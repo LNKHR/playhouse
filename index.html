@@ -11,39 +11,26 @@
     integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
 
   <!-- Toyhou.se Theme -->
-  <link href="../toyhouse_themes/night.css" title="thThemes" id="thThemes" rel="stylesheet" type="text/css" />
+  <link href="/toyhouse_themes/night.css" title="thThemes" id="thThemes" rel="stylesheet" type="text/css" />
 
   <style>
-
-    /*textarea {
-      width: 32%;
-      min-height: 250px;
-      overflow: scroll;
-      margin: auto;
-      display: inline-block;
-      background: #f4f4f9;
-      outline: none;
-      font-family: Courier, sans-serif;
-      font-size: 14px;
-    }*/
 
     iframe {
       bottom: 0;
       position: relative;
       width: 100%;
-      height: 35em;
       border: 0;
     }
 
     .ace_editor{
       height: 100%;
-      font-size: 1rem;
     }
+
   </style>
 </head>
 <body>
   <nav class="navbar navbar-toggleable-md navbar-inverse">
-    <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarSupportedContent">
+    <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
     <a class="navbar-brand" href="#">Playhou.se</a>
@@ -54,17 +41,26 @@
           <a class="nav-link" href="#">Home</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#">Link</a>
+          <form>
+            <select class="dropdown" id="thCSSThemes">
+              <option value="../toyhouse_themes/default.css">Default</option>
+              <option selected="selected" value="../toyhouse_themes/night.css">Night</option>
+              <option value="../toyhouse_themes/pink.css">Pink</option>
+              <option value="../toyhouse_themes/teal.css">Teal</option>
+              <option value="../toyhouse_themes/bee.css">Bee</option>
+              <option value="../toyhouse_themes/velvet.css">Velvet</option>
+            </select>
+          </form>
         </li>
       </ul>
     </div>
   </nav>
 
   <div class="row no-gutters" style="min-height: calc(100vh - 43px)">
-    <div class="col-6">
-      <textarea id="html"><div id="editor"></div></textarea>
+    <div class="col-4">
+      <textarea id="html"></textarea>
     </div>
-    <div class="col-6 p-4">
+    <div class="col-8 p-4">
       <iframe id="code"></iframe>
     </div>
   </div>
@@ -87,15 +83,38 @@
   <!-- Ace Editor -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.9/ace.js"></script>
 
-  <!-- Ace Editor Settings -->
   <script>
+
     var editor = ace.edit("html");
     editor.setTheme("ace/theme/tomorrow_night");
     editor.session.setMode("ace/mode/html");
+    editor.session.setUseWrapMode(true);
+    
+    function setStyleSource (linkID, sourceLoc) {
+      var theLink = document.getElementById(linkID);
+      theLink.href = sourceLoc;
+    }
+
+    document.getElementById("thCSSThemes").addEventListener("change", function(){
+      var selected = this.options[this.selectedIndex].value;
+      setStyleSource ("thThemes", selected)
+    });
+
+    (function(test) {
+      let code = document.getElementById("code").contentWindow.document;
+      editor.addEventListener('change', function() {    
+        let e = document.getElementById("thCSSThemes");  
+        code.open();
+        code.writeln(
+          `<head><link href="` + e.options[e.selectedIndex].value + `" rel="stylesheet" type="text/css" /></head>` + 
+          editor.getValue()
+        );
+        code.close();
+      });
+      console.log(e);
+    })()
+
   </script>
-  
-  <!-- Compiler Script -->
-  <script type="text/javascript" src="app.js"></script>
 
 </body>
 </html>
