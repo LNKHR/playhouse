@@ -1,6 +1,6 @@
 
 function compile() {
-  var html = document.getElementById("html");
+  var html = document.getElementsById("html");
   var code = document.getElementById("code").contentWindow.document;
   document.body.onkeyup = function() {
     code.open();
