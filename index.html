@@ -13,215 +13,141 @@
 
   <!-- Toyhou.se Theme -->
   <link href="./toyhouse_themes/night.css" title="thThemes" id="thThemes" rel="stylesheet" type="text/css" />
+  <link href="playhouse.css" rel="stylesheet" type="text/css" />
 
-  <style>
-
-    @media screen and (min-width: 768px){
-      #codeEditor {
-        position: relative;
-        min-width: 0%;
-        width: 25%;
-        max-width: 100%;
-        z-index: 1000;
-        overflow: hidden;
-      }
-    }
-
-    .ace_editor {
-      position: relative;
-      width: 100% !important;
-      height: calc(100vh - 93px);
-    }
-
-    @media screen and (max-width: 767px){
-      #codeEditor {
-        position: absolute;
-        top: 0;
-        left: -100%;
-        height: 100%;
-        width: 100%;
-        transition: left .5s ease-in-out;
-        z-index: 1000;
-      }
-      #codeEditor.active{
-        left: 0;
-      }
-      .ace_editor{
-        height: calc(100vh - 164px);
-      }
-    }
-
-    .resizer {cursor: ew-resize;}
-
-    pre{margin: 0 !important;}
-
-  </style>
 </head>
 
-<body>
+<body id="main">
 
-  <body class="page-body page-body-user" style="min-height: 100%;">
+  <!-- Navbar -->
+  <nav class="navbar navbar-toggleable-sm navbar-inverse header" data-topbar="" role="navigation" id="header">
+    <a class="navbar-brand" href="">PLAYHOU.SE</a>
+  </nav>
 
-    <div id="container" class="page-container page-container-user">
-      <a id="top"></a>
+  <!-- Mobile Menu -->
+  <div class="hidden-md-up nav-mobile-menu">
+    <button class="btn btn-outline-secondary nav-mobile-menu-toggle" onclick="offCanvas()" data-target="#">
+      Menu <span class="fa fa-caret-right"></span>
+    </button>
+  </div>
 
-      <nav class="navbar navbar-toggleable-sm navbar-inverse header" data-topbar="" role="navigation" id="header">
-        <a class="navbar-brand" href="">PLAYHOU.SE</a>
-      </nav>
-      <div class="hidden-md-up nav-mobile-menu">
-        <button class="btn btn-outline-secondary nav-mobile-menu-toggle" onclick="offCanvas()" data-target="#">
-          Menu <span class="fa fa-caret-right"></span>
-        </button>
-      </div>
+  <div class="clearfix container-fluid p-0">
+    <div class="row no-gutters flex-nowrap">
+      <div class="bg-faded" id="codeEditor">
+        <div class="bonk">
+          <div class="row flex-nowrap no-gutters p-1 align-items-center options">
 
-      <div id="main" class="clearfix container-fluid main-container">
-        <div class="row" style="min-height: calc(100vh - 43px);">
-          <div class="bg-faded" id="codeEditor">
-            <div class="card-header p-2">
-              <div class="d-flex flex-nowrap no-gutters m-n1 align-items-center">
-                <div class="col p-1">
-                  <form>
-                    <select class="form-control" id="thCSSThemes">
-                      <option value="./toyhouse_themes/night.css">Night</option>
-                      <option value="./toyhouse_themes/default.css">Default</option>
-                      <option value="./toyhouse_themes/pink.css">Pink</option>
-                      <option value="./toyhouse_themes/teal.css">Teal</option>
-                      <option value="./toyhouse_themes/bee.css">Bee</option>
-                      <option value="./toyhouse_themes/velvet.css">Velvet</option>
-                    </select>
-                  </form>
-                </div>
-                <div class="col p-1">
-                  <select class="form-control" id="editorThemes">
-                    <option value="ace/theme/tomorrow_night">Dark Editor</option>
-                    <option value="ace/theme/chrome">Light Editor</option>
-                  </select>
-                </div>
-                <div class="col-auto p-1">
-                  <button class="btn btn-default d-block" onclick="copyToClipboard()">
-                    <i class="fas fa-clipboard"></i>
-                  </button>
-                </div>
-              </div>
+            <!-- Theme Options -->
+            <div class="col p-1">
+              <form>
+                <select class="form-control" id="thCSSThemes">
+                  <option value="./toyhouse_themes/night.css">Night</option>
+                  <option value="./toyhouse_themes/default.css">Default</option>
+                  <option value="./toyhouse_themes/pink.css">Pink</option>
+                  <option value="./toyhouse_themes/teal.css">Teal</option>
+                  <option value="./toyhouse_themes/bee.css">Bee</option>
+                  <option value="./toyhouse_themes/velvet.css">Velvet</option>
+                </select>
+              </form>
             </div>
-            <textarea id="html"></textarea>
+
+            <!-- Editor Options -->
+            <div class="col p-1">
+              <select class="form-control" id="editorThemes">
+                <option value="ace/theme/tomorrow_night">Dark Editor</option>
+                <option value="ace/theme/chrome">Light Editor</option>
+              </select>
+            </div>
+
+            <!-- Copy -->
+            <div class="col-auto p-1 hidden-sm-down">
+              <button class="btn btn-default d-block" title="Toggle Sidebar" onclick="sidebarToggle()"><i class="fas fa-adjust"></i></button>
+            </div>
+
+            <!-- Copy -->
+            <div class="col-auto p-1">
+              <button class="btn btn-default d-block" title="Copy HTML" onclick="copyToClipboard()"><i class="fas fa-clipboard"></i></button>
+            </div>
+
           </div>
-          <div class="resizer bg-secondary p-1 hidden-sm-down"></div>
-          <div class="col content-main">
-            <div class="user-profile" id="code"></div>
+          <textarea id="html"></textarea>
+        </div>
+      </div>
+      <div class="resizer bg-secondary p-1 hidden-sm-down"></div>
+
+      <!-- Render Area -->
+      <div class="col" style="overflow: hidden !important;">
+        <div id="main" class="clearfix container-fluid">
+          <div class="row" style="min-height: calc(100vh - 43px);">
+
+            <!-- Sidebar -->
+            <div class="col-md-3 col-lg-2 sidebar" id="sidebar">
+              <ul class="side-nav list-unstyled">
+                <li class="header"><i class="fas fa-user header-icon"></i>User</li>
+                <li>
+                  <span class="display-user">
+                    <a href="">
+                      <img src="https://cdn.discordapp.com/attachments/728916999610171427/811090456460918784/682307614478041107.png" class="display-user-avatar">
+                      <span class="display-user-username">user</span>
+                    </a>
+                  </span>
+                </li>
+                <li class="divider sidebar-divider-username"></li>
+                <li class=" sidebar-li-bulletins"><a href=""><i class="far fa-newspaper fa-fw sidebar-icon"></i>Bulletins</a></li>
+                <li class=" sidebar-li-characters"><a href=""><i class="fa fa-users fa-fw sidebar-icon"></i>Characters</a></li>
+                <li class=" sidebar-li-links"><a href=""><i class="fa fa-link fa-fw sidebar-icon"></i>Links</a></li>
+                <li class=" sidebar-li-worlds"><a href=""><i class="fa fa-globe fa-fw sidebar-icon"></i>Worlds</a></li>
+                <li class=" sidebar-li-favorites"><a href=""><i class="fa fa-star fa-fw sidebar-icon"></i>Favorites</a></li>
+                <li class="divider sidebar-divider-collections"></li>
+                <li class=" sidebar-li-created"><a href=""><i class="fa fa-palette fa-fw sidebar-icon"></i>Designs</a></li>
+                <li class=" sidebar-li-art"><a href=""><i class="fa fa-paint-brush fa-fw sidebar-icon"></i>Art</a></li>
+                <li class=" sidebar-li-literatures"><a href=""><i class="fa fa-book fa-fw sidebar-icon"></i>Library</a></li>
+                <li class="divider sidebar-divider-stats"></li>
+                <li class=" sidebar-li-stats"><a href=""><i class="fa fa-chart-bar fa-fw sidebar-icon"></i>Stats</a></li>
+              </ul>
+            </div>
+
+            <!-- Main Content -->
+            <div class="col-sm-12 col-md-9 col-lg-10 content-main" id="content">
+              <div class="user-profile" id="code"></div>
+            </div>
+
           </div>
         </div>
       </div>
-
-      <div id="footer" class="text-muted text-center p-3 footer">
-        
-      </div>
     </div>
+  </div>
 
+  <!-- Footer -->
+  <div class="text-muted text-center p-3 footer">
+    This is a live compiler for Toyhou.se HTML Layouts!<br>
+    <a class="mx-2" href="https://toyhou.se/">Toyhou.se</a>
+    <a class="mx-2" href="">Bookmark on TH</a>
+    <a class="mx-2" href="https://ko-fi.com/cheeriko">Support Me</a>
+  </div>
 
-    <!-- Bootstrap JS -->
-    <script src="https://code.jquery.com/jquery-3.1.1.slim.min.js" integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n" crossorigin="anonymous"></script>
-    <script type="text/javascript" src="https://rawgit.com/RickStrahl/jquery-resizable/master/src/jquery-resizable.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
-    
-    <!-- Font Awesome -->
-    <script src="https://kit.fontawesome.com/734cc6a413.js" crossorigin="anonymous"></script>
+  <!-- Bootstrap JS -->
+  <script src="https://code.jquery.com/jquery-3.1.1.slim.min.js"
+    integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n"
+    crossorigin="anonymous"></script>
+  <script type="text/javascript"
+    src="https://rawgit.com/RickStrahl/jquery-resizable/master/src/jquery-resizable.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js"
+    integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb"
+    crossorigin="anonymous"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js"
+    integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn"
+    crossorigin="anonymous"></script>
 
-    <!-- Ace Editor -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.9/ace.js"></script>
+  <!-- Font Awesome -->
+  <script src="https://kit.fontawesome.com/734cc6a413.js" crossorigin="anonymous"></script>
 
-    <script>
+  <!-- Ace Editor -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.9/ace.js"></script>
 
-      /* Editor Stuff
-      ========================================================== */
-      var editor = ace.edit("html");
-      editor.$blockScrolling = Infinity;
-      editor.setOptions({
-        // editor options
-        selectionStyle: 'line',
-        highlightActiveLine: true,
-        highlightSelectedWord: true,
-        behavioursEnabled: true,
-        wrapBehavioursEnabled: true,
-        
-        // renderer options
-        displayIndentGuides: true,
-        fontSize: 16,
-        theme: 'ace/theme/tomorrow_night',
+  <!-- Dah JS -->
+  <script src="/playhouse.js"></script>
 
-        // session options
-        useWorker: false,
-        useSoftTabs: true,
-        tabSize: 2,
-        mode: 'ace/mode/html'
-      });
-
-      /* Change Theme
-      ========================================================== */
-      function setStyleSource(linkID, sourceLoc) {
-        var theLink = document.querySelector(linkID);
-        theLink.href = sourceLoc;
-      }
-
-      document.getElementById("thCSSThemes").addEventListener("change", function () {
-        var selected = this.options[this.selectedIndex].value;
-        setStyleSource("#thThemes", selected);
-        edit(selected);
-      });	
-
-      document.getElementById("editorThemes").addEventListener("change", function () {
-        var selected = this.options[this.selectedIndex].value;
-        editor.setTheme(selected);
-      });	
-
-      /* Complie HTML 
-      ========================================================== */
-      let compile = () => {
-        editor.addEventListener('change', function () {
-          let code = document.getElementById("code");
-          var text = editor.getValue();
-          localStorage.setItem("html", text);
-          code.innerHTML = text;
-        });
-        window.onload = () => {
-          var savedText = localStorage.getItem("html") || "";
-          code.innerHTML = savedText;
-          editor.session.setValue(savedText);
-        };
-      }
-
-      compile();
-
-      /* Copy to Clipboard
-      ========================================================== */
-      function copyToClipboard() {
-        const str = editor.getValue();
-        const el = document.createElement('textarea');
-        el.value = str;
-        el.setAttribute('readonly', '');
-        el.style.position = 'absolute';
-        el.style.left = '-9999px';
-        document.body.appendChild(el);
-        el.select();
-        document.execCommand('copy');
-        document.body.removeChild(el);
-      }
-
-      /* Resizer
-      ========================================================== */
-      $("#codeEditor").resizable({
-        handleSelector: ".resizer", 
-        resizeHeight: false 
-      });
-
-      function offCanvas() {
-        var element = document.getElementById("codeEditor");
-        element.classList.toggle("active");
-      }
-
-    </script>
-
-  </body>
+</body>
 
 </html>
