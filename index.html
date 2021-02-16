@@ -12,37 +12,29 @@
     integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
 
   <!-- Toyhou.se Theme -->
-  <link href="./toyhouse_themes/night.css" title="thThemes" id="thThemes" rel="stylesheet" type="text/css" />
+  <link href="/toyhouse_themes/night.css" title="thThemes" id="thThemes" rel="stylesheet" type="text/css" />
 
   <style>
-    iframe {
-      bottom: 0;
+
+    #codeEditor {
       position: relative;
-      width: 100%;
-      height: 100%;
-      border: 0;
-      overflow-x: hidden;
+      min-width: 0%;
+      width: 25%;
+      max-width: 100%;
+      z-index: 1000;
+      overflow: hidden;
     }
 
     .ace_editor {
-      height: 100%;
-      width: 100%
+      position: relative;
+      width: 100% !important;
+      height: calc(100vh - 98px);
     }
 
-    #mydiv {
-      position: absolute;
-      z-index: 1000;
-      height: 300px;
-      width: 500px;
-      bottom: 1.5rem;
-      right: 1.5rem;
-      resize: both;
-      overflow: auto;
-    }
-
-    #mydivheader {cursor: move;}
+    .resizer {cursor: ew-resize;}
 
     pre{margin: 0 !important;}
+
   </style>
 </head>
 
@@ -76,170 +68,102 @@
       </nav>
       <div class="hidden-md-up nav-mobile-menu">
         <button class="btn btn-outline-secondary nav-mobile-menu-toggle" data-toggle="offcanvas" data-target="#">
-          Menu <span class="fa fa-caret-right" style=""></span>
+          Menu <span class="fa fa-caret-right"></span>
         </button>
       </div>
 
-      <div id="main" class="clearfix container-fluid main-container full-sidebar">
-        <div class="row row-offcanvas row-offcanvas-left" data-sticky-wrap="" style="min-height: 816px;">
-          <div class="col-md-3 col-lg-2 sidebar sidebar-offcanvas" id="sidebar">
-            <ul class="side-nav list-unstyled">
-              <li class="header"><i class="fi-torso header-icon"></i>User</li>
-              <li><span class="display-user"><a href="https://toyhou.se/cheeriko"><img
-                      src="https://f2.toyhou.se/file/f2-toyhou-se/users/cheeriko?20" class="display-user-avatar"><span
-                      class="display-user-username">cheeriko</span></a></span></li>
-              <li class="blurb user-content fr-view">
-                <div class="text-center">
-                  Looking for codes? <a href="https://toyhou.se/cheerikola">Check here.</a>
+      <div id="main" class="clearfix container-fluid main-container">
+        <div class="row" style="min-height: calc(100vh - 43px);">
+          <div id="codeEditor">
+            <div class="card-header p-2">
+              <div class="row no-gutters m-n1 align-items-center">
+                <div class="col p-1">
+                  <form>
+                    <select class="form-control" id="thCSSThemes">
+                      <option value="./toyhouse_themes/night.css">Night</option>
+                      <option value="./toyhouse_themes/default.css">Default</option>
+                      <option value="./toyhouse_themes/pink.css">Pink</option>
+                      <option value="./toyhouse_themes/teal.css">Teal</option>
+                      <option value="./toyhouse_themes/bee.css">Bee</option>
+                      <option value="./toyhouse_themes/velvet.css">Velvet</option>
+                    </select>
+                  </form>
                 </div>
-              </li>
-              <li class="divider sidebar-divider-username"></li>
-              <li class=" sidebar-li-bulletins">
-                <a href="https://toyhou.se/cheeriko/bulletins">
-                  <i class="far fa-newspaper fa-fw sidebar-icon"></i>Bulletins
-                </a>
-              </li>
-              <li class=" sidebar-li-characters">
-                <a href="https://toyhou.se/cheeriko/characters">
-                  <i class="fa fa-users fa-fw sidebar-icon"></i>Characters
-                </a>
-              </li>
-              <li class=" sidebar-li-links">
-                <a href="https://toyhou.se/cheeriko/links">
-                  <i class="fa fa-link fa-fw sidebar-icon"></i>Links
-                </a>
-              </li>
-              <li class=" sidebar-li-worlds">
-                <a href="https://toyhou.se/cheeriko/worlds">
-                  <i class="fa fa-globe fa-fw sidebar-icon"></i>Worlds
-                </a>
-              </li>
-              <li class=" sidebar-li-favorites">
-                <a href="https://toyhou.se/cheeriko/favorites">
-                  <i class="fa fa-star fa-fw sidebar-icon"></i>Favorites
-                </a>
-              </li>
-              <li class="divider sidebar-divider-collections"></li>
-              <li class=" sidebar-li-created">
-                <a href="https://toyhou.se/cheeriko/created">
-                  <i class="fa fa-palette fa-fw sidebar-icon"></i>Designs
-                </a>
-              </li>
-              <li class=" sidebar-li-art">
-                <a href="https://toyhou.se/cheeriko/art">
-                  <i class="fa fa-paint-brush fa-fw sidebar-icon"></i>Art
-                </a>
-              </li>
-              <li class=" sidebar-li-literatures">
-                <a href="https://toyhou.se/cheeriko/literatures">
-                  <i class="fa fa-book fa-fw sidebar-icon"></i>Library
-                </a>
-              </li>
-              <li class="divider sidebar-divider-stats"></li>
-              <li class=" sidebar-li-comments">
-                <a href="https://toyhou.se/cheeriko/comments">
-                  <i class="fa fa-comment fa-fw sidebar-icon"></i>2 Comments
-                </a>
-              </li>
-              <li class=" sidebar-li-stats">
-                <a href="https://toyhou.se/cheeriko/stats">
-                  <i class="fa fa-chart-bar fa-fw sidebar-icon"></i>Stats
-                </a>
-              </li>
-            </ul>
-          </div>
-          <div class="col-sm-12 col-md-9 col-lg-10 content-main" id="content">
-            <div class="user-profile" id="code">
-
+                <div class="col p-1">
+                  <select class="form-control" id="editorThemes">
+                    <option value="ace/theme/tomorrow_night">Dark Editor</option>
+                    <option value="ace/theme/chrome">Light Editor</option>
+                  </select>
+                </div>
+                <div class="col-auto p-1">
+                  <button class="btn btn-default d-block" onclick="copyToClipboard()">
+                    <i class="fas fa-clipboard"></i>
+                  </button>
+                </div>
+              </div>
             </div>
+            <textarea id="html"></textarea>
+          </div>
+          <div class="resizer bg-secondary p-1"></div>
+          <div class="col content-main">
+            <div class="user-profile" id="code"></div>
           </div>
         </div>
       </div>
 
-      <div id="mydiv" class="card">
-        <div class="card-header p-1">
-          <div class="row no-gutters m-n1">
-            <div class="col-7 p-1">
-              <form>
-                <select class="form-control" id="thCSSThemes">
-                  <option value="./toyhouse_themes/night.css">Night</option>
-                  <option value="./toyhouse_themes/default.css">Default</option>
-                  <option value="./toyhouse_themes/pink.css">Pink</option>
-                  <option value="./toyhouse_themes/teal.css">Teal</option>
-                  <option value="./toyhouse_themes/bee.css">Bee</option>
-                  <option value="./toyhouse_themes/velvet.css">Velvet</option>
-                </select>
-              </form>
-            </div>
-            <div class="col p-1">
-              <a class="btn btn-default d-block">
-                <i class="fas fa-clipboard"></i>
-              </a>
-            </div>
-            <div class="col p-1">
-              <a class="btn btn-danger d-block">
-                <i class="fas fa-trash-alt"></i>
-              </a>
-            </div>
-            <div class="col p-1">
-              <a class="btn btn-primary d-block" id="mydivheader">
-                <i class="fas fa-arrows-alt"></i>
-              </a>
-            </div>
-          </div>
-        </div>
-        <textarea id="html"></textarea>
-      </div>
-
-      <div id="footer" class="text-muted text-center p-3 footer" data-sticky-footer="">
-
+      <div id="footer" class="text-muted text-center p-3 footer">
+        
       </div>
     </div>
+
 
     <!-- Bootstrap JS -->
     <script src="https://code.jquery.com/jquery-3.1.1.slim.min.js"
       integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n"
       crossorigin="anonymous"></script>
+    <script type="text/javascript" src="https://rawgit.com/RickStrahl/jquery-resizable/master/src/jquery-resizable.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js"
       integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb"
       crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js"
       integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn"
       crossorigin="anonymous"></script>
-    <script src="https://kit.fontawesome.com/0d9ecae968.js" crossorigin="anonymous"></script>
+    
+    <!-- Font Awesome -->
+    <script src="https://kit.fontawesome.com/734cc6a413.js" crossorigin="anonymous"></script>
 
     <!-- Ace Editor -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.9/ace.js"></script>
 
     <script>
 
-      function calculateSomethingMaybe(args){
-        return args;
-      }
-
-      function caching(fn){
-        const cache = {};
-        return function(){
-          const string = arguments[0];
-          if(!cache[string]){
-            const result = fn.apply(this, arguments);
-            cache[string] = result;
-            return result;
-          }
-          return cache[string];
-        }
-      }
-
-      const letsCache = caching(calculateSomethingMaybe);
-
-      console.log(letsCache('a book'), letsCache('a pen'), letsCache('a book'));
-
+      /* Editor Stuff
+      ========================================================== */
       var editor = ace.edit("html");
-      editor.setTheme("ace/theme/tomorrow_night");
-      editor.session.setMode("ace/mode/html");
-      editor.session.setUseWrapMode(true);
-      editor.setFontSize(18);
+      editor.$blockScrolling = Infinity;
+      editor.setOptions({
+        // editor options
+        selectionStyle: 'line',
+        highlightActiveLine: true,
+        highlightSelectedWord: true,
+        behavioursEnabled: true,
+        wrapBehavioursEnabled: true,
+        
+        // renderer options
+        displayIndentGuides: true,
+        fontSize: 16,
+        theme: 'ace/theme/tomorrow_night',
 
+        // session options
+        overwrite: true,
+        useWorker: false,
+        useSoftTabs: true,
+        tabSize: 2,
+        mode: 'ace/mode/html'
+      });
+
+      /* Change Theme
+      ========================================================== */
       function setStyleSource(linkID, sourceLoc) {
         var theLink = document.querySelector(linkID);
         theLink.href = sourceLoc;
@@ -249,67 +173,52 @@
         var selected = this.options[this.selectedIndex].value;
         setStyleSource("#thThemes", selected);
         edit(selected);
-      });
+      });	
 
-      let compile = function () {
+      document.getElementById("editorThemes").addEventListener("change", function () {
+        var selected = this.options[this.selectedIndex].value;
+        editor.setTheme(selected);
+      });	
+
+      /* Complie HTML 
+      ========================================================== */
+      let compile = () => {
         editor.addEventListener('change', function () {
           let code = document.getElementById("code");
-          if (typeof(Storage) !== "undefined") {
-            // Store
-            localStorage.setItem('userCode', editor.getValue());
-            // Retrieve
-            code.innerHTML = localStorage.getItem("userCode");
-          } else {
-            code.innerHTML = "Sorry, your browser does not support Web Storage...";
-          }
+          var text = editor.getValue();
+          localStorage.setItem("html", text);
+          code.innerHTML = text;
         });
+        window.onload = () => {
+          var savedText = localStorage.getItem("html") || "";
+          code.innerHTML = savedText;
+          editor.session.setValue(savedText);
+        };
       }
 
-      compile();	
+      compile();
 
-      dragElement(document.getElementById("mydiv"));
-
-      function dragElement(elmnt) {
-        var pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
-        if (document.getElementById(elmnt.id + "header")) {
-          // if present, the header is where you move the DIV from:
-          document.getElementById(elmnt.id + "header").onmousedown = dragMouseDown;
-        } else {
-          // otherwise, move the DIV from anywhere inside the DIV:
-          elmnt.onmousedown = dragMouseDown;
-        }
-
-        function dragMouseDown(e) {
-          e = e || window.event;
-          e.preventDefault();
-          // get the mouse cursor position at startup:
-          pos3 = e.clientX;
-          pos4 = e.clientY;
-          document.onmouseup = closeDragElement;
-          // call a function whenever the cursor moves:
-          document.onmousemove = elementDrag;
-        }
-
-        function elementDrag(e) {
-          e = e || window.event;
-          e.preventDefault();
-          // calculate the new cursor position:
-          pos1 = pos3 - e.clientX;
-          pos2 = pos4 - e.clientY;
-          pos3 = e.clientX;
-          pos4 = e.clientY;
-          // set the element's new position:
-          elmnt.style.top = (elmnt.offsetTop - pos2) + "px";
-          elmnt.style.left = (elmnt.offsetLeft - pos1) + "px";
-        }
-
-        function closeDragElement() {
-          // stop moving when mouse button is released:
-          document.onmouseup = null;
-          document.onmousemove = null;
-        }
+      /* Copy to Clipboard
+      ========================================================== */
+      function copyToClipboard() {
+        const str = editor.getValue();
+        const el = document.createElement('textarea');
+        el.value = str;
+        el.setAttribute('readonly', '');
+        el.style.position = 'absolute';
+        el.style.left = '-9999px';
+        document.body.appendChild(el);
+        el.select();
+        document.execCommand('copy');
+        document.body.removeChild(el);
       }
 
+      /* Resizer
+      ========================================================== */
+      $("#codeEditor").resizable({
+        handleSelector: ".resizer", 
+        resizeHeight: false 
+      });
 
     </script>
 
