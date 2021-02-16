@@ -211,6 +211,17 @@
       mode: 'ace/mode/html'
     });
 
+    /* Resize Editor
+    ========================================================== */
+    var resize = function() {
+     var minHt = 16;
+     var sl = editor.getSession().getScreenLength();
+     var sw = editor.renderer.scrollBar.getWidth();
+     var lh = Math.max(editor.renderer.lineHeight, minHt);
+     var ht = Math.max(((sl * lh) + sw), minHt);
+     $('#codeEditor').height(ht);
+     editor.resize();
+   };
 
     /* Expand Content on Scroll
     ========================================================== */
@@ -222,7 +233,6 @@
         $("#codeEditor").removeClass("extend");
       }
     });
-
 
     /* Change Theme
     ========================================================== */
