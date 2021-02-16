@@ -15,9 +15,9 @@
   <link href="./toyhouse_themes/night.css" title="thThemes" id="thThemes" rel="stylesheet" type="text/css" />
 
   <style>
-    body{overflow-x: hidden;}
     .resizer {cursor: ew-resize;}
-    pre{margin: 0 !important;}
+    #codeEditor pre{margin: 0 !important;}
+    .options{overflow: hidden;}
 
     @media screen and (min-width: 768px){
       #codeEditor {
@@ -27,8 +27,6 @@
       }
     }
 
-    .options{overflow: hidden;}
-
     .bonk{
       position: sticky;
       top: 0;
@@ -37,18 +35,13 @@
 
     .ace_editor {
       width: 100% !important;
-      height: calc(100vh - 92px);
-      transition: height .1s ease;
-    }
-
-    #codeEditor.extend .ace_editor{
       height: calc(100vh - 55px);
     }
 
     @media screen and (max-width: 767px){
       #codeEditor {
         position: absolute;
-        top: 0;
+        top: 109px;
         left: -100%;
         height: 100%;
         width: 100%;
@@ -64,19 +57,6 @@
 </head>
 
 <body id="main">
-
-  <!-- Navbar -->
-  <nav class="navbar navbar-toggleable-sm navbar-inverse header" data-topbar="" role="navigation" id="header">
-    <a class="navbar-brand" href="">PLAYHOU.SE</a>
-  </nav>
-
-  <!-- Mobile Menu -->
-  <div class="hidden-md-up nav-mobile-menu">
-    <button class="btn btn-outline-secondary nav-mobile-menu-toggle" onclick="offCanvas()" data-target="#">
-      Menu <span class="fa fa-caret-right"></span>
-    </button>
-  </div>
-
   <div class="clearfix container-fluid p-0">
     <div class="row no-gutters flex-nowrap">
       <div class="bg-faded" id="codeEditor">
@@ -123,8 +103,22 @@
 
       <!-- Render Area -->
       <div class="col" style="overflow: hidden !important;">
-        <div id="main" class="clearfix container-fluid h-100">
-          <div class="row h-100">
+
+        <!-- Navbar -->
+        <nav class="navbar navbar-toggleable-sm navbar-inverse header" data-topbar="" role="navigation" id="header">
+          <a class="navbar-brand" href="">PLAYHOU.SE</a>
+        </nav>
+      
+        <!-- Mobile Menu -->
+        <div class="hidden-md-up nav-mobile-menu">
+          <button class="btn btn-outline-secondary nav-mobile-menu-toggle" onclick="offCanvas()" data-target="#">
+            Menu <span class="fa fa-caret-right"></span>
+          </button>
+        </div>
+      
+        <!-- Main Content -->
+        <div id="main" class="clearfix container-fluid">
+          <div class="row" style="min-height: calc(100vh - 55px)">
 
             <!-- Sidebar -->
             <div class="col-md-3 col-lg-2 sidebar" id="sidebar">
@@ -160,16 +154,16 @@
 
           </div>
         </div>
+
+        <!-- Footer -->
+        <div class="text-muted text-center p-3 footer">
+          This is a live compiler for Toyhou.se HTML Layouts!<br>
+          <a class="mx-2" href="https://toyhou.se/">Toyhou.se</a>
+          <a class="mx-2" href="">Bookmark on TH</a>
+          <a class="mx-2" href="https://ko-fi.com/cheeriko">Support Me</a>
+        </div>
       </div>
     </div>
-  </div>
-
-  <!-- Footer -->
-  <div class="text-muted text-center p-3 footer">
-    This is a live compiler for Toyhou.se HTML Layouts!<br>
-    <a class="mx-2" href="https://toyhou.se/">Toyhou.se</a>
-    <a class="mx-2" href="">Bookmark on TH</a>
-    <a class="mx-2" href="https://ko-fi.com/cheeriko">Support Me</a>
   </div>
 
   <!-- Bootstrap JS -->
@@ -211,29 +205,6 @@
       mode: 'ace/mode/html'
     });
 
-    /* Resize Editor
-    ========================================================== */
-    var resize = function() {
-     var minHt = 16;
-     var sl = editor.getSession().getScreenLength();
-     var sw = editor.renderer.scrollBar.getWidth();
-     var lh = Math.max(editor.renderer.lineHeight, minHt);
-     var ht = Math.max(((sl * lh) + sw), minHt);
-     $('#codeEditor').height(ht);
-     editor.resize();
-   };
-
-    /* Expand Content on Scroll
-    ========================================================== */
-    $(window).scroll(function() {    
-      var scroll = $(window).scrollTop();
-      if (scroll >= 50) {
-        $("#codeEditor").addClass("extend");
-      } else {
-        $("#codeEditor").removeClass("extend");
-      }
-    });
-
     /* Change Theme
     ========================================================== */
     function setStyleSource(linkID, sourceLoc) {
@@ -251,7 +222,6 @@
       var selected = this.options[this.selectedIndex].value;
       editor.setTheme(selected);
     });	
-
 
     /* Complie HTML 
     ========================================================== */
@@ -271,7 +241,6 @@
 
     compile();
 
-
     /* Copy to Clipboard
     ========================================================== */
     function copyToClipboard() {
@@ -287,22 +256,12 @@
       document.body.removeChild(el);
     }
 
-
-    /* Resizer
-    ========================================================== */
-    $("#codeEditor").resizable({
-      handleSelector: ".resizer", 
-      resizeHeight: false 
-    });
-
-
     /* Sidebar Junk
     ========================================================== */
     function offCanvas() {
       var element = document.getElementById("codeEditor");
       element.classList.toggle("active");
     }
-
 
     /* Sidebar Junk
     ========================================================== */
@@ -312,6 +271,7 @@
       var element2 = document.getElementById("content");
       element2.classList.toggle("col-lg-12");
     }
+
   </script>
 
 </body>
