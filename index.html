@@ -256,6 +256,13 @@
       document.body.removeChild(el);
     }
 
+    /* Resizer
+    ========================================================== */
+    $("#codeEditor").resizable({
+      handleSelector: ".resizer", 
+      resizeHeight: false 
+    });
+
     /* Sidebar Junk
     ========================================================== */
     function offCanvas() {
