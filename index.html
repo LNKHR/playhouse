@@ -16,19 +16,39 @@
 
   <style>
 
-    #codeEditor {
-      position: relative;
-      min-width: 0%;
-      width: 25%;
-      max-width: 100%;
-      z-index: 1000;
-      overflow: hidden;
+    @media screen and (min-width: 768px){
+      #codeEditor {
+        position: relative;
+        min-width: 0%;
+        width: 25%;
+        max-width: 100%;
+        z-index: 1000;
+        overflow: hidden;
+      }
     }
 
     .ace_editor {
       position: relative;
       width: 100% !important;
-      height: calc(100vh - 98px);
+      height: calc(100vh - 93px);
+    }
+
+    @media screen and (max-width: 767px){
+      #codeEditor {
+        position: absolute;
+        top: 0;
+        left: -100%;
+        height: 100%;
+        width: 100%;
+        transition: left .5s ease-in-out;
+        z-index: 1000;
+      }
+      #codeEditor.active{
+        left: 0;
+      }
+      .ace_editor{
+        height: calc(100vh - 164px);
+      }
     }
 
     .resizer {cursor: ew-resize;}
@@ -46,37 +66,19 @@
       <a id="top"></a>
 
       <nav class="navbar navbar-toggleable-sm navbar-inverse header" data-topbar="" role="navigation" id="header">
-
-        <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse"
-          data-target="#headerContent" aria-controls="headerContent" aria-expanded="false"
-          aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-
-
-        <a class="navbar-brand" href="https://toyhou.se">TOYHOU.SE</a>
-
-
-        <div class="collapse navbar-collapse" id="headerContent">
-
-
-          <div class="navbar-nav navbar-right form-group">
-
-          </div>
-
-        </div>
+        <a class="navbar-brand" href="">PLAYHOU.SE</a>
       </nav>
       <div class="hidden-md-up nav-mobile-menu">
-        <button class="btn btn-outline-secondary nav-mobile-menu-toggle" data-toggle="offcanvas" data-target="#">
+        <button class="btn btn-outline-secondary nav-mobile-menu-toggle" onclick="offCanvas()" data-target="#">
           Menu <span class="fa fa-caret-right"></span>
         </button>
       </div>
 
       <div id="main" class="clearfix container-fluid main-container">
         <div class="row" style="min-height: calc(100vh - 43px);">
-          <div id="codeEditor">
+          <div class="bg-faded" id="codeEditor">
             <div class="card-header p-2">
-              <div class="row no-gutters m-n1 align-items-center">
+              <div class="d-flex flex-nowrap no-gutters m-n1 align-items-center">
                 <div class="col p-1">
                   <form>
                     <select class="form-control" id="thCSSThemes">
@@ -104,7 +106,7 @@
             </div>
             <textarea id="html"></textarea>
           </div>
-          <div class="resizer bg-secondary p-1"></div>
+          <div class="resizer bg-secondary p-1 hidden-sm-down"></div>
           <div class="col content-main">
             <div class="user-profile" id="code"></div>
           </div>
@@ -118,16 +120,10 @@
 
 
     <!-- Bootstrap JS -->
-    <script src="https://code.jquery.com/jquery-3.1.1.slim.min.js"
-      integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n"
-      crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.1.1.slim.min.js" integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n" crossorigin="anonymous"></script>
     <script type="text/javascript" src="https://rawgit.com/RickStrahl/jquery-resizable/master/src/jquery-resizable.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js"
-      integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb"
-      crossorigin="anonymous"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js"
-      integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn"
-      crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
     
     <!-- Font Awesome -->
     <script src="https://kit.fontawesome.com/734cc6a413.js" crossorigin="anonymous"></script>
@@ -155,7 +151,6 @@
         theme: 'ace/theme/tomorrow_night',
 
         // session options
-        overwrite: true,
         useWorker: false,
         useSoftTabs: true,
         tabSize: 2,
@@ -219,6 +214,11 @@
         handleSelector: ".resizer", 
         resizeHeight: false 
       });
+
+      function offCanvas() {
+        var element = document.getElementById("codeEditor");
+        element.classList.toggle("active");
+      }
 
     </script>
 
