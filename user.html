@@ -5,7 +5,9 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Playhouse</title>
+
+  <link rel="shortcut icon" type="image/png" href="/favicon.png" />
+  <title>Playhou.se</title>
 
   <!-- Bootstrap CDN -->
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css"
@@ -13,54 +15,9 @@
 
   <!-- Toyhou.se Theme -->
   <link href="./toyhouse_themes/night.css" title="thThemes" id="thThemes" rel="stylesheet" type="text/css" />
+  <link href="./playhouse.css" rel="stylesheet" type="text/css" />
 
   <style>
-    .resizer {
-      cursor: ew-resize;
-    }
-
-    #codeEditor pre {
-      margin: 0 !important;
-    }
-
-    .options {
-      overflow: hidden;
-    }
-
-    @media screen and (min-width: 768px) {
-      #codeEditor {
-        width: 25%;
-        max-width: calc(100% - .5rem);
-        z-index: 1000;
-      }
-    }
-
-    .bonk {
-      position: sticky;
-      top: 0;
-      z-index: 200;
-    }
-
-    .ace_editor {
-      width: 100% !important;
-      height: calc(100vh - 55px);
-    }
-
-    @media screen and (max-width: 767px) {
-      #codeEditor {
-        position: absolute;
-        top: 109px;
-        left: -100%;
-        height: 100%;
-        width: 100%;
-        transition: left .5s ease-in-out;
-        z-index: 1000;
-      }
-
-      #codeEditor.active {
-        left: 0;
-      }
-    }
   </style>
 
 </head>
@@ -72,9 +29,9 @@
         <div class="bonk">
           <div class="row flex-nowrap no-gutters p-1 align-items-center options">
 
-            <!-- Copy -->
-            <div class="col-auto p-1 hidden-sm-down">
-              <a href="" class="btn btn-primary d-block" title="Switch to User" data-toggle="tooltip" data-placement="right"><i class="fas fa-exchange"></i></a>
+            <!-- Switch -->
+            <div class="col-auto p-1">
+              <a href="/character.html" class="btn btn-primary d-block" title="Switch to User" data-toggle="tooltip" data-placement="right"><i class="fas fa-exchange"></i></a>
             </div>
 
             <!-- Theme Options -->
@@ -101,14 +58,14 @@
 
             <!-- Copy -->
             <div class="col-auto p-1 hidden-sm-down">
-              <button class="btn btn-default d-block" title="Toggle Sidebar" data-toggle="tooltip" data-placement="right" onclick="sidebarToggle()"><i
-                  class="fas fa-adjust"></i></button>
+              <button class="btn btn-default d-block" title="Toggle Sidebar" data-toggle="tooltip"
+                data-placement="bottom" onclick="sidebarToggle()"><i class="fas fa-adjust"></i></button>
             </div>
 
             <!-- Copy -->
             <div class="col-auto p-1">
-              <button class="btn btn-default d-block" title="Copy HTML" data-toggle="tooltip" data-placement="right" onclick="copyToClipboard()"><i
-                  class="fas fa-clipboard"></i></button>
+              <button class="btn btn-default d-block" title="Copy HTML" data-toggle="tooltip" data-placement="right"
+                onclick="copyToClipboard()"><i class="fas fa-clipboard"></i></button>
             </div>
 
           </div>
@@ -122,7 +79,7 @@
 
         <!-- Navbar -->
         <nav class="navbar navbar-toggleable-sm navbar-inverse header" data-topbar="" role="navigation" id="header">
-          <a class="navbar-brand" href="">PLAYHOU.SE</a>
+          <a class="navbar-brand" href="/index.html">PLAYHOU.SE</a>
         </nav>
 
         <!-- Mobile Menu -->
@@ -144,7 +101,7 @@
                   <span class="display-user">
                     <a href="">
                       <img
-                        src="https://cdn.discordapp.com/attachments/728916999610171427/811090456460918784/682307614478041107.png"
+                        src="/favicon.png"
                         class="display-user-avatar">
                       <span class="display-user-username">user</span>
                     </a>
@@ -173,87 +130,11 @@
 
             <!-- Main Content -->
             <div class="col-sm-12 col-md-9 col-lg-10 content-main" id="content">
-              <div class="character-profile">
-                
-                <div class="row profile-header">
-
-                  <div class="col-lg-6 col-12 profile-section profile-name-section">
-                    <div class="img-thumbnail">
-                      <img src="https://f2.toyhou.se/file/f2-toyhou-se/characters/7943690?1597975815"
-                        class="profile-name-icon">
-                    </div>
-                    <div class="profile-name-info">
-                      <h1 class="display-4">Character</h1>
-                      <h2><span class="display-user"><a href=""><i class="fa fa-star mr-1"></i>user</a></span></h2>
-                    </div>
-                  </div>
-
-
-                  <div class="col-lg-6 col-12 profile-section profile-info-section">
-                    <div class="card">
-                      <div class="card-block bg-faded">
-                        <div class="profile-info-title hidden-lg-up">
-                          <h2>Info</h2>
-                          <hr>
-                        </div>
-                        <div class="profile-info-content row">
-                          <div class="profile-stats-content  col-12">
-                            <dl class="fields">
-                              <div class="row fields-field">
-                                <dt class="field-title col-sm-4">
-                                  Created
-                                </dt>
-                                <dd class="field-value col-sm-8">
-                                  <abbr class="tooltipster datetime small"><script> document.write(new Date().toLocaleDateString()); </script></abbr>
-                                </dd>
-                              </div>
-                              <div class="row fields-field">
-                                <dt class="field-title col-sm-4">
-                                  Creator
-                                </dt>
-                                <dd class="field-value col-sm-8">
-                                  <span class="display-user"><a href=""><i class="fa fa-star mr-1"></i>user</a></span>
-                                </dd>
-                              </div>
-                              <div class="row fields-field">
-                                <dt class="field-title col-sm-4">
-                                  Favorites
-                                </dt>
-                                <dd class="field-value col-sm-8"><a href="" th-modal-trigger="">127</a></dd>
-                              </div>
-                            </dl>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                </div>
-
-
-
-                <div class="profile-section profile-content-section ">
-                  <div class="profile-content-title">
-                    <h2>Profile</h2>
-                    <hr>
-                  </div>
-                  <div class="profile-content-content user-content fr-view">
-                    <div class="user-profile" id="code"></div>
+              <div class="row">
+                <div class="col-lg-12">
+                  <div class="profile-section profile-content-section user-content fr-view" id="code">
                   </div>
                 </div>
-
-
-                <div class="profile-section profile-gallery-section">
-                  <div class="profile-gallery-title">
-                    <h2>Recent Images
-                      <hr>
-                    </h2>
-                  </div>
-                  <div class="profile-gallery-content">
-                    <p class="image-gallery-none">No images.</p>
-                  </div>
-                </div>
-
               </div>
             </div>
 
@@ -292,48 +173,26 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.9/ace.js"></script>
 
   <!-- Dah JS -->
+  <script src="/playhouse.js"></script>
   <script type="text/javascript">
-    /* Editor Stuff
-    ========================================================== */
-    var editor = ace.edit("html");
-    editor.$blockScrolling = Infinity;
-    editor.setOptions({
-      selectionStyle: 'line',
-      highlightActiveLine: true,
-      highlightSelectedWord: true,
-      behavioursEnabled: true,
-      displayIndentGuides: true,
-      fontSize: 16,
-      theme: 'ace/theme/tomorrow_night',
-      useWorker: false,
-      useSoftTabs: true,
-      tabSize: 2,
-      hScrollBarAlwaysVisible: true,
-      vScrollBarAlwaysVisible: true,
-      mode: 'ace/mode/html'
-    });
 
     /* Change Theme
     ========================================================== */
-    function setStyleSource(linkID, sourceLoc) {
-      var theLink = document.querySelector(linkID);
-      theLink.href = sourceLoc;
-    }
 
-    (function newTheme() {
-      var savedTheme = localStorage.getItem("theme");
+    (function newThemeUser() {
+      var savedTheme = localStorage.getItem("themeUser");
       document.querySelector(`[value='${savedTheme}']`).setAttribute("selected", "true");
       setStyleSource("#thThemes", savedTheme);
     })();
 
     document.getElementById("thCSSThemes").addEventListener("change", function () {
       var selected = this.options[this.selectedIndex].value;
-      setStyleSource("#thThemes", selected);      
-      localStorage.setItem("theme", selected);
-    });  
+      setStyleSource("#thThemes", selected);
+      localStorage.setItem("themeUser", selected);
+    });
 
-    (function setCssEditor() {
-      var savedEditor = localStorage.getItem("cssEditor");
+    (function setUserEditor() {
+      var savedEditor = localStorage.getItem("userEditor");
       document.querySelector(`[value='${savedEditor}']`).setAttribute("selected", "true");
       editor.setTheme(savedEditor);
     })();
@@ -341,8 +200,9 @@
     document.getElementById("editorThemes").addEventListener("change", function () {
       var selected = this.options[this.selectedIndex].value;
       editor.setTheme(selected);
-      localStorage.setItem("cssEditor", selected);
-    });  
+      localStorage.setItem("userEditor", selected);
+      console.log(selected);
+    });
 
     /* Compile HTML 
     ========================================================== */
@@ -350,11 +210,11 @@
       editor.addEventListener('change', function () {
         let code = document.getElementById("code");
         var text = editor.getValue();
-        localStorage.setItem("html", text);
+        localStorage.setItem("htmluser", text);
         code.innerHTML = text;
       });
       window.onload = () => {
-        var savedText = localStorage.getItem("html") || "";
+        var savedText = localStorage.getItem("htmluser") || "";
         code.innerHTML = savedText;
         editor.session.setValue(savedText);
       };
@@ -362,51 +222,8 @@
 
     compile();
 
-    /* Copy to Clipboard
-    ========================================================== */
-    function copyToClipboard() {
-      const str = editor.getValue();
-      const el = document.createElement('textarea');
-      el.value = str;
-      el.setAttribute('readonly', '');
-      el.style.position = 'absolute';
-      el.style.left = '-9999px';
-      document.body.appendChild(el);
-      el.select();
-      document.execCommand('copy');
-      document.body.removeChild(el);
-    }
-
-    /* Resizer
-    ========================================================== */
-    $("#codeEditor").resizable({
-      handleSelector: ".resizer",
-      resizeHeight: false
-    });
-
-    /* Sidebar Junk
-    ========================================================== */
-    function offCanvas() {
-      var element = document.getElementById("codeEditor");
-      element.classList.toggle("active");
-    }
-
-    /* Sidebar Junk
-    ========================================================== */
-    function sidebarToggle() {
-      var element = document.getElementById("sidebar");
-      element.classList.toggle("d-none");
-      var element2 = document.getElementById("content");
-      element2.classList.toggle("col-lg-12");
-    }
-
-    /* Tooltip
-    ========================================================== */
-    $(function () {
-      $('[data-toggle="tooltip"]').tooltip()
-    })
-
   </script>
 
 </body>
+
 </html>

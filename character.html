@@ -5,7 +5,9 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Playhouse</title>
+
+  <link rel="shortcut icon" type="image/png" href="/favicon.png"/>
+  <title>Playhou.se</title>
 
   <!-- Bootstrap CDN -->
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css"
@@ -13,55 +15,7 @@
 
   <!-- Toyhou.se Theme -->
   <link href="./toyhouse_themes/night.css" title="thThemes" id="thThemes" rel="stylesheet" type="text/css" />
-
-  <style>
-    .resizer {
-      cursor: ew-resize;
-    }
-
-    #codeEditor pre {
-      margin: 0 !important;
-    }
-
-    .options {
-      overflow: hidden;
-    }
-
-    @media screen and (min-width: 768px) {
-      #codeEditor {
-        width: 25%;
-        max-width: calc(100% - .5rem);
-        z-index: 1000;
-      }
-    }
-
-    .bonk {
-      position: sticky;
-      top: 0;
-      z-index: 200;
-    }
-
-    .ace_editor {
-      width: 100% !important;
-      height: calc(100vh - 55px);
-    }
-
-    @media screen and (max-width: 767px) {
-      #codeEditor {
-        position: absolute;
-        top: 109px;
-        left: -100%;
-        height: 100%;
-        width: 100%;
-        transition: left .5s ease-in-out;
-        z-index: 1000;
-      }
-
-      #codeEditor.active {
-        left: 0;
-      }
-    }
-  </style>
+  <link href="./playhouse.css" rel="stylesheet" type="text/css" />
 
 </head>
 
@@ -72,9 +26,9 @@
         <div class="bonk">
           <div class="row flex-nowrap no-gutters p-1 align-items-center options">
 
-            <!-- Copy -->
-            <div class="col-auto p-1 hidden-sm-down">
-              <a href="" class="btn btn-primary d-block" title="Switch to User" data-toggle="tooltip" data-placement="right"><i class="fas fa-exchange"></i></a>
+            <!-- Switch -->
+            <div class="col-auto p-1">
+              <a href="/user.html" class="btn btn-primary d-block" title="Switch to User" data-toggle="tooltip" data-placement="right"><i class="fas fa-exchange"></i></a>
             </div>
 
             <!-- Theme Options -->
@@ -101,14 +55,14 @@
 
             <!-- Copy -->
             <div class="col-auto p-1 hidden-sm-down">
-              <button class="btn btn-default d-block" title="Toggle Sidebar" data-toggle="tooltip" data-placement="right" onclick="sidebarToggle()"><i
-                  class="fas fa-adjust"></i></button>
+              <button class="btn btn-default d-block" title="Toggle Sidebar" data-toggle="tooltip"
+                data-placement="bottom" onclick="sidebarToggle()"><i class="fas fa-adjust"></i></button>
             </div>
 
             <!-- Copy -->
             <div class="col-auto p-1">
-              <button class="btn btn-default d-block" title="Copy HTML" data-toggle="tooltip" data-placement="right" onclick="copyToClipboard()"><i
-                  class="fas fa-clipboard"></i></button>
+              <button class="btn btn-default d-block" title="Copy HTML" data-toggle="tooltip" data-placement="right"
+                onclick="copyToClipboard()"><i class="fas fa-clipboard"></i></button>
             </div>
 
           </div>
@@ -122,7 +76,7 @@
 
         <!-- Navbar -->
         <nav class="navbar navbar-toggleable-sm navbar-inverse header" data-topbar="" role="navigation" id="header">
-          <a class="navbar-brand" href="">PLAYHOU.SE</a>
+          <a class="navbar-brand" href="/index.html">PLAYHOU.SE</a>
         </nav>
 
         <!-- Mobile Menu -->
@@ -139,52 +93,60 @@
             <!-- Sidebar -->
             <div class="col-md-3 col-lg-2 sidebar" id="sidebar">
               <ul class="side-nav list-unstyled">
-                <li class="header"><i class="fas fa-user header-icon"></i>User</li>
-                <li>
+                <li class="header"><i class="fa fa-heart mr-2"></i> Character</li>
+                <li class="user-name">
                   <span class="display-user">
-                    <a href="">
-                      <img
-                        src="https://cdn.discordapp.com/attachments/728916999610171427/811090456460918784/682307614478041107.png"
-                        class="display-user-avatar">
+                    <a href=""><img src="/favicon.png" class="display-user-avatar">
                       <span class="display-user-username">user</span>
                     </a>
                   </span>
                 </li>
-                <li class="divider sidebar-divider-username"></li>
-                <li class=" sidebar-li-bulletins"><a href=""><i
-                      class="far fa-newspaper fa-fw sidebar-icon"></i>Bulletins</a></li>
-                <li class=" sidebar-li-characters"><a href=""><i
-                      class="fa fa-users fa-fw sidebar-icon"></i>Characters</a></li>
-                <li class=" sidebar-li-links"><a href=""><i class="fa fa-link fa-fw sidebar-icon"></i>Links</a></li>
-                <li class=" sidebar-li-worlds"><a href=""><i class="fa fa-globe fa-fw sidebar-icon"></i>Worlds</a></li>
-                <li class=" sidebar-li-favorites"><a href=""><i class="fa fa-star fa-fw sidebar-icon"></i>Favorites</a>
+                <li class="character-folder subheader">
+                  <a href=""><i class="mr-1 fa fa-folder"></i>All Characters</a>
+                </li>
+                <li class="character-name">
+                  <span class="display-character"><a href="">
+                    <img src="/favicon.png" class="mr-2">Character</a>
+                  </span>
                 </li>
                 <li class="divider sidebar-divider-collections"></li>
-                <li class=" sidebar-li-created"><a href=""><i class="fa fa-palette fa-fw sidebar-icon"></i>Designs</a>
+                <li class=" sidebar-li-gallery"><a href=""><i class="far fa-image fa-fw sidebar-icon"></i>Gallery</a></li>
+                <li class=" sidebar-li-library"><a href=""><i class="fa fa-book fa-fw sidebar-icon"></i>Library</a></li>
+                <li class=" sidebar-li-worlds"><a href=""><i class="fa fa-globe fa-fw sidebar-icon"></i>Worlds</a></li>
+                <li class=" sidebar-li-links"><a href=""><i class="fa fa-link fa-fw sidebar-icon"></i>Links</a></li>
+                <li class="divider sidebar-divider-interactions"></li>
+                <li class="sidebar-li-favorites hide" data-id="" data-url="" th-favorite="0" data-trigger="focus" tabindex="-1">
+                  <a href="#" class="favorited"><i class="fa fa-star fa-fw sidebar-icon"></i>Unfavorite
+                    <span class="pull-right sidebar-stat sidebar-stat-favorites th-favorite-count" data-id=""></span>
+                  </a>
                 </li>
-                <li class=" sidebar-li-art"><a href=""><i class="fa fa-paint-brush fa-fw sidebar-icon"></i>Art</a></li>
-                <li class=" sidebar-li-literatures"><a href=""><i class="fa fa-book fa-fw sidebar-icon"></i>Library</a>
+                <li class="sidebar-li-favorites " data-id="" data-url="" th-favorite="1">
+                  <a href="#"><i class="far fa-star fa-fw sidebar-icon"></i>Favorite 
+                    <span class="pull-right sidebar-stat sidebar-stat-favorites th-favorite-count" data-id=""></span>
+                  </a>
                 </li>
-                <li class="divider sidebar-divider-stats"></li>
-                <li class=" sidebar-li-stats"><a href=""><i class="fa fa-chart-bar fa-fw sidebar-icon"></i>Stats</a>
-                </li>
+                <li class="divider sidebar-divider-ownership"></li>
+                <li class=" sidebar-li-ownership"><a href=""><i class="far fa-check-square fa-fw sidebar-icon"></i>Ownership</a></li>
+                <li class="divider sidebar-divider-mod"></li>
+                <li class="sidebar-li-report"><a href=""><i class="fa fa-exclamation-triangle fa-fw sidebar-icon"></i>Report</a></li>
+                <li class="sidebar-li-block"><a href="" th-modal-trigger=""><i class="fa fa-ban fa-fw sidebar-icon"></i>Block</a></li>
               </ul>
             </div>
 
             <!-- Main Content -->
             <div class="col-sm-12 col-md-9 col-lg-10 content-main" id="content">
               <div class="character-profile">
-                
+
                 <div class="row profile-header">
 
                   <div class="col-lg-6 col-12 profile-section profile-name-section">
                     <div class="img-thumbnail">
-                      <img src="https://f2.toyhou.se/file/f2-toyhou-se/characters/7943690?1597975815"
+                      <img src="/favicon.png"
                         class="profile-name-icon">
                     </div>
                     <div class="profile-name-info">
                       <h1 class="display-4">Character</h1>
-                      <h2><span class="display-user"><a href=""><i class="fa fa-star mr-1"></i>user</a></span></h2>
+                      <h2><span class="display-user"><a href=""><i class="fa fa-user mr-1" style="font-size:14px;"></i>user</a></span></h2>
                     </div>
                   </div>
 
@@ -204,7 +166,9 @@
                                   Created
                                 </dt>
                                 <dd class="field-value col-sm-8">
-                                  <abbr class="tooltipster datetime small"><script> document.write(new Date().toLocaleDateString()); </script></abbr>
+                                  <abbr class="tooltipster datetime small">
+                                    <script> document.write(new Date().toLocaleDateString()); </script>
+                                  </abbr>
                                 </dd>
                               </div>
                               <div class="row fields-field">
@@ -212,7 +176,7 @@
                                   Creator
                                 </dt>
                                 <dd class="field-value col-sm-8">
-                                  <span class="display-user"><a href=""><i class="fa fa-star mr-1"></i>user</a></span>
+                                  <span class="display-user"><a href=""><i class="fa fa-user mr-1" style="font-size:10px;"></i>user</a></span>
                                 </dd>
                               </div>
                               <div class="row fields-field">
@@ -292,34 +256,11 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.9/ace.js"></script>
 
   <!-- Dah JS -->
+  <script src="/playhouse.js"></script>
   <script type="text/javascript">
-    /* Editor Stuff
-    ========================================================== */
-    var editor = ace.edit("html");
-    editor.$blockScrolling = Infinity;
-    editor.setOptions({
-      selectionStyle: 'line',
-      highlightActiveLine: true,
-      highlightSelectedWord: true,
-      behavioursEnabled: true,
-      displayIndentGuides: true,
-      fontSize: 16,
-      theme: 'ace/theme/tomorrow_night',
-      useWorker: false,
-      useSoftTabs: true,
-      tabSize: 2,
-      hScrollBarAlwaysVisible: true,
-      vScrollBarAlwaysVisible: true,
-      mode: 'ace/mode/html'
-    });
 
     /* Change Theme
     ========================================================== */
-    function setStyleSource(linkID, sourceLoc) {
-      var theLink = document.querySelector(linkID);
-      theLink.href = sourceLoc;
-    }
-
     (function newTheme() {
       var savedTheme = localStorage.getItem("theme");
       document.querySelector(`[value='${savedTheme}']`).setAttribute("selected", "true");
@@ -328,9 +269,9 @@
 
     document.getElementById("thCSSThemes").addEventListener("change", function () {
       var selected = this.options[this.selectedIndex].value;
-      setStyleSource("#thThemes", selected);      
+      setStyleSource("#thThemes", selected);
       localStorage.setItem("theme", selected);
-    });  
+    });
 
     (function setCssEditor() {
       var savedEditor = localStorage.getItem("cssEditor");
@@ -342,7 +283,7 @@
       var selected = this.options[this.selectedIndex].value;
       editor.setTheme(selected);
       localStorage.setItem("cssEditor", selected);
-    });  
+    });
 
     /* Compile HTML 
     ========================================================== */
@@ -377,36 +318,8 @@
       document.body.removeChild(el);
     }
 
-    /* Resizer
-    ========================================================== */
-    $("#codeEditor").resizable({
-      handleSelector: ".resizer",
-      resizeHeight: false
-    });
-
-    /* Sidebar Junk
-    ========================================================== */
-    function offCanvas() {
-      var element = document.getElementById("codeEditor");
-      element.classList.toggle("active");
-    }
-
-    /* Sidebar Junk
-    ========================================================== */
-    function sidebarToggle() {
-      var element = document.getElementById("sidebar");
-      element.classList.toggle("d-none");
-      var element2 = document.getElementById("content");
-      element2.classList.toggle("col-lg-12");
-    }
-
-    /* Tooltip
-    ========================================================== */
-    $(function () {
-      $('[data-toggle="tooltip"]').tooltip()
-    })
-
   </script>
 
 </body>
+
 </html>
