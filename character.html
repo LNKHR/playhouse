@@ -282,10 +282,10 @@
       var savedTheme = localStorage.getItem("theme");
       if(document.querySelector(`[value='${savedTheme}']`)) {
         document.querySelector(`[value='${savedTheme}']`).setAttribute("selected", "true");
+        setStyleSource("#thThemes", savedTheme);
       }
-      setStyleSource("#thThemes", savedTheme);
     })();
-
+    
     document.getElementById("thCSSThemes").addEventListener("change", function () {
       var selected = this.options[this.selectedIndex].value;
       setStyleSource("#thThemes", selected);
