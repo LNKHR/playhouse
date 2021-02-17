@@ -258,6 +258,24 @@
   <script src="playhouse.js" type="text/javascript"></script>
   <script type="text/javascript">
 
+    /* Compile HTML 
+    ========================================================== */
+    let compile = () => {
+      editor.addEventListener('change', function () {
+        let code = document.getElementById("code");
+        var text = editor.getValue();
+        localStorage.setItem("html", text);
+        code.innerHTML = text;
+      });
+      window.onload = () => {
+        var savedText = localStorage.getItem("html") || "";
+        code.innerHTML = savedText;
+        editor.session.setValue(savedText);
+      };
+    }
+
+    compile();
+
     /* Change Theme
     ========================================================== */
     (function newTheme() {
@@ -283,24 +301,6 @@
       editor.setTheme(selected);
       localStorage.setItem("cssEditor", selected);
     });
-
-    /* Compile HTML 
-    ========================================================== */
-    let compile = () => {
-      editor.addEventListener('change', function () {
-        let code = document.getElementById("code");
-        var text = editor.getValue();
-        localStorage.setItem("html", text);
-        code.innerHTML = text;
-      });
-      window.onload = () => {
-        var savedText = localStorage.getItem("html") || "";
-        code.innerHTML = savedText;
-        editor.session.setValue(savedText);
-      };
-    }
-
-    compile();
 
   </script>
 
