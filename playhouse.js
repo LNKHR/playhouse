@@ -13,10 +13,16 @@ editor.setOptions({
   useWorker: false,
   useSoftTabs: true,
   tabSize: 2,
+  wrap: true,
   hScrollBarAlwaysVisible: true,
   vScrollBarAlwaysVisible: true,
   mode: 'ace/mode/html'
 });
+
+document.querySelector(".resizer").addEventListener("click",function() {
+  editor.resize();
+  editor.renderer.updateFull();
+})
 
 /* Copy to Clipboard
 ========================================================== */
