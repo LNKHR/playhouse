@@ -175,6 +175,24 @@
   <script src="playhouse.js" type="text/javascript"></script>
   <script type="text/javascript">
 
+    /* Compile HTML 
+    ========================================================== */
+    let compile = () => {
+      editor.addEventListener('change', function () {
+        let code = document.getElementById("code");
+        var text = editor.getValue();
+        localStorage.setItem("htmluser", text);
+        code.innerHTML = text;
+      });
+      window.onload = () => {
+        var savedText = localStorage.getItem("htmluser") || "";
+        code.innerHTML = savedText;
+        editor.session.setValue(savedText);
+      };
+    }
+
+    compile();
+
     /* Change Theme
     ========================================================== */
 
@@ -202,24 +220,6 @@
       localStorage.setItem("userEditor", selected);
       console.log(selected);
     });
-
-    /* Compile HTML 
-    ========================================================== */
-    let compile = () => {
-      editor.addEventListener('change', function () {
-        let code = document.getElementById("code");
-        var text = editor.getValue();
-        localStorage.setItem("htmluser", text);
-        code.innerHTML = text;
-      });
-      window.onload = () => {
-        var savedText = localStorage.getItem("htmluser") || "";
-        code.innerHTML = savedText;
-        editor.session.setValue(savedText);
-      };
-    }
-
-    compile();
 
   </script>
 
