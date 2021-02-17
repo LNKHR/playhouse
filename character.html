@@ -280,7 +280,9 @@
     ========================================================== */
     (function newTheme() {
       var savedTheme = localStorage.getItem("theme");
-      document.querySelector(`[value='${savedTheme}']`).setAttribute("selected", "true");
+      if(document.querySelector(`[value='${savedTheme}']`)) {
+        document.querySelector(`[value='${savedTheme}']`).setAttribute("selected", "true");
+      }
       setStyleSource("#thThemes", savedTheme);
     })();
 
@@ -292,7 +294,9 @@
 
     (function setCssEditor() {
       var savedEditor = localStorage.getItem("cssEditor");
-      document.querySelector(`[value='${savedEditor}']`).setAttribute("selected", "true");
+      if(document.querySelector(`[value='${savedEditor}']`)) {
+        document.querySelector(`[value='${savedEditor}']`).setAttribute("selected", "true");
+      }
       editor.setTheme(savedEditor);
     })();
 
