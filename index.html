@@ -5,6 +5,8 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <link rel="shortcut icon" type="image/png" href="/favicon.png"/>
   <title>Playhouse</title>
 
   <!-- Bootstrap CDN -->
@@ -14,260 +16,60 @@
   <!-- Toyhou.se Theme -->
   <link href="./toyhouse_themes/night.css" title="thThemes" id="thThemes" rel="stylesheet" type="text/css" />
 
-  <style>
-    .resizer {
-      cursor: ew-resize;
-    }
-
-    #codeEditor pre {
-      margin: 0 !important;
-    }
-
-    .options {
-      overflow: hidden;
-    }
-
-    @media screen and (min-width: 768px) {
-      #codeEditor {
-        width: 25%;
-        max-width: calc(100% - .5rem);
-        z-index: 1000;
-      }
-    }
-
-    .bonk {
-      position: sticky;
-      top: 0;
-      z-index: 200;
-    }
-
-    .ace_editor {
-      width: 100% !important;
-      height: calc(100vh - 55px);
-    }
-
-    @media screen and (max-width: 767px) {
-      #codeEditor {
-        position: absolute;
-        top: 109px;
-        left: -100%;
-        height: 100%;
-        width: 100%;
-        transition: left .5s ease-in-out;
-        z-index: 1000;
-      }
-
-      #codeEditor.active {
-        left: 0;
-      }
-    }
-  </style>
-
 </head>
 
-<body id="main">
+<body>
   <div class="clearfix container-fluid p-0">
-    <div class="row no-gutters flex-nowrap">
-      <div class="bg-faded" id="codeEditor">
-        <div class="bonk">
-          <div class="row flex-nowrap no-gutters p-1 align-items-center options">
+    <!-- Navbar -->
+    <nav class="navbar navbar-toggleable-sm navbar-inverse header" data-topbar="" role="navigation" id="header">
+      <a class="navbar-brand" href="/index.html">PLAYHOU.SE</a>
+    </nav>
 
-            <!-- Copy -->
-            <div class="col-auto p-1 hidden-sm-down">
-              <a href="" class="btn btn-primary d-block" title="Switch to User" data-toggle="tooltip" data-placement="right"><i class="fas fa-exchange"></i></a>
-            </div>
-
-            <!-- Theme Options -->
-            <div class="col p-1">
-              <form>
-                <select class="form-control" id="thCSSThemes">
-                  <option selected value="./toyhouse_themes/night.css">Night</option>
-                  <option value="./toyhouse_themes/default.css">Default</option>
-                  <option value="./toyhouse_themes/pink.css">Pink</option>
-                  <option value="./toyhouse_themes/teal.css">Teal</option>
-                  <option value="./toyhouse_themes/bee.css">Bee</option>
-                  <option value="./toyhouse_themes/velvet.css">Velvet</option>
-                </select>
-              </form>
-            </div>
-
-            <!-- Editor Options -->
-            <div class="col p-1">
-              <select class="form-control" id="editorThemes">
-                <option selected value="ace/theme/tomorrow_night">Dark Editor</option>
-                <option value="ace/theme/chrome">Light Editor</option>
-              </select>
-            </div>
-
-            <!-- Copy -->
-            <div class="col-auto p-1 hidden-sm-down">
-              <button class="btn btn-default d-block" title="Toggle Sidebar" data-toggle="tooltip" data-placement="right" onclick="sidebarToggle()"><i
-                  class="fas fa-adjust"></i></button>
-            </div>
-
-            <!-- Copy -->
-            <div class="col-auto p-1">
-              <button class="btn btn-default d-block" title="Copy HTML" data-toggle="tooltip" data-placement="right" onclick="copyToClipboard()"><i
-                  class="fas fa-clipboard"></i></button>
-            </div>
-
-          </div>
-          <textarea id="html"></textarea>
+    <!-- Main Content -->
+    <div class="container p-5" style="min-height: calc(100vh - 112px);font-size: 120%;">
+      <h1 class="display-3 mb-4 text-center">Welcome to <span class="text-primary">Playhou.se</span></h1>
+      <div class="text-center">
+        <p>Playhou.se is a quick live editor for <b>Toyhou.se profile HTML.</b><br><small class="text-muted">Created and maintained by <a href="https://toyhou.se/cheeriko">Cheeriko</a> with help from <a href="https://toyhou.se/togedemaru">Sylueon</a>.</small></p>
+      </div>
+      <hr class="my-5">
+      <div class="row no-gutters m-n2">
+        <div class="col p-2 text-center">
+          <a href="/user.html" class="btn btn-outline-primary card bg-faded btn-lg d-block">User Editor</a>
+        </div>  
+        <div class="col-auto p-2 my-auto hidden-sm-down">
+          <i class="fas fa-exchange text-primary"></i>
+        </div>
+        <div class="col p-2 text-center">
+          <a href="/character.html" class="btn btn-outline-primary card bg-faded btn-lg d-block ">Character Editor</a>
+        </div>  
+      </div>   
+      <hr class="my-5">
+      <div class="row no-gutters px-5">
+        <div class="col-lg-4 p-5 text-center">
+          <i class="fal fa-code fa-5x text-primary"></i><br><br>
+          Render your code in real time
+        </div>
+        <div class="col-lg-4 p-5 text-center">
+          <i class="fal fa-light-switch-on fa-5x text-primary"></i><br><br>
+          Change between Toyhou.se's CSS theme's instantly
+        </div>
+        <div class="col-lg-4 p-5 text-center">
+          <i class="fal fa-users-cog fa-5x text-primary"></i><br><br>
+          Check your code on user or character profiles
         </div>
       </div>
-      <div class="resizer bg-secondary p-1 hidden-sm-down"></div>
-
-      <!-- Render Area -->
-      <div class="col" style="overflow: hidden !important;">
-
-        <!-- Navbar -->
-        <nav class="navbar navbar-toggleable-sm navbar-inverse header" data-topbar="" role="navigation" id="header">
-          <a class="navbar-brand" href="">PLAYHOU.SE</a>
-        </nav>
-
-        <!-- Mobile Menu -->
-        <div class="hidden-md-up nav-mobile-menu">
-          <button class="btn btn-outline-secondary nav-mobile-menu-toggle" onclick="offCanvas()" data-target="#">
-            Menu <span class="fa fa-caret-right"></span>
-          </button>
-        </div>
-
-        <!-- Main Content -->
-        <div id="main" class="clearfix container-fluid">
-          <div class="row" style="min-height: calc(100vh - 55px)">
-
-            <!-- Sidebar -->
-            <div class="col-md-3 col-lg-2 sidebar" id="sidebar">
-              <ul class="side-nav list-unstyled">
-                <li class="header"><i class="fas fa-user header-icon"></i>User</li>
-                <li>
-                  <span class="display-user">
-                    <a href="">
-                      <img
-                        src="https://cdn.discordapp.com/attachments/728916999610171427/811090456460918784/682307614478041107.png"
-                        class="display-user-avatar">
-                      <span class="display-user-username">user</span>
-                    </a>
-                  </span>
-                </li>
-                <li class="divider sidebar-divider-username"></li>
-                <li class=" sidebar-li-bulletins"><a href=""><i
-                      class="far fa-newspaper fa-fw sidebar-icon"></i>Bulletins</a></li>
-                <li class=" sidebar-li-characters"><a href=""><i
-                      class="fa fa-users fa-fw sidebar-icon"></i>Characters</a></li>
-                <li class=" sidebar-li-links"><a href=""><i class="fa fa-link fa-fw sidebar-icon"></i>Links</a></li>
-                <li class=" sidebar-li-worlds"><a href=""><i class="fa fa-globe fa-fw sidebar-icon"></i>Worlds</a></li>
-                <li class=" sidebar-li-favorites"><a href=""><i class="fa fa-star fa-fw sidebar-icon"></i>Favorites</a>
-                </li>
-                <li class="divider sidebar-divider-collections"></li>
-                <li class=" sidebar-li-created"><a href=""><i class="fa fa-palette fa-fw sidebar-icon"></i>Designs</a>
-                </li>
-                <li class=" sidebar-li-art"><a href=""><i class="fa fa-paint-brush fa-fw sidebar-icon"></i>Art</a></li>
-                <li class=" sidebar-li-literatures"><a href=""><i class="fa fa-book fa-fw sidebar-icon"></i>Library</a>
-                </li>
-                <li class="divider sidebar-divider-stats"></li>
-                <li class=" sidebar-li-stats"><a href=""><i class="fa fa-chart-bar fa-fw sidebar-icon"></i>Stats</a>
-                </li>
-              </ul>
-            </div>
-
-            <!-- Main Content -->
-            <div class="col-sm-12 col-md-9 col-lg-10 content-main" id="content">
-              <div class="character-profile">
-                
-                <div class="row profile-header">
-
-                  <div class="col-lg-6 col-12 profile-section profile-name-section">
-                    <div class="img-thumbnail">
-                      <img src="https://f2.toyhou.se/file/f2-toyhou-se/characters/7943690?1597975815"
-                        class="profile-name-icon">
-                    </div>
-                    <div class="profile-name-info">
-                      <h1 class="display-4">Character</h1>
-                      <h2><span class="display-user"><a href=""><i class="fa fa-star mr-1"></i>user</a></span></h2>
-                    </div>
-                  </div>
-
-
-                  <div class="col-lg-6 col-12 profile-section profile-info-section">
-                    <div class="card">
-                      <div class="card-block bg-faded">
-                        <div class="profile-info-title hidden-lg-up">
-                          <h2>Info</h2>
-                          <hr>
-                        </div>
-                        <div class="profile-info-content row">
-                          <div class="profile-stats-content  col-12">
-                            <dl class="fields">
-                              <div class="row fields-field">
-                                <dt class="field-title col-sm-4">
-                                  Created
-                                </dt>
-                                <dd class="field-value col-sm-8">
-                                  <abbr class="tooltipster datetime small"><script> document.write(new Date().toLocaleDateString()); </script></abbr>
-                                </dd>
-                              </div>
-                              <div class="row fields-field">
-                                <dt class="field-title col-sm-4">
-                                  Creator
-                                </dt>
-                                <dd class="field-value col-sm-8">
-                                  <span class="display-user"><a href=""><i class="fa fa-star mr-1"></i>user</a></span>
-                                </dd>
-                              </div>
-                              <div class="row fields-field">
-                                <dt class="field-title col-sm-4">
-                                  Favorites
-                                </dt>
-                                <dd class="field-value col-sm-8"><a href="" th-modal-trigger="">127</a></dd>
-                              </div>
-                            </dl>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                </div>
-
-
-
-                <div class="profile-section profile-content-section ">
-                  <div class="profile-content-title">
-                    <h2>Profile</h2>
-                    <hr>
-                  </div>
-                  <div class="profile-content-content user-content fr-view">
-                    <div class="user-profile" id="code"></div>
-                  </div>
-                </div>
-
-
-                <div class="profile-section profile-gallery-section">
-                  <div class="profile-gallery-title">
-                    <h2>Recent Images
-                      <hr>
-                    </h2>
-                  </div>
-                  <div class="profile-gallery-content">
-                    <p class="image-gallery-none">No images.</p>
-                  </div>
-                </div>
-
-              </div>
-            </div>
-
-          </div>
-        </div>
-
-        <!-- Footer -->
-        <div class="text-muted text-center p-3 footer">
-          This is a live compiler for Toyhou.se HTML Layouts!<br>
-          <a class="mx-2" href="https://toyhou.se/">Toyhou.se</a>
-          <a class="mx-2" href="">Bookmark on TH</a>
-          <a class="mx-2" href="https://ko-fi.com/cheeriko">Support Me</a>
-        </div>
+      <hr class="my-5">
+      <div class="text-center small">
+        Toyhou.se and the CSS assets used for this site belong to Cyancrows.
       </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="text-muted text-center p-4 footer">
+      <i class="fab fa-github mr-1"></i>Powered by Github<br>
+      <a class="mx-2" href="https://toyhou.se/">Toyhou.se</a>
+      <a class="mx-2" href="https://toyhou.se/~messages/create/cheerikola">Report a Bug</a>
+      <a class="mx-2" href="https://ko-fi.com/cheeriko">Support Me</a>
     </div>
   </div>
 
@@ -275,8 +77,6 @@
   <script src="https://code.jquery.com/jquery-3.1.1.slim.min.js"
     integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n"
     crossorigin="anonymous"></script>
-  <script type="text/javascript"
-    src="https://rawgit.com/RickStrahl/jquery-resizable/master/src/jquery-resizable.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js"
     integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb"
     crossorigin="anonymous"></script>
@@ -287,126 +87,6 @@
   <!-- Font Awesome -->
   <script src="https://kit.fontawesome.com/a3d06f1529.js" crossorigin="anonymous"></script> <!-- test kit -->
   <script src="https://kit.fontawesome.com/734cc6a413.js" crossorigin="anonymous"></script>
-
-  <!-- Ace Editor -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.9/ace.js"></script>
-
-  <!-- Dah JS -->
-  <script type="text/javascript">
-    /* Editor Stuff
-    ========================================================== */
-    var editor = ace.edit("html");
-    editor.$blockScrolling = Infinity;
-    editor.setOptions({
-      selectionStyle: 'line',
-      highlightActiveLine: true,
-      highlightSelectedWord: true,
-      behavioursEnabled: true,
-      displayIndentGuides: true,
-      fontSize: 16,
-      theme: 'ace/theme/tomorrow_night',
-      useWorker: false,
-      useSoftTabs: true,
-      tabSize: 2,
-      hScrollBarAlwaysVisible: true,
-      vScrollBarAlwaysVisible: true,
-      mode: 'ace/mode/html'
-    });
-
-    /* Change Theme
-    ========================================================== */
-    function setStyleSource(linkID, sourceLoc) {
-      var theLink = document.querySelector(linkID);
-      theLink.href = sourceLoc;
-    }
-
-    (function newTheme() {
-      var savedTheme = localStorage.getItem("theme");
-      document.querySelector(`[value='${savedTheme}']`).setAttribute("selected", "true");
-      setStyleSource("#thThemes", savedTheme);
-    })();
-
-    document.getElementById("thCSSThemes").addEventListener("change", function () {
-      var selected = this.options[this.selectedIndex].value;
-      setStyleSource("#thThemes", selected);      
-      localStorage.setItem("theme", selected);
-    });  
-
-    (function setCssEditor() {
-      var savedEditor = localStorage.getItem("cssEditor");
-      document.querySelector(`[value='${savedEditor}']`).setAttribute("selected", "true");
-      editor.setTheme(savedEditor);
-    })();
-
-    document.getElementById("editorThemes").addEventListener("change", function () {
-      var selected = this.options[this.selectedIndex].value;
-      editor.setTheme(selected);
-      localStorage.setItem("cssEditor", selected);
-    });  
-
-    /* Compile HTML 
-    ========================================================== */
-    let compile = () => {
-      editor.addEventListener('change', function () {
-        let code = document.getElementById("code");
-        var text = editor.getValue();
-        localStorage.setItem("html", text);
-        code.innerHTML = text;
-      });
-      window.onload = () => {
-        var savedText = localStorage.getItem("html") || "";
-        code.innerHTML = savedText;
-        editor.session.setValue(savedText);
-      };
-    }
-
-    compile();
-
-    /* Copy to Clipboard
-    ========================================================== */
-    function copyToClipboard() {
-      const str = editor.getValue();
-      const el = document.createElement('textarea');
-      el.value = str;
-      el.setAttribute('readonly', '');
-      el.style.position = 'absolute';
-      el.style.left = '-9999px';
-      document.body.appendChild(el);
-      el.select();
-      document.execCommand('copy');
-      document.body.removeChild(el);
-    }
-
-    /* Resizer
-    ========================================================== */
-    $("#codeEditor").resizable({
-      handleSelector: ".resizer",
-      resizeHeight: false
-    });
-
-    /* Sidebar Junk
-    ========================================================== */
-    function offCanvas() {
-      var element = document.getElementById("codeEditor");
-      element.classList.toggle("active");
-    }
-
-    /* Sidebar Junk
-    ========================================================== */
-    function sidebarToggle() {
-      var element = document.getElementById("sidebar");
-      element.classList.toggle("d-none");
-      var element2 = document.getElementById("content");
-      element2.classList.toggle("col-lg-12");
-    }
-
-    /* Tooltip
-    ========================================================== */
-    $(function () {
-      $('[data-toggle="tooltip"]').tooltip()
-    })
-
-  </script>
 
 </body>
 </html>
