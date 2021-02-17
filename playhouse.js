@@ -12,6 +12,7 @@ editor.setOptions({
   theme: 'ace/theme/tomorrow_night',
   useWorker: false,
   useSoftTabs: true,
+  indentedSoftWrap: false,
   tabSize: 2,
   wrap: true,
   hScrollBarAlwaysVisible: true,
