@@ -198,8 +198,10 @@
 
     (function newThemeUser() {
       var savedTheme = localStorage.getItem("themeUser");
-      document.querySelector(`[value='${savedTheme}']`).setAttribute("selected", "true");
-      setStyleSource("#thThemes", savedTheme);
+      if(document.querySelector(`[value='${savedTheme}']`)) {
+        document.querySelector(`[value='${savedTheme}']`).setAttribute("selected", "true");
+        setStyleSource("#thThemes", savedTheme);
+      }
     })();
 
     document.getElementById("thCSSThemes").addEventListener("change", function () {
@@ -210,8 +212,10 @@
 
     (function setUserEditor() {
       var savedEditor = localStorage.getItem("userEditor");
-      document.querySelector(`[value='${savedEditor}']`).setAttribute("selected", "true");
-      editor.setTheme(savedEditor);
+      if(document.querySelector(`[value='${savedEditor}']`)) {
+        document.querySelector(`[value='${savedEditor}']`).setAttribute("selected", "true");
+        editor.setTheme(savedEditor);
+      }
     })();
 
     document.getElementById("editorThemes").addEventListener("change", function () {

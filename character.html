@@ -285,7 +285,7 @@
         setStyleSource("#thThemes", savedTheme);
       }
     })();
-    
+
     document.getElementById("thCSSThemes").addEventListener("change", function () {
       var selected = this.options[this.selectedIndex].value;
       setStyleSource("#thThemes", selected);
@@ -296,8 +296,8 @@
       var savedEditor = localStorage.getItem("cssEditor");
       if(document.querySelector(`[value='${savedEditor}']`)) {
         document.querySelector(`[value='${savedEditor}']`).setAttribute("selected", "true");
+        editor.setTheme(savedEditor);
       }
-      editor.setTheme(savedEditor);
     })();
 
     document.getElementById("editorThemes").addEventListener("change", function () {
