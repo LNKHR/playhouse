@@ -122,21 +122,21 @@ const editorThemeToggle= () => {
   localStorage.setItem("userEditor", editorTheme);
 }
 
-/* Change Theme
+/* Change CSS Theme
 ========================================================== */
-
 (function newThemeUser() {
   var savedTheme = localStorage.getItem("themeUser");
-  if (document.querySelector(`[value='${savedTheme}']`)) {
+  if(document.querySelector(`[value='${savedTheme}']`)) {
     document.querySelector(`[value='${savedTheme}']`).setAttribute("selected", "true");
-    setStyleSource("#thThemes", savedTheme);
+    setStyleSource("#thThemes","../styles/toyhouse_themes/" + savedTheme + ".css");
   }
 })();
 
 document.getElementById("thCSSThemes").addEventListener("change", function () {
-  var selected = this.options[this.selectedIndex].value;
+  var selected = "../styles/toyhouse_themes/" + this.options[this.selectedIndex].value + ".css";
+  let vanillaSelected = this.options[this.selectedIndex].value;
   setStyleSource("#thThemes", selected);
-  localStorage.setItem("themeUser", selected);
+  localStorage.setItem("themeUser", vanillaSelected);
 });
 
 /* User Warning
