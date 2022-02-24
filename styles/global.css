@@ -134,13 +134,13 @@ button {
   }
 
   ::-webkit-scrollbar {
-    width: 6px;
-    height: 6px;
+    width: 10px;
+    height: 10px;
     background-color: #F5F5F5;
   }
 
   ::-webkit-scrollbar-thumb {
     background-color: #acacac;
-    border: 1px solid #F5F5F5;
+    border: 2px solid #F5F5F5;
   }
 }

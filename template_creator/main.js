@@ -92,14 +92,6 @@ function offCanvas() {
   element.classList.toggle("active");
 }
 
-/* Toyhouse Sidebar Toggle 
-========================================================== */
-function sidebarToggle() {
-  document.getElementById("sidebar").classList.toggle("d-none");
-  document.getElementById("content").classList.toggle("col-lg-12");
-}
-
-
 /* Theme Helper
 ========================================================== */
 function setStyleSource(linkID, sourceLoc) {

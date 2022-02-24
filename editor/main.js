@@ -51,17 +51,17 @@ let compile = () => {
   editor.addEventListener('change', function () {
     let code = document.getElementById("code");
     var text = editor.getValue();
-    localStorage.setItem("htmluser", text);
+    localStorage.setItem("htmlRendered", text);
     code.innerHTML = text;
   });
   document.getElementById("profile-toggler").addEventListener('click', function () {
     let code = document.getElementById("code");
     var text = editor.getValue();
-    localStorage.setItem("htmluser", text);
+    localStorage.setItem("htmlRendered", text);
     code.innerHTML = text;
   });
   window.onload = () => {
-    var savedText = localStorage.getItem("htmluser") || "";
+    var savedText = localStorage.getItem("htmlRendered") || "";
     code.innerHTML = savedText;
     editor.session.setValue(savedText);
   };

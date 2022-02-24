@@ -3,11 +3,10 @@
 
 <head>
   <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <link rel="shortcut icon" type="image/png" href="favicon.png" />
-  <title>Toyhou.se Template Editor</title>
+  <title>Toyhou.se Template Creator</title>
 
   <!-- Toyhou.se Theme -->
   <link href="../styles/toyhouse_themes/night.css" title="thThemes" id="thThemes" rel="stylesheet" type="text/css" />
@@ -33,12 +32,6 @@
               <button class="btn btn-default d-block" title="Editor Theme" data-toggle="tooltip" data-placement="bottom" onclick="editorThemeToggle()"><i class="fas fa-sun"></i></button>
             </div>
 
-            <!-- Copy -->
-            <div class="col-auto p-1 hidden-sm-down">
-              <button class="btn btn-default d-block" title="Toggle Sidebar" data-toggle="tooltip"
-                data-placement="bottom" onclick="sidebarToggle()"><i class="fas fa-adjust"></i></button>
-            </div>
-
             <!-- Theme Options -->
             <div class="col p-1">
               <form>
@@ -55,7 +48,7 @@
 
             <!-- Render -->
             <div class="col-auto p-1">
-              <button class="btn btn-primary d-block" title="Create Form" data-toggle="tooltip" data-placement="bottom" id="render-form">
+              <button class="btn btn-primary d-block" title="Submit" data-toggle="tooltip" data-placement="bottom" id="render-form">
                 <i class="fas fa-pen-to-square"></i>
               </button>
             </div>
@@ -73,73 +66,8 @@
       <div class="resizer bg-secondary hidden-sm-down"><i class="fas fa-grip-lines-vertical"></i></div>
 
       <!-- Render Area -->
-      <div class="col" style="overflow: hidden !important;">
-
-        <!-- Navbar -->
-        <nav class="navbar navbar-toggleable-sm navbar-inverse header" data-topbar="" role="navigation" id="header">
-          <a class="navbar-brand" href="index.html">TOYHOU.SE</a>
-        </nav>
-
-        <!-- Mobile Menu -->
-        <div class="hidden-md-up nav-mobile-menu">
-          <button class="btn btn-outline-secondary nav-mobile-menu-toggle" onclick="offCanvas()" data-target="#">
-            Menu <span class="fa fa-caret-right"></span>
-          </button>
-        </div>
-
-        <!-- Main Content -->
-        <div id="main" class="clearfix container-fluid">
-          <div class="row" style="min-height: calc(100vh - 55px)"> 
-            
-            <!-- Sidebar -->
-            <div class="col-md-3 col-lg-2 sidebar hidden-md-down" id="sidebar">
-              <ul class="side-nav list-unstyled">
-                <li class="header"><i class="fas fa-user header-icon"></i>User</li>
-                <li>
-                  <span class="display-user">
-                    <a href="">
-                      <img src="favicon.png" class="display-user-avatar">
-                      <span class="display-user-username">user</span>
-                    </a>
-                  </span>
-                </li>
-                <li class="divider sidebar-divider-username"></li>
-                <li class=" sidebar-li-bulletins"><a href=""><i class="far fa-newspaper fa-fw sidebar-icon"></i>Bulletins</a></li>
-                <li class=" sidebar-li-characters"><a href=""><i class="fa fa-users fa-fw sidebar-icon"></i>Characters</a></li>
-                <li class=" sidebar-li-links"><a href=""><i class="fa fa-link fa-fw sidebar-icon"></i>Links</a></li>
-                <li class=" sidebar-li-worlds"><a href=""><i class="fa fa-globe fa-fw sidebar-icon"></i>Worlds</a></li>
-                <li class=" sidebar-li-favorites"><a href=""><i class="fa fa-star fa-fw sidebar-icon"></i>Favorites</a></li>
-                <li class="divider sidebar-divider-collections"></li>
-                <li class=" sidebar-li-created"><a href=""><i class="fa fa-palette fa-fw sidebar-icon"></i>Designs</a></li>
-                <li class=" sidebar-li-art"><a href=""><i class="fa fa-paint-brush fa-fw sidebar-icon"></i>Art</a></li>
-                <li class=" sidebar-li-literatures"><a href=""><i class="fa fa-book fa-fw sidebar-icon"></i>Library</a></li>
-                <li class="divider sidebar-divider-stats"></li>
-                <li class=" sidebar-li-stats"><a href=""><i class="fa fa-chart-bar fa-fw sidebar-icon"></i>Stats</a>
-                </li>
-              </ul>
-            </div>
-
-            <!-- Main Content -->
-            <div class="col-sm-12 col-md-9 col-lg-10 content-main" id="content">
-              <div class="row">
-                <div class="col-lg-12">
-                  <div class="profile-section profile-content-section user-content fr-view">
-                    <div class="" id="code"></div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-          </div>
-        </div>
-
-        <!-- Footer -->
-        <div class="text-muted text-center p-3 footer">
-          This is a live compiler for Toyhou.se HTML Layouts!<br>
-          <a class="mx-2" href="https://toyhou.se/">Toyhou.se</a>
-          <a class="mx-2" href="https://toyhou.se/~messages/create/cheerikola">Report a Bug</a>
-          <a class="mx-2" href="https://ko-fi.com/cheeriko">Support Me</a>
-        </div>
+      <div class="col p-4" style="overflow: hidden !important;">
+        <div id="code"></div>
       </div>
     </div>
   </div>
@@ -166,18 +94,18 @@
     /* Compile HTML 
     ========================================================== */
     editor.addEventListener('change', function () {
-      let code = document.getElementById("code");
       const text = editor.getValue();
       localStorage.setItem("htmluser", text);
-      code.innerHTML = text;
-      // writtenEdit.setValue(text);
     });
 
     // Loads user's previous html into the editor
     window.onload = () => {
-      const savedText = localStorage.getItem("htmluser") || "";
-      code.innerHTML = savedText;
-      editor.session.setValue(savedText);
+      const savedTemplateHTML = localStorage.getItem("htmluser") || "";
+      editor.session.setValue(savedTemplateHTML);
+
+      let renderedCode = localStorage.getItem("htmlRendered");
+      code.innerHTML = renderedCode;
+      writtenEdit.setValue(renderedCode);
     };
 
     // Grabs user input from the forms
@@ -199,7 +127,7 @@
 
       // Grabbing all dah HTML
       var savedInput = inputGetter();
-      var itemList = editor.getValue().match(/{{(?:.+)}}/gm); //.filter((x, i, a) => a.indexOf(x) == i)
+      var itemList = editor.getValue().match(/{{(?:.+)}}/gm).filter((x, i, a) => a.indexOf(x) == i); //
       let cleanList = [];
       let bigArray = [];
       
@@ -261,6 +189,7 @@
             // only replaces the first instance of the item
             var inputChange = inputChange.replace(`{{${bigArray[i].itemList}}}`,`${bigArray[i].userInput}`);
             code.innerHTML = inputChange;
+            localStorage.setItem("htmlRendered", inputChange);
             writtenEdit.setValue(inputChange);
 
           }
@@ -270,8 +199,10 @@
 
     
     let bigArray = [];
-    
-    document.getElementById('render-form').addEventListener('click', function () {
+
+      
+    function formBuilder() {
+      
       var bigArray = templateGetter();
       document.getElementById('options').innerHTML = "";
 
@@ -339,16 +270,16 @@
 
       insertInput();
 
-    }); 
+    };
     
-        
+    
+    document.getElementById('render-form').addEventListener('click', function () {
+      formBuilder()
+    });  
 
     document.querySelector("#options").addEventListener("change",function() {
       insertInput();
     });
-      
-
-        
 
   </script>
 
