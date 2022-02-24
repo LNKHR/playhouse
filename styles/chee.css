@@ -1277,7 +1277,7 @@ ul.pagination li a.active{
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
-  padding: var(--spacer-1) var(--spacer-3);
+  padding: var(--spacer-3) var(--spacer-3);
 }
 
 .navbar .logo a{
@@ -1299,7 +1299,7 @@ ul.pagination li a.active{
   display: block;
   position: relative;
   color: var(--navbar-font-color);
-  padding: var(--spacer-2) var(--spacer-4);
+  padding: var(--spacer-2) var(--spacer-3);
   font-family: var(--navbar-font-family);
   cursor: pointer;
   transition: 
@@ -1336,7 +1336,7 @@ ul.pagination li a.active{
 
   .navbar .nav-link {
     display: inline-block;
-    padding: var(--spacer-4) var(--spacer-2);
+    padding: var(--spacer-3) var(--spacer-2);
   }
 
   .navbar .nav-link:hover{
@@ -1389,17 +1389,17 @@ ul.pagination li a.active{
     position: absolute;
     border: var(--navbar-border-width) var(--navbar-border-style) var(--navbar-border-color);
     background: var(--navbar-background-color);
-    min-width: 200px;
+    min-width: 175px;
     border-radius: 0 0 var(--border-radius-sm) var(--border-radius-sm);
     right: 0;
     left: auto;
+    text-align: center;
   }
 
   .navbar .dropdown > .dropdown-menu .nav-link {
     padding:  var(--spacer-2) var(--spacer-3);
     border-top: var(--navbar-border-width) var(--navbar-border-style) var(--navbar-border-color);
     display: block;
-    text-align: right;
   }
 
   .navbar .dropdown > .dropdown-menu > .nav-link:first-child {border: 0}
