@@ -22,16 +22,12 @@
   margin-top: 52px;
 }
 
-.resizer,
-.resizer-horizontal,
-.resizer-horizontal-2{
+.resizers{
   opacity: 1;
   transition: opacity .5s ease;
 }
 
-.resizer:hover,
-.resizer-horizontal:hover,
-.resizer-horizontal-2:hover{
+.resizers:hover{
   opacity: .75;
 }
 

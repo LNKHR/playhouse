@@ -1,6 +1,6 @@
 /* Editor Stuff
 ========================================================== */
-var editor = ace.edit("html");
+const editor = ace.edit("html");
 editor.$blockScrolling = Infinity;
 editor.setOptions({
   selectionStyle: 'line',
@@ -8,7 +8,7 @@ editor.setOptions({
   highlightSelectedWord: true,
   behavioursEnabled: true,
   displayIndentGuides: true,
-  fontSize: 14,
+  fontSize: 12,
   theme: 'ace/theme/tomorrow_night',
   useWorker: false,
   useSoftTabs: true,
@@ -20,14 +20,14 @@ editor.setOptions({
 
 /* Editor Stuff
 ========================================================== */
-var writtenEdit = ace.edit("writtenhtml");
+const writtenEdit = ace.edit("writtenhtml");
 writtenEdit.$blockScrolling = Infinity;
 writtenEdit.setOptions({
   selectionStyle: 'line',
   highlightActiveLine: true,
   highlightSelectedWord: true,
   displayIndentGuides: true,
-  fontSize: 14,
+  fontSize: 12,
   theme: 'ace/theme/tomorrow_night',
   useWorker: false,
   indentedSoftWrap: false,
@@ -42,26 +42,16 @@ writtenEdit.setReadOnly(true);
 /* Resizing Renderer
 ========================================================== */
 
-document.querySelector(".resizer").addEventListener("click",function() {
-  editor.resize();
-  editor.renderer.updateFull();
-  writtenEdit.resize();
-  writtenEdit.renderer.updateFull();
-})
+let resizers = document.querySelectorAll(".resizers");
 
-document.querySelector(".resizer-horizontal").addEventListener("click",function() {
-  editor.resize();
-  editor.renderer.updateFull();
-  writtenEdit.resize();
-  writtenEdit.renderer.updateFull();
-})
-
-document.querySelector(".resizer-horizontal-2").addEventListener("click",function() {
-  editor.resize();
-  editor.renderer.updateFull();
-  writtenEdit.resize();
-  writtenEdit.renderer.updateFull();
-})
+for(var i = 0; i < resizers.length; i++){
+  resizers[i].addEventListener("click", function() {
+    editor.resize();
+    editor.renderer.updateFull();
+    writtenEdit.resize();
+    writtenEdit.renderer.updateFull();
+  });
+}
 
 
 /* Resizer

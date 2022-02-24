@@ -8,7 +8,7 @@ editor.setOptions({
   highlightSelectedWord: true,
   behavioursEnabled: true,
   displayIndentGuides: true,
-  fontSize: 14,
+  fontSize: 12,
   theme: 'ace/theme/tomorrow_night',
   useWorker: false,
   useSoftTabs: true,
