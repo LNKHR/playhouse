@@ -75,7 +75,59 @@ const profileToggler = () => {
   var currentTime = new Date().toLocaleDateString();
   profileToggle = !profileToggle;
 
-  if (profileToggle == false) {
+  if (profileToggle) {
+    $("#fa-user").addClass("fa-user").removeClass("fa-user-astronaut");
+    document.getElementById("profile-toggle").innerHTML = `<!-- Main Content -->
+    <div id="main" class="clearfix container-fluid">
+      <div class="row" style="min-height: calc(100vh - 55px)">
+
+        <!-- Sidebar -->
+        <div class="col-md-3 col-lg-2 sidebar" id="sidebar">
+          <ul class="side-nav list-unstyled" id="user-links">
+            <li class="header"><i class="fas fa-user header-icon"></i>User</li>
+            <li>
+              <span class="display-user">
+                <a href="">
+                  <img src="../favicon.png" class="display-user-avatar">
+                  <span class="display-user-username">user</span>
+                </a>
+              </span>
+            </li>
+            <li class="divider sidebar-divider-username"></li>
+            <li class=" sidebar-li-bulletins"><a href=""><i
+                  class="far fa-newspaper fa-fw sidebar-icon"></i>Bulletins</a></li>
+            <li class=" sidebar-li-characters"><a href=""><i
+                  class="fa fa-users fa-fw sidebar-icon"></i>Characters</a></li>
+            <li class=" sidebar-li-links"><a href=""><i class="fa fa-link fa-fw sidebar-icon"></i>Links</a></li>
+            <li class=" sidebar-li-worlds"><a href=""><i class="fa fa-globe fa-fw sidebar-icon"></i>Worlds</a></li>
+            <li class=" sidebar-li-favorites"><a href=""><i class="fa fa-star fa-fw sidebar-icon"></i>Favorites</a>
+            </li>
+            <li class="divider sidebar-divider-collections"></li>
+            <li class=" sidebar-li-created"><a href=""><i class="fa fa-palette fa-fw sidebar-icon"></i>Designs</a>
+            </li>
+            <li class=" sidebar-li-art"><a href=""><i class="fa fa-paint-brush fa-fw sidebar-icon"></i>Art</a></li>
+            <li class=" sidebar-li-literatures"><a href=""><i class="fa fa-book fa-fw sidebar-icon"></i>Library</a>
+            </li>
+            <li class="divider sidebar-divider-stats"></li>
+            <li class=" sidebar-li-stats"><a href=""><i class="fa fa-chart-bar fa-fw sidebar-icon"></i>Stats</a>
+            </li>
+          </ul>
+        </div>
+
+        <!-- Main Content -->
+        <div class="col-sm-12 col-md-9 col-lg-10 content-main" id="content">
+          <div class="row">
+            <div class="col-lg-12">
+              <div class="profile-section profile-content-section user-content fr-view" id="code">
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>`;
+  } else {
+    $("#fa-user").addClass("fa-user-astronaut").removeClass("fa-user");
     document.getElementById("profile-toggle").innerHTML = `<!-- Main Content -->
     <div id="main" class="clearfix container-fluid">
       <div class="row" style="min-height: calc(100vh - 55px)">
@@ -86,8 +138,8 @@ const profileToggler = () => {
             <li class="header"><i class="fa fa-heart mr-2"></i> Character</li>
             <li class="user-name">
               <span class="display-user">
-                <a href=""><img src="favicon.png" class="display-user-avatar">
-                  <span class="display-user-username">user</span>
+                <a href=""><img src="../favicon.png" class="display-user-avatar">
+                  <span class="display-user-username">User</span>
                 </a>
               </span>
             </li>
@@ -96,7 +148,7 @@ const profileToggler = () => {
             </li>
             <li class="character-name">
               <span class="display-character"><a href="">
-                <img src="favicon.png" class="mr-2">Character</a>
+                <img src="../favicon.png" class="mr-2">Character</a>
               </span>
             </li>
             <li class="divider sidebar-divider-collections"></li>
@@ -129,8 +181,7 @@ const profileToggler = () => {
 
             <div class="col-lg-6 col-12 profile-section profile-name-section">
               <div class="img-thumbnail">
-                <img src="favicon.png"
-                  class="profile-name-icon">
+                <img src="../favicon.png" class="profile-name-icon">
               </div>
               <div class="profile-name-info">
                 <h1 class="display-4">Character</h1>
@@ -204,58 +255,7 @@ const profileToggler = () => {
         </div>
       </div>
     </div>`;
-  } else {
-    document.getElementById("profile-toggle").innerHTML = `<!-- Main Content -->
-    <div id="main" class="clearfix container-fluid">
-      <div class="row" style="min-height: calc(100vh - 55px)">
-
-        <!-- Sidebar -->
-        <div class="col-md-3 col-lg-2 sidebar" id="sidebar">
-          <ul class="side-nav list-unstyled" id="user-links">
-            <li class="header"><i class="fas fa-user header-icon"></i>User</li>
-            <li>
-              <span class="display-user">
-                <a href="">
-                  <img
-                    src="favicon.png"
-                    class="display-user-avatar">
-                  <span class="display-user-username">user</span>
-                </a>
-              </span>
-            </li>
-            <li class="divider sidebar-divider-username"></li>
-            <li class=" sidebar-li-bulletins"><a href=""><i
-                  class="far fa-newspaper fa-fw sidebar-icon"></i>Bulletins</a></li>
-            <li class=" sidebar-li-characters"><a href=""><i
-                  class="fa fa-users fa-fw sidebar-icon"></i>Characters</a></li>
-            <li class=" sidebar-li-links"><a href=""><i class="fa fa-link fa-fw sidebar-icon"></i>Links</a></li>
-            <li class=" sidebar-li-worlds"><a href=""><i class="fa fa-globe fa-fw sidebar-icon"></i>Worlds</a></li>
-            <li class=" sidebar-li-favorites"><a href=""><i class="fa fa-star fa-fw sidebar-icon"></i>Favorites</a>
-            </li>
-            <li class="divider sidebar-divider-collections"></li>
-            <li class=" sidebar-li-created"><a href=""><i class="fa fa-palette fa-fw sidebar-icon"></i>Designs</a>
-            </li>
-            <li class=" sidebar-li-art"><a href=""><i class="fa fa-paint-brush fa-fw sidebar-icon"></i>Art</a></li>
-            <li class=" sidebar-li-literatures"><a href=""><i class="fa fa-book fa-fw sidebar-icon"></i>Library</a>
-            </li>
-            <li class="divider sidebar-divider-stats"></li>
-            <li class=" sidebar-li-stats"><a href=""><i class="fa fa-chart-bar fa-fw sidebar-icon"></i>Stats</a>
-            </li>
-          </ul>
-        </div>
-
-        <!-- Main Content -->
-        <div class="col-sm-12 col-md-9 col-lg-10 content-main" id="content">
-          <div class="row">
-            <div class="col-lg-12">
-              <div class="profile-section profile-content-section user-content fr-view" id="code">
-              </div>
-            </div>
-          </div>
-        </div>
-
-      </div>
-    </div>`;
+    
   }
 }
 
@@ -268,16 +268,33 @@ function setStyleSource(linkID, sourceLoc) {
 
 /* Editor Theme Toggle 
 ========================================================== */
-let savedEditor = localStorage.getItem("userEditor");
-(savedEditor) ? editor.setTheme("ace/theme/tomorrow_night") : editor.setTheme("ace/theme/chrome");
 
 let editorTheme = true;
 
+const toggleTheme = () => {
+  if (editorTheme == true || editorTheme == "true") {
+    editorTheme = true;
+    editor.setTheme("ace/theme/tomorrow_night");
+    $("#fa-editor-toggle").addClass("fa-sun").removeClass("fa-moon");
+   } else {
+    editorTheme = false;
+    $("#fa-editor-toggle").addClass("fa-moon").removeClass("fa-sun");
+    editor.setTheme("ace/theme/chrome");
+  }
+}
+
+(function savedEditorTheme() {
+  let savedEditor = localStorage.getItem("userEditor");
+  editorTheme = savedEditor ? savedEditor : editorTheme;
+  toggleTheme();
+})();
+
 const editorThemeToggle= () => {
   editorTheme = !editorTheme;
-  (editorTheme) ? editor.setTheme("ace/theme/tomorrow_night") : editor.setTheme("ace/theme/chrome");
+  toggleTheme();
   localStorage.setItem("userEditor", editorTheme);
 }
+
 
 /* Change CSS Theme
 ========================================================== */
