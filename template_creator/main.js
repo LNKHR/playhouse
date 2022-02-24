@@ -92,12 +92,12 @@ function offCanvas() {
   element.classList.toggle("active");
 }
 
-
-/* Tooltip
+/* Toyhouse Sidebar Toggle 
 ========================================================== */
-$(function () {
-  $('[data-toggle="tooltip"]').tooltip()
-})
+function sidebarToggle() {
+  document.getElementById("sidebar").classList.toggle("d-none");
+  document.getElementById("content").classList.toggle("col-lg-12");
+}
 
 
 /* Theme Helper
@@ -107,11 +107,20 @@ function setStyleSource(linkID, sourceLoc) {
   theLink.href = sourceLoc;
 }
 
-/* User Warning
+/* Editor Theme Toggle 
 ========================================================== */
-/*window.onbeforeunload = function(e) {
-  return '';
-};*/
+let savedEditor = localStorage.getItem("userEditor");
+(savedEditor) ? editor.setTheme("ace/theme/tomorrow_night") : editor.setTheme("ace/theme/chrome");
+(savedEditor) ? writtenEdit.setTheme("ace/theme/tomorrow_night") : writtenEdit.setTheme("ace/theme/chrome");
+
+let editorTheme = true;
+
+const editorThemeToggle= () => {
+  editorTheme = !editorTheme;
+  (editorTheme) ? editor.setTheme("ace/theme/tomorrow_night") : editor.setTheme("ace/theme/chrome");
+  (editorTheme) ? writtenEdit.setTheme("ace/theme/tomorrow_night") : writtenEdit.setTheme("ace/theme/chrome");
+  localStorage.setItem("userEditor", editorTheme);
+}
 
 /* Change Theme
 ========================================================== */
@@ -130,18 +139,14 @@ document.getElementById("thCSSThemes").addEventListener("change", function () {
   localStorage.setItem("themeUser", selected);
 });
 
-(function setUserEditor() {
-  var savedEditor = localStorage.getItem("userEditor");
-  if (document.querySelector(`[value='${savedEditor}']`)) {
-    document.querySelector(`[value='${savedEditor}']`).setAttribute("selected", "true");
-    editor.setTheme(savedEditor);
-    writtenEdit.setTheme(savedEditor);
-  }
-})();
+/* User Warning
+========================================================== */
+/*window.onbeforeunload = function(e) {
+  return '';
+};*/
 
-document.getElementById("editorThemes").addEventListener("change", function () {
-  var selected = this.options[this.selectedIndex].value;
-  editor.setTheme(selected);
-  writtenEdit.setTheme(selected);
-  localStorage.setItem("userEditor", selected);
-});
+/* Tooltip
+========================================================== */
+$(function () {
+  $('[data-toggle="tooltip"]').tooltip()
+})

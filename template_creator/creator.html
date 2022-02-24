@@ -23,11 +23,20 @@
         <div class="main-editor">
           <div class="row flex-nowrap no-gutters p-1 align-items-center options">
 
-            <!-- Erase -->
+            <!-- Documentation -->
             <div class="col-auto p-1">
-              <button class="btn btn-primary d-block" title="Documentation" data-toggle="tooltip" data-placement="bottom">
-                <i class="fas fa-book"></i>
-              </button>
+              <button class="btn btn-default d-block" title="Documentation" data-toggle="tooltip" data-placement="bottom"><i class="fas fa-book"></i></button>
+            </div>
+
+            <!-- Editor Theme Change -->
+            <div class="col-auto p-1">
+              <button class="btn btn-default d-block" title="Editor Theme" data-toggle="tooltip" data-placement="bottom" onclick="editorThemeToggle()"><i class="fas fa-sun"></i></button>
+            </div>
+
+            <!-- Copy -->
+            <div class="col-auto p-1 hidden-sm-down">
+              <button class="btn btn-default d-block" title="Toggle Sidebar" data-toggle="tooltip"
+                data-placement="bottom" onclick="sidebarToggle()"><i class="fas fa-adjust"></i></button>
             </div>
 
             <!-- Theme Options -->
@@ -42,14 +51,6 @@
                   <option value="styles/toyhouse_themes/velvet.css">Velvet</option>
                 </select>
               </form>
-            </div>
-
-            <!-- Editor Options -->
-            <div class="col p-1">
-              <select class="form-control" id="editorThemes">
-                <option selected value="ace/theme/tomorrow_night">Dark Editor</option>
-                <option value="ace/theme/chrome">Light Editor</option>
-              </select>
             </div>
 
             <!-- Render -->

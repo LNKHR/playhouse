@@ -266,7 +266,7 @@ function setStyleSource(linkID, sourceLoc) {
   theLink.href = sourceLoc;
 }
 
-/* Toyhouse User/Character Toggle 
+/* Editor Theme Toggle 
 ========================================================== */
 let savedEditor = localStorage.getItem("userEditor");
 (savedEditor) ? editor.setTheme("ace/theme/tomorrow_night") : editor.setTheme("ace/theme/chrome");
@@ -278,7 +278,6 @@ const editorThemeToggle= () => {
   (editorTheme) ? editor.setTheme("ace/theme/tomorrow_night") : editor.setTheme("ace/theme/chrome");
   localStorage.setItem("userEditor", editorTheme);
 }
-
 
 /* Change CSS Theme
 ========================================================== */
