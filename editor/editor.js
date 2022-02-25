@@ -24,12 +24,14 @@ document.querySelector(".resizer").addEventListener("click",function() {
   editor.renderer.updateFull();
 })
 
+
 /* Resizer
 ========================================================== */
 $("#codeEditor").resizable({
   handleSelector: ".resizer",
   resizeHeight: false
 });
+
 
 /* Sidebar Toggle
 ========================================================== */
@@ -38,12 +40,14 @@ function offCanvas() {
   element.classList.toggle("active");
 }
 
+
 /* Toyhouse Sidebar Toggle 
 ========================================================== */
 function sidebarToggle() {
   document.getElementById("sidebar").classList.toggle("d-none");
   document.getElementById("content").classList.toggle("col-lg-12");
 }
+
 
 /* Compiler
 ========================================================== */
@@ -67,6 +71,7 @@ let compile = () => {
   };
 }
 
+
 /* Toyhouse User/Character Toggle 
 ========================================================== */
 let profileToggle = true;
@@ -77,7 +82,7 @@ const profileToggler = () => {
 
   if (profileToggle) {
     $("#fa-user").addClass("fa-user").removeClass("fa-user-astronaut");
-    document.getElementById("profile-toggle").innerHTML = `<!-- Main Content -->
+    document.getElementById("profile-toggle").innerHTML = `
     <div id="main" class="clearfix container-fluid">
       <div class="row" style="min-height: calc(100vh - 55px)">
 
@@ -94,23 +99,17 @@ const profileToggler = () => {
               </span>
             </li>
             <li class="divider sidebar-divider-username"></li>
-            <li class=" sidebar-li-bulletins"><a href=""><i
-                  class="far fa-newspaper fa-fw sidebar-icon"></i>Bulletins</a></li>
-            <li class=" sidebar-li-characters"><a href=""><i
-                  class="fa fa-users fa-fw sidebar-icon"></i>Characters</a></li>
-            <li class=" sidebar-li-links"><a href=""><i class="fa fa-link fa-fw sidebar-icon"></i>Links</a></li>
-            <li class=" sidebar-li-worlds"><a href=""><i class="fa fa-globe fa-fw sidebar-icon"></i>Worlds</a></li>
-            <li class=" sidebar-li-favorites"><a href=""><i class="fa fa-star fa-fw sidebar-icon"></i>Favorites</a>
-            </li>
+            <li class="sidebar-li-bulletins"><a href=""><i class="far fa-newspaper fa-fw sidebar-icon"></i>Bulletins</a></li>
+            <li class="sidebar-li-characters"><a href=""><i class="fa fa-users fa-fw sidebar-icon"></i>Characters</a></li>
+            <li class="sidebar-li-links"><a href=""><i class="fa fa-link fa-fw sidebar-icon"></i>Links</a></li>
+            <li class="sidebar-li-worlds"><a href=""><i class="fa fa-globe fa-fw sidebar-icon"></i>Worlds</a></li>
+            <li class="sidebar-li-favorites"><a href=""><i class="fa fa-star fa-fw sidebar-icon"></i>Favorites</a></li>
             <li class="divider sidebar-divider-collections"></li>
-            <li class=" sidebar-li-created"><a href=""><i class="fa fa-palette fa-fw sidebar-icon"></i>Designs</a>
-            </li>
-            <li class=" sidebar-li-art"><a href=""><i class="fa fa-paint-brush fa-fw sidebar-icon"></i>Art</a></li>
-            <li class=" sidebar-li-literatures"><a href=""><i class="fa fa-book fa-fw sidebar-icon"></i>Library</a>
-            </li>
+            <li class="sidebar-li-created"><a href=""><i class="fa fa-palette fa-fw sidebar-icon"></i>Designs</a></li>
+            <li class="sidebar-li-art"><a href=""><i class="fa fa-paint-brush fa-fw sidebar-icon"></i>Art</a></li>
+            <li class="sidebar-li-literatures"><a href=""><i class="fa fa-book fa-fw sidebar-icon"></i>Library</a></li>
             <li class="divider sidebar-divider-stats"></li>
-            <li class=" sidebar-li-stats"><a href=""><i class="fa fa-chart-bar fa-fw sidebar-icon"></i>Stats</a>
-            </li>
+            <li class="sidebar-li-stats"><a href=""><i class="fa fa-chart-bar fa-fw sidebar-icon"></i>Stats</a></li>
           </ul>
         </div>
 
@@ -128,7 +127,7 @@ const profileToggler = () => {
     </div>`;
   } else {
     $("#fa-user").addClass("fa-user-astronaut").removeClass("fa-user");
-    document.getElementById("profile-toggle").innerHTML = `<!-- Main Content -->
+    document.getElementById("profile-toggle").innerHTML = `
     <div id="main" class="clearfix container-fluid">
       <div class="row" style="min-height: calc(100vh - 55px)">
 
@@ -157,11 +156,6 @@ const profileToggler = () => {
             <li class=" sidebar-li-worlds"><a href=""><i class="fa fa-globe fa-fw sidebar-icon"></i>Worlds</a></li>
             <li class=" sidebar-li-links"><a href=""><i class="fa fa-link fa-fw sidebar-icon"></i>Links</a></li>
             <li class="divider sidebar-divider-interactions"></li>
-            <li class="sidebar-li-favorites hide" data-id="" data-url="" th-favorite="0" data-trigger="focus" tabindex="-1">
-              <a href="#" class="favorited"><i class="fa fa-star fa-fw sidebar-icon"></i>Unfavorite
-                <span class="pull-right sidebar-stat sidebar-stat-favorites th-favorite-count" data-id=""></span>
-              </a>
-            </li>
             <li class="sidebar-li-favorites " data-id="" data-url="" th-favorite="1">
               <a href="#"><i class="far fa-star fa-fw sidebar-icon"></i>Favorite 
                 <span class="pull-right sidebar-stat sidebar-stat-favorites th-favorite-count" data-id=""></span>
@@ -259,6 +253,7 @@ const profileToggler = () => {
   }
 }
 
+
 /* Theme Helper
 ========================================================== */
 function setStyleSource(linkID, sourceLoc) {
@@ -266,9 +261,9 @@ function setStyleSource(linkID, sourceLoc) {
   theLink.href = sourceLoc;
 }
 
+
 /* Editor Theme Toggle 
 ========================================================== */
-
 let editorTheme = true;
 
 const toggleTheme = () => {
@@ -319,6 +314,7 @@ document.getElementById("thCSSThemes").addEventListener("change", function () {
 $(function () {
   $('[data-toggle="tooltip"]').tooltip()
 })
+
 
 /* User Warning
 ========================================================== */
