@@ -250,7 +250,7 @@ function insertInput() {
         }
 
         // only replaces the first instance of the item
-        var inputChange = inputChange.replace(`{{${bigArray[i].itemList}}}`, `${bigArray[i].userInput}`);
+        var inputChange = inputChange.replace(`{{${bigArray[i].itemList}}}`, `${bigArray[i].userInput}`).replace(/{{section(?:.+)}}/gm,"");
 
         code.innerHTML = inputChange;
         localStorage.setItem("htmluser", editor.getValue());
