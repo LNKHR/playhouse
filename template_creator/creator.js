@@ -158,6 +158,7 @@ $(function () {
   $('[data-toggle="tooltip"]').tooltip()
 })
 
+
 /* Lol
 ========================================================== */
 // Loads user's previous html into the editor
@@ -223,6 +224,8 @@ function templateGetter() {
     // Removes undefined from value
     let itemValues = (cleanList[i].split(/:(.+)/)[1].split('|')[1] == undefined) ? "[info]" : cleanList[i].split(/:(.+)/)[1].split('|')[1];
 
+    //console.log(itemValues);
+
     // Makes a pretty array of info
     bigArray[i] = {
       itemList: cleanList[i],
@@ -231,22 +234,21 @@ function templateGetter() {
       itemID: cleanList[i].replace(/\s/g, '-').split(':')[1].split('|')[0],
       itemValue: itemValues
     };
-
     
   };
 
-    var savedInput = inputGetter(bigArray);
-    
-    // Inserts saved user input into big array
-    if (savedInput.length > 0) {
-      for (let i = 0; i < itemList.length; i++) {
-        for (let j = 0; j < savedInput.length; j++) {        
-          if (savedInput[j].id == bigArray[i].itemID) {
-            bigArray[i].itemValue = savedInput[j].value;
-          }
+  var savedInput = inputGetter(bigArray);
+  
+  // Inserts saved user input into big array
+  if (savedInput.length > 0) {
+    for (let i = 0; i < itemList.length; i++) {
+      for (let j = 0; j < savedInput.length; j++) {        
+        if (savedInput[j].id == bigArray[i].itemID) {
+          bigArray[i].itemValue = savedInput[j].value;
         }
       }
     }
+  }
 
   return bigArray;
 
@@ -275,13 +277,15 @@ function insertInput() {
           bigArray[i].userInput = inputArray[j].value;
         }
 
-        // only replaces the first instance of the item
-        var inputChange = inputChange.replaceAll(`{{${bigArray[i].itemList}}}`, `${bigArray[i].userInput}`).replace(/{{section(?:.+)}}/gm,"");
+        
+        var inputChange = inputChange.replaceAll(`{{${bigArray[i].itemList}}}`, `${bigArray[i].userInput}`).replace(/{{section(?:.+)}}/gm,"").replace(/{{subsection(?:.+)}}/gm,"");
+        //var inputChangeTest = inputChange.replaceAll(`{{${bigArray[i].itemList}}}`, `{{${bigArray[i].itemInput}:${bigArray[i].itemTitle}|${bigArray[i].userInput}}}`);
 
         code.innerHTML = inputChange;
         localStorage.setItem("htmluser", editor.getValue());
         localStorage.setItem("htmlRendered", inputChange);
         writtenEdit.setValue(inputChange);
+        //editor.setValue(inputChangeTest);
 
       }
     }
@@ -295,56 +299,97 @@ let bigArray = [];
 function formBuilder() {
   var bigArray = templateGetter();
   document.getElementById('options').innerHTML = "";
+  console.log(bigArray);
 
   // Creates the forms
   for (let i = 0; i < bigArray.length; i++) {
 
     let inputText = `
-      <label for="${bigArray[i].itemID}">${bigArray[i].itemTitle}</label>
-      <input class="form-control user-input mb-3" type="text" value="${bigArray[i].itemValue}" input-type="${bigArray[i].itemInput}" name="${bigArray[i].itemID}" id="${bigArray[i].itemID}"></input>
+    <div class="row no-gutters mx-n1">
+      <div class="col-4 my-auto p-1">
+        <label class="m-0" for="${bigArray[i].itemID}">${bigArray[i].itemTitle}</label>
+      </div>
+      <div class="col-8 my-auto p-1">
+        <input class="form-control user-input" type="text" value="${bigArray[i].itemValue}" input-type="${bigArray[i].itemInput}" name="${bigArray[i].itemID}" id="${bigArray[i].itemID}"></input>
+      </div>
+    </div>
     `;
 
     let inputTextArea = `
-      <label for="${bigArray[i].itemID}">${bigArray[i].itemTitle}</label>
-      <textarea class="form-control user-input mb-3" type="color" input-type="${bigArray[i].itemInput}" name="${bigArray[i].itemID}" id="${bigArray[i].itemID}">${bigArray[i].itemValue}</textarea>
+      <div class="mb-3">
+        <label class="mb-2" for="${bigArray[i].itemID}">${bigArray[i].itemTitle}</label>
+        <textarea class="form-control user-input" type="color" input-type="${bigArray[i].itemInput}" name="${bigArray[i].itemID}" id="${bigArray[i].itemID}">${bigArray[i].itemValue}</textarea>
+      </div>
     `;
 
     let inputColor = `
-      <label for="${bigArray[i].itemID}">${bigArray[i].itemTitle}</label>
-      <input class="form-control user-input mb-3" value="${bigArray[i].itemValue}" type="color" input-type="${bigArray[i].itemInput}" name="${bigArray[i].itemID}" id="${bigArray[i].itemID}"></input>
+    <div class="row no-gutters mx-n1">
+      <div class="col-4 my-auto p-1">
+        <label class="m-0" for="${bigArray[i].itemID}">${bigArray[i].itemTitle}</label>
+      </div>
+      <div class="col-8 my-auto p-1">
+        <input class="form-control user-input" value="${bigArray[i].itemValue}" type="color" input-type="${bigArray[i].itemInput}" name="${bigArray[i].itemID}" id="${bigArray[i].itemID}"></input>
+      </div>
+    </div>
     `;
 
     let inputNumber = `
-      <label for="${bigArray[i].itemID}">${bigArray[i].itemTitle}</label>
-      <input class="form-control user-input mb-3" value="${bigArray[i].itemValue}" type="number" input-type="${bigArray[i].itemInput}" name="${bigArray[i].itemID}" id="${bigArray[i].itemID}"></input>
+    <div class="row no-gutters mx-n1">
+      <div class="col-4 my-auto p-1">
+        <label class="m-0" for="${bigArray[i].itemID}">${bigArray[i].itemTitle}</label>
+      </div>
+      <div class="col-8 my-auto p-1">
+        <input class="form-control user-input" value="${bigArray[i].itemValue}" type="number" input-type="${bigArray[i].itemInput}" name="${bigArray[i].itemID}" id="${bigArray[i].itemID}"></input>
+      </div>
+    </div>
     `;
     
     let inputBootstrap = `
-      <label for="${bigArray[i].itemID}">${bigArray[i].itemTitle}</label>
-      <select class="form-control user-input mb-3" input-type="${bigArray[i].itemInput}" name="${bigArray[i].itemID}" id="${bigArray[i].itemID}">
-        <option value="primary">Primary</option>
-        <option value="warning">Warning</option>
-        <option value="info">Info</option>
-        <option value="danger">Danger</option>
-      </select> 
+    <div class="row no-gutters mx-n1">
+      <div class="col-4 my-auto p-1">
+        <label class="m-0" for="${bigArray[i].itemID}">${bigArray[i].itemTitle}</label>
+      </div>
+      <div class="col-8 my-auto p-1">
+        <select class="form-control user-input" input-type="${bigArray[i].itemInput}" name="${bigArray[i].itemID}" id="${bigArray[i].itemID}">
+          <option value="primary">Primary</option>
+          <option value="warning">Warning</option>
+          <option value="info">Info</option>
+          <option value="danger">Danger</option>
+        </select> 
+      </div>
+    </div>
     `;
 
     let inputDropdown = `
-      <label for="${bigArray[i].itemID}">${bigArray[i].itemTitle}</label>
-      <select class="form-control user-input mb-3" input-type="${bigArray[i].itemInput}" name="${bigArray[i].itemID}" id="${bigArray[i].itemID}">
-        <option>` + bigArray[i].itemValue.replaceAll(',',`</option>
-        <option>`) + `</option>
-      </select> 
+    <div class="row no-gutters mx-n1">
+      <div class="col-4 my-auto p-1">
+        <label class="m-0" for="${bigArray[i].itemID}">${bigArray[i].itemTitle}</label>
+      </div>
+      <div class="col-8 my-auto p-1">
+        <select class="form-control user-input" input-type="${bigArray[i].itemInput}" name="${bigArray[i].itemID}" id="${bigArray[i].itemID}">
+          <option>` + bigArray[i].itemValue.replaceAll(',',`</option>
+          <option>`) + `</option>
+        </select> 
+      </div>
+    </div>
     `;
 
     let inputList = `
-      <label for="${bigArray[i].itemID}">${bigArray[i].itemTitle}</label>
-      <textarea class="form-control user-input mb-3" type="color" input-type="${bigArray[i].itemInput}" name="${bigArray[i].itemID}" id="${bigArray[i].itemID}"></textarea>
+    <div class="mb-3">
+      <label class="mb-1" for="${bigArray[i].itemID}">${bigArray[i].itemTitle}</label>
+      <textarea class="form-control user-input" type="color" input-type="${bigArray[i].itemInput}" name="${bigArray[i].itemID}" id="${bigArray[i].itemID}"></textarea>
+    </div>
     `;
 
     let sectionTitle = `
       <hr class="mx-n4 my-4">
       <h1 class="text-primary text-center text-capitalize display-4 mb-4">${bigArray[i].itemTitle}</h1>
+    `;
+
+    let subsectionTitle = `
+      <hr>
+        <h1 class="text-capitalize text-muted display-4 mb-0" style="font-size:1.25rem;">${bigArray[i].itemTitle}</h1>
+      <hr>
     `;
 
     if (bigArray[i].itemInput == "text") {
@@ -363,6 +408,8 @@ function formBuilder() {
       document.getElementById('options').innerHTML += inputBootstrap;
     } if (bigArray[i].itemInput == "section") {
       document.getElementById('options').innerHTML += sectionTitle;
+    } if (bigArray[i].itemInput == "subsection") {
+      document.getElementById('options').innerHTML += subsectionTitle;
     }
 
   }
@@ -372,10 +419,22 @@ function formBuilder() {
 };
 
 document.getElementById('render-form').addEventListener('click', function () {
-  formBuilder()
+  formBuilder();
 });
 
 document.querySelector("#options").addEventListener("change", function () {
   inputSaver();
   insertInput();
+});
+
+
+document.querySelector("#download").addEventListener("click",function () {
+  var zip = new JSZip();
+  let templateCode = localStorage.getItem("htmluser");
+  let renderedCode = localStorage.getItem("htmlRendered");
+  zip.file("Template HTML.txt",templateCode).file("Rendered HTML.txt",renderedCode);
+  zip.generateAsync({type:"blob"})
+    .then(function(zip) {
+    saveAs(zip, "Playhouse Templates.zip");
+  });
 });

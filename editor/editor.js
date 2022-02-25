@@ -55,17 +55,17 @@ let compile = () => {
   editor.addEventListener('change', function () {
     let code = document.getElementById("code");
     var text = editor.getValue();
-    localStorage.setItem("htmlRendered", text);
+    localStorage.setItem("htmlTHEditor", text);
     code.innerHTML = text;
   });
   document.getElementById("profile-toggler").addEventListener('click', function () {
     let code = document.getElementById("code");
     var text = editor.getValue();
-    localStorage.setItem("htmlRendered", text);
+    localStorage.setItem("htmlTHEditor", text);
     code.innerHTML = text;
   });
   window.onload = () => {
-    var savedText = localStorage.getItem("htmlRendered") || "";
+    var savedText = localStorage.getItem("htmlTHEditor") || "";
     code.innerHTML = savedText;
     editor.session.setValue(savedText);
   };
@@ -81,7 +81,7 @@ const profileToggler = () => {
   profileToggle = !profileToggle;
 
   if (profileToggle) {
-    $("#fa-user").addClass("fa-user").removeClass("fa-user-astronaut");
+    $("#fa-user").addClass("fa-user-astronaut").removeClass("fa-user");
     document.getElementById("profile-toggle").innerHTML = `
     <div id="main" class="clearfix container-fluid">
       <div class="row" style="min-height: calc(100vh - 55px)">
@@ -126,7 +126,7 @@ const profileToggler = () => {
       </div>
     </div>`;
   } else {
-    $("#fa-user").addClass("fa-user-astronaut").removeClass("fa-user");
+    $("#fa-user").addClass("fa-user").removeClass("fa-user-astronaut");
     document.getElementById("profile-toggle").innerHTML = `
     <div id="main" class="clearfix container-fluid">
       <div class="row" style="min-height: calc(100vh - 55px)">
@@ -171,81 +171,83 @@ const profileToggler = () => {
 
         <!-- Main Content -->
         <div class="col-sm-12 col-md-9 col-lg-10 content-main" id="content">
-          <div class="row profile-header">
+          <div class="character-profile">
+            <div class="row profile-header">
 
-            <div class="col-lg-6 col-12 profile-section profile-name-section">
-              <div class="img-thumbnail">
-                <img src="../favicon.png" class="profile-name-icon">
+              <div class="col-lg-6 col-12 profile-section profile-name-section">
+                <div class="img-thumbnail">
+                  <img src="../favicon.png" class="profile-name-icon" style="max-width:100px;">
+                </div>
+                <div class="profile-name-info">
+                  <h1 class="display-4">Character</h1>
+                  <h2><span class="display-user"><a href=""><i class="fa fa-user mr-1" style="font-size:14px;"></i>user</a></span></h2>
+                </div>
               </div>
-              <div class="profile-name-info">
-                <h1 class="display-4">Character</h1>
-                <h2><span class="display-user"><a href=""><i class="fa fa-user mr-1" style="font-size:14px;"></i>user</a></span></h2>
-              </div>
-            </div>
 
-            <div class="col-lg-6 col-12 profile-section profile-info-section">
-              <div class="card">
-                <div class="card-block bg-faded">
-                  <div class="profile-info-title hidden-lg-up">
-                    <h2>Info</h2>
-                    <hr>
-                  </div>
-                  <div class="profile-info-content row">
-                    <div class="profile-stats-content  col-12">
-                      <dl class="fields">
-                        <div class="row fields-field">
-                          <dt class="field-title col-sm-4">
-                            Created
-                          </dt>
-                          <dd class="field-value col-sm-8">
-                            <abbr class="tooltipster datetime small">
-                              ${currentTime}
-                            </abbr>
-                          </dd>
-                        </div>
-                        <div class="row fields-field">
-                          <dt class="field-title col-sm-4">
-                            Creator
-                          </dt>
-                          <dd class="field-value col-sm-8">
-                            <span class="display-user"><a href=""><i class="fa fa-user mr-1" style="font-size:10px;"></i>user</a></span>
-                          </dd>
-                        </div>
-                        <div class="row fields-field">
-                          <dt class="field-title col-sm-4">
-                            Favorites
-                          </dt>
-                          <dd class="field-value col-sm-8"><a href="" th-modal-trigger="">127</a></dd>
-                        </div>
-                      </dl>
+              <div class="col-lg-6 col-12 profile-section profile-info-section">
+                <div class="card">
+                  <div class="card-block bg-faded">
+                    <div class="profile-info-title hidden-lg-up">
+                      <h2>Info</h2>
+                      <hr>
+                    </div>
+                    <div class="profile-info-content row">
+                      <div class="profile-stats-content  col-12">
+                        <dl class="fields">
+                          <div class="row fields-field">
+                            <dt class="field-title col-sm-4">
+                              Created
+                            </dt>
+                            <dd class="field-value col-sm-8">
+                              <abbr class="tooltipster datetime small">
+                                ${currentTime}
+                              </abbr>
+                            </dd>
+                          </div>
+                          <div class="row fields-field">
+                            <dt class="field-title col-sm-4">
+                              Creator
+                            </dt>
+                            <dd class="field-value col-sm-8">
+                              <span class="display-user"><a href=""><i class="fa fa-user mr-1" style="font-size:10px;"></i>user</a></span>
+                            </dd>
+                          </div>
+                          <div class="row fields-field">
+                            <dt class="field-title col-sm-4">
+                              Favorites
+                            </dt>
+                            <dd class="field-value col-sm-8"><a href="" th-modal-trigger="">127</a></dd>
+                          </div>
+                        </dl>
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
-          </div>
 
-          <div class="profile-section profile-content-section ">
-            <div class="profile-content-title">
-              <h2>Profile</h2>
-              <hr>
-            </div>
-            <div class="profile-content-content user-content fr-view">
-              <div class="user-profile" id="code"></div>
-            </div>
-          </div>
-
-          <div class="profile-section profile-gallery-section">
-            <div class="profile-gallery-title">
-              <h2>Recent Images
+            <div class="profile-section profile-content-section ">
+              <div class="profile-content-title">
+                <h2>Profile</h2>
                 <hr>
-              </h2>
+              </div>
+              <div class="profile-content-content user-content fr-view">
+                <div class="user-profile" id="code"></div>
+              </div>
             </div>
-            <div class="profile-gallery-content">
-              <p class="image-gallery-none">No images.</p>
-            </div>
-          </div>
 
+            <div class="profile-section profile-gallery-section">
+              <div class="profile-gallery-title">
+                <h2>Recent Images
+                  <hr>
+                </h2>
+              </div>
+              <div class="profile-gallery-content">
+                <p class="image-gallery-none">No images.</p>
+              </div>
+            </div>
+
+          </div>
         </div>
       </div>
     </div>`;

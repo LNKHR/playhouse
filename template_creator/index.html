@@ -26,12 +26,12 @@
             
             <!-- Switch -->
             <div class="col-auto p-1">
-              <a href="../editor/index.html" class="btn btn-primary d-block"><i class="fas fa-exchange"></i></a>
+              <a href="../editor/index.html" title="Switch to Editor" data-toggle="tooltip" data-placement="bottom" class="btn btn-primary d-block"><i class="fas fa-exchange fa-fw"></i></a>
             </div>
 
             <!-- Switch -->
             <div class="col-auto p-1">
-              <button class="btn btn-default d-block" onclick="documentationToggle()"><i class="fas fa-info"></i></button>
+              <button class="btn btn-default d-block" title="Documentation" data-toggle="tooltip" data-placement="bottom" onclick="documentationToggle()"><i class="fas fa-info fa-fw"></i></button>
             </div>
 
             <!-- Editor Theme Change -->
@@ -55,7 +55,14 @@
 
             <!-- Render -->
             <div class="col-auto p-1">
-              <button class="btn btn-primary d-block" id="render-form">
+              <button class="btn btn-default d-block" title="Download Codes" data-toggle="tooltip" data-placement="bottom" id="download">
+                <i class="fas fa-download fa-fw"></i>
+              </button>
+            </div>
+
+            <!-- Render -->
+            <div class="col-auto p-1">
+              <button class="btn btn-primary d-block" title="Save" data-toggle="tooltip" data-placement="bottom" id="render-form">
                 <i class="fas fa-floppy-disk"></i>
               </button>
             </div>
@@ -135,6 +142,10 @@
 
   <!-- Font Awesome -->
   <script src="https://kit.fontawesome.com/734cc6a413.js" crossorigin="anonymous"></script>
+
+  <!-- File Savers -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.4/jszip.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/filesaver.js-npm@1.0.1/FileSaver.min.js"></script>
 
   <!-- Ace Editor -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.9/ace.js"></script>
