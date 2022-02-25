@@ -44,8 +44,8 @@ writtenEdit.setReadOnly(true);
 
 let resizers = document.querySelectorAll(".resizers");
 
-for(var i = 0; i < resizers.length; i++){
-  resizers[i].addEventListener("click", function() {
+for (var i = 0; i < resizers.length; i++) {
+  resizers[i].addEventListener("click", function () {
     editor.resize();
     editor.renderer.updateFull();
     writtenEdit.resize();
@@ -100,13 +100,13 @@ const toggleTheme = () => {
     editor.setTheme("ace/theme/tomorrow_night");
     writtenEdit.setTheme("ace/theme/tomorrow_night");
     $("#fa-editor-toggle").addClass("fa-sun").removeClass("fa-moon");
-   } else {
+  } else {
     editorTheme = false;
     $("#fa-editor-toggle").addClass("fa-moon").removeClass("fa-sun");
     editor.setTheme("ace/theme/chrome");
     writtenEdit.setTheme("ace/theme/chrome");
   }
-}
+};
 
 (function savedEditorTheme() {
   let savedEditor = localStorage.getItem("userEditor");
@@ -114,19 +114,19 @@ const toggleTheme = () => {
   toggleTheme();
 })();
 
-const editorThemeToggle= () => {
+const editorThemeToggle = () => {
   editorTheme = !editorTheme;
   toggleTheme();
   localStorage.setItem("userEditor", editorTheme);
-}
+};
 
 /* Change CSS Theme
 ========================================================== */
 (function newThemeUser() {
   var savedTheme = localStorage.getItem("themeUser");
-  if(document.querySelector(`[value='${savedTheme}']`)) {
+  if (document.querySelector(`[value='${savedTheme}']`)) {
     document.querySelector(`[value='${savedTheme}']`).setAttribute("selected", "true");
-    setStyleSource("#thThemes","../styles/toyhouse_themes/" + savedTheme + ".css");
+    setStyleSource("#thThemes", "../styles/toyhouse_themes/" + savedTheme + ".css");
   }
 })();
 
@@ -136,6 +136,15 @@ document.getElementById("thCSSThemes").addEventListener("change", function () {
   setStyleSource("#thThemes", selected);
   localStorage.setItem("themeUser", vanillaSelected);
 });
+
+
+/* Show Documentation
+========================================================== */
+const documentationToggle = () => {
+  $("#code").toggleClass("d-none");
+  $("#documentation").toggleClass("d-none");
+};
+
 
 /* User Warning
 ========================================================== */
@@ -164,13 +173,13 @@ window.onload = () => {
 
 // Grabs user input from the forms
 function inputGetter() {
-  var inputs = document.querySelectorAll('.user-input');    
+  var inputs = document.querySelectorAll('.user-input');
   var inputArray = [];
   for (var i = 0; i < inputs.length; i++) {
     inputArray[i] = {
       id: inputs[i].id,
       value: inputs[i].value
-    };        
+    };
   }
   console.log(inputs);
   return inputArray;
@@ -184,7 +193,7 @@ function templateGetter() {
   var itemList = editor.getValue().match(/{{(?:.+)}}/gm); //.filter((x, i, a) => a.indexOf(x) == i)
   let cleanList = [];
   let bigArray = [];
-  
+
   for (let i = 0; i < itemList.length; i++) {
 
     // So we don't have to keep scrubbing the {{}}
@@ -201,20 +210,20 @@ function templateGetter() {
       itemID: cleanList[i].replace(/\s/g, '-').split(':')[1].split('|')[0],
       itemValue: itemValues
     };
-    
+
     // Saved user input
     if (savedInput.length > 0) {
-      for(let j = 0; j < savedInput.length; j++){
-        if(savedInput[j].id == bigArray[i].itemID) {
+      for (let j = 0; j < savedInput.length; j++) {
+        if (savedInput[j].id == bigArray[i].itemID) {
           bigArray[i].itemValue = savedInput[j].value;
         }
       }
-    } 
-    
+    }
+
   };
 
   return bigArray;
-  
+
 }
 
 
@@ -227,38 +236,38 @@ function insertInput() {
   //loop through big array to store user input then change html using template accordingly
   for (var i = 0; i < bigArray.length; i++) {
     for (var j = 0; j < inputArray.length; j++) {
-      if(inputArray[j].id == bigArray[i].itemID){    
+      if (inputArray[j].id == bigArray[i].itemID) {
 
-        
-        if(bigArray[i].itemInput == 'textarea') {
-          bigArray[i].userInput = "<p>" + inputArray[j].value.replaceAll("\n",`</p>
+
+        if (bigArray[i].itemInput == 'textarea') {
+          bigArray[i].userInput = "<p>" + inputArray[j].value.replaceAll("\n", `</p>
           <p>`) + "</p>";
-        } else if(bigArray[i].itemInput == 'list') {
-          bigArray[i].userInput = "<li>" + inputArray[j].value.replaceAll("\n",`</li>
+        } else if (bigArray[i].itemInput == 'list') {
+          bigArray[i].userInput = "<li>" + inputArray[j].value.replaceAll("\n", `</li>
           <li>`) + "</li>";
         } else {
           bigArray[i].userInput = inputArray[j].value;
-        }  
+        }
 
         // only replaces the first instance of the item
-        var inputChange = inputChange.replace(`{{${bigArray[i].itemList}}}`,`${bigArray[i].userInput}`);
-        
+        var inputChange = inputChange.replace(`{{${bigArray[i].itemList}}}`, `${bigArray[i].userInput}`);
+
         code.innerHTML = inputChange;
         localStorage.setItem("htmluser", editor.getValue());
         localStorage.setItem("htmlRendered", inputChange);
         writtenEdit.setValue(inputChange);
 
       }
-    }    
+    }
   }
 };
 
 
 let bigArray = [];
 
-  
+
 function formBuilder() {
-  
+
   var bigArray = templateGetter();
   document.getElementById('options').innerHTML = "";
 
@@ -267,46 +276,53 @@ function formBuilder() {
 
     let inputText = `
       <label for="${bigArray[i].itemID}">${bigArray[i].itemTitle}</label>
-      <input class="form-control user-input" type="text" value="${bigArray[i].itemValue}" input-type="${bigArray[i].itemInput}" name="${bigArray[i].itemID}" id="${bigArray[i].itemID}"></input>
-      <hr class="mx-n4">
+      <input class="form-control user-input mb-3" type="text" value="${bigArray[i].itemValue}" input-type="${bigArray[i].itemInput}" name="${bigArray[i].itemID}" id="${bigArray[i].itemID}"></input>
     `;
 
     let inputTextArea = `
       <label for="${bigArray[i].itemID}">${bigArray[i].itemTitle}</label>
-      <textarea class="form-control user-input" type="color" input-type="${bigArray[i].itemInput}" name="${bigArray[i].itemID}" id="${bigArray[i].itemID}">${bigArray[i].itemValue}</textarea>
-      <hr class="mx-n4">
+      <textarea class="form-control user-input mb-3" type="color" input-type="${bigArray[i].itemInput}" name="${bigArray[i].itemID}" id="${bigArray[i].itemID}">${bigArray[i].itemValue}</textarea>
     `;
 
     let inputColor = `
       <label for="${bigArray[i].itemID}">${bigArray[i].itemTitle}</label>
-      <input class="form-control user-input" value="${bigArray[i].itemValue}" type="color" input-type="${bigArray[i].itemInput}" name="${bigArray[i].itemID}" id="${bigArray[i].itemID}"></input>
-      <hr class="mx-n4">
+      <input class="form-control user-input mb-3" value="${bigArray[i].itemValue}" type="color" input-type="${bigArray[i].itemInput}" name="${bigArray[i].itemID}" id="${bigArray[i].itemID}"></input>
     `;
 
     let inputNumber = `
       <label for="${bigArray[i].itemID}">${bigArray[i].itemTitle}</label>
-      <input class="form-control user-input" value="${bigArray[i].itemValue}" type="number" input-type="${bigArray[i].itemInput}" name="${bigArray[i].itemID}" id="${bigArray[i].itemID}"></input>
-      <hr class="mx-n4">
+      <input class="form-control user-input mb-3" value="${bigArray[i].itemValue}" type="number" input-type="${bigArray[i].itemInput}" name="${bigArray[i].itemID}" id="${bigArray[i].itemID}"></input>
     `;
-
+    
     let inputBootstrap = `
       <label for="${bigArray[i].itemID}">${bigArray[i].itemTitle}</label>
-      <select class="form-control user-input" input-type="${bigArray[i].itemInput}" name="${bigArray[i].itemID}" id="${bigArray[i].itemID}">
+      <select class="form-control user-input mb-3" input-type="${bigArray[i].itemInput}" name="${bigArray[i].itemID}" id="${bigArray[i].itemID}">
         <option value="primary">Primary</option>
         <option value="warning">Warning</option>
         <option value="info">Info</option>
         <option value="danger">Danger</option>
       </select> 
-      <hr class="mx-n4">
+    `;
+
+    let inputDropdown = `
+      <label for="${bigArray[i].itemID}">${bigArray[i].itemTitle}</label>
+      <select class="form-control user-input mb-3" input-type="${bigArray[i].itemInput}" name="${bigArray[i].itemID}" id="${bigArray[i].itemID}">
+        <option>` + bigArray[i].itemValue.replaceAll(',',`</option>
+        <option>`) + `</option>
+      </select> 
     `;
 
     let inputList = `
       <label for="${bigArray[i].itemID}">${bigArray[i].itemTitle}</label>
-      <textarea class="form-control user-input" type="color" input-type="${bigArray[i].itemInput}" name="${bigArray[i].itemID}" id="${bigArray[i].itemID}"></textarea>
-      <hr class="mx-n4">
+      <textarea class="form-control user-input mb-3" type="color" input-type="${bigArray[i].itemInput}" name="${bigArray[i].itemID}" id="${bigArray[i].itemID}"></textarea>
     `;
 
-    
+    let sectionTitle = `
+      <hr class="mx-n4 my-4">
+      <h1 class="text-primary text-center text-capitalize display-4 mb-4">${bigArray[i].itemTitle}</h1>
+    `;
+
+
 
     if (bigArray[i].itemInput == "text") {
       document.getElementById('options').innerHTML += inputText;
@@ -316,10 +332,14 @@ function formBuilder() {
       document.getElementById('options').innerHTML += inputColor;
     } if (bigArray[i].itemInput == "number") {
       document.getElementById('options').innerHTML += inputNumber;
-    } if (bigArray[i].itemInput == "bootstrap") {
-      document.getElementById('options').innerHTML += inputBootstrap;
+    } if (bigArray[i].itemInput == "dropdown") {
+      document.getElementById('options').innerHTML += inputDropdown;
     } if (bigArray[i].itemInput == "list") {
       document.getElementById('options').innerHTML += inputList;
+    } if (bigArray[i].itemInput == "bootstrap") {
+      document.getElementById('options').innerHTML += inputBootstrap;
+    } if (bigArray[i].itemInput == "section") {
+      document.getElementById('options').innerHTML += sectionTitle;
     }
 
   }
@@ -330,8 +350,8 @@ function formBuilder() {
 
 document.getElementById('render-form').addEventListener('click', function () {
   formBuilder()
-});  
+});
 
-document.querySelector("#options").addEventListener("change",function() {
+document.querySelector("#options").addEventListener("change", function () {
   insertInput();
 });

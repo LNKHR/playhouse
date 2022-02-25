@@ -29,7 +29,7 @@
 
             <!-- Switch -->
             <div class="col-auto p-1">
-              <button class="btn btn-default d-block"><i class="fas fa-info"></i></button>
+              <button class="btn btn-default d-block" onclick="documentationToggle()"><i class="fas fa-info"></i></button>
             </div>
 
             <!-- Editor Theme Change -->
@@ -73,6 +73,52 @@
       <!-- Render Area -->
       <div class="col p-4" style="overflow: hidden !important;">
         <div id="code"></div>
+        <div class="d-none" id="documentation">
+          <div class="mx-auto my-4" style="max-width: 768px;">
+            <h1 class="display-3 mb-4 text-primary">General Information</h1>
+            <div class="pl-4" style="font-size:1.125rem;">
+              <p>About</p>
+            </div>
+            <hr class="my-5">
+            <h1 class="display-3 mb-4 text-primary">Variables</h1>
+            <div class="pl-4 mb-4">
+              <div class="mb-3" style="font-size:1.25rem;letter-spacing:1px;">{{text:title|value}}</div>
+              <div class="blockquote pl-4 ml-4 text-muted">
+                <p>Info here</p>
+              </div>
+            </div>
+            <div class="pl-4 mb-4">
+              <div class="mb-3" style="font-size:1.25rem;letter-spacing:1px;">{{textarea:title|value}}</div>
+              <div class="blockquote pl-4 ml-4 text-muted">
+                <p>Info here</p>
+              </div>
+            </div>
+            <div class="pl-4 mb-4">
+              <div class="mb-3" style="font-size:1.25rem;letter-spacing:1px;">{{color:title|value}}</div>
+              <div class="blockquote pl-4 ml-4 text-muted">
+                <p>Info here</p>
+              </div>
+            </div>
+            <div class="pl-4 mb-4">
+              <div class="mb-3" style="font-size:1.25rem;letter-spacing:1px;">{{number:title|value}}</div>
+              <div class="blockquote pl-4 ml-4 text-muted">
+                <p>Info here</p>
+              </div>
+            </div>
+            <div class="pl-4 mb-4">
+              <div class="mb-3" style="font-size:1.25rem;letter-spacing:1px;">{{dropdown:title|option1,option2,option3}}</div>
+              <div class="blockquote pl-4 ml-4 text-muted">
+                <p>Info here</p>
+              </div>
+            </div>
+            <div class="pl-4 mb-4">
+              <div class="mb-3" style="font-size:1.25rem;letter-spacing:1px;">{{list:title}}</div>
+              <div class="blockquote pl-4 ml-4 text-muted">
+                <p>Info here</p>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
