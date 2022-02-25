@@ -322,8 +322,6 @@ function formBuilder() {
       <h1 class="text-primary text-center text-capitalize display-4 mb-4">${bigArray[i].itemTitle}</h1>
     `;
 
-
-
     if (bigArray[i].itemInput == "text") {
       document.getElementById('options').innerHTML += inputText;
     } if (bigArray[i].itemInput == "textarea") {
