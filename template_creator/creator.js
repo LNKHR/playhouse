@@ -170,18 +170,36 @@ window.onload = () => {
   writtenEdit.setValue(renderedCode);
 };
 
+// Sets user input as a variable in local storage
+function inputSaver() {
+  var inputs = document.querySelectorAll('.user-input');  
+  for (let j = 0; j < localStorage.length; j++) {
+    let storedValue = localStorage.key(j);
+    if (storedValue != "htmlRendered" || storedValue != "htmluser" || storedValue != "userEditor") {
+      localStorage.removeItem(storedValue)
+    }
+  }
+  for (var i = 0; i < inputs.length; i++) {
+    localStorage.setItem(inputs[i].id,inputs[i].value);
+  }
+}
 
 // Grabs user input from the forms
-function inputGetter() {
-  var inputs = document.querySelectorAll('.user-input');
-  var inputArray = [];
-  for (var i = 0; i < inputs.length; i++) {
-    inputArray[i] = {
-      id: inputs[i].id,
-      value: inputs[i].value
-    };
-  }
-  console.log(inputs);
+function inputGetter(bigArray) {  
+  var inputArray = [];  
+    for (var i = 0; i < bigArray.length; i++) {
+      if (localStorage.getItem(bigArray[i].itemID)) {
+        inputArray[i] = {
+          id: bigArray[i].itemID,
+          value: localStorage.getItem(bigArray[i].itemID)
+        };
+      } else {
+        inputArray[i] = {
+          id: bigArray[i].itemID,
+          value: bigArray[i].itemValue
+        };
+      } 
+    } 
   return inputArray;
 }
 
@@ -189,10 +207,13 @@ function inputGetter() {
 function templateGetter() {
 
   // Grabbing all dah HTML
-  var savedInput = inputGetter();
-  var itemList = editor.getValue().match(/{{(?:.+)}}/gm); //.filter((x, i, a) => a.indexOf(x) == i)
+  var itemListRaw = editor.getValue().match(/{{(?:.+)}}/gm); //.filter((x, i, a) => a.indexOf(x) == i)
   let cleanList = [];
   let bigArray = [];
+
+  // removes all duplicates from list
+  var itemListSet = new Set(itemListRaw);
+  var itemList = Array.from(itemListSet);
 
   for (let i = 0; i < itemList.length; i++) {
 
@@ -211,16 +232,21 @@ function templateGetter() {
       itemValue: itemValues
     };
 
-    // Saved user input
+    
+  };
+
+    var savedInput = inputGetter(bigArray);
+    
+    // Inserts saved user input into big array
     if (savedInput.length > 0) {
-      for (let j = 0; j < savedInput.length; j++) {
-        if (savedInput[j].id == bigArray[i].itemID) {
-          bigArray[i].itemValue = savedInput[j].value;
+      for (let i = 0; i < itemList.length; i++) {
+        for (let j = 0; j < savedInput.length; j++) {        
+          if (savedInput[j].id == bigArray[i].itemID) {
+            bigArray[i].itemValue = savedInput[j].value;
+          }
         }
       }
     }
-
-  };
 
   return bigArray;
 
@@ -229,9 +255,9 @@ function templateGetter() {
 
 function insertInput() {
   //get the original template
-  var inputChange = editor.getValue();
-  var inputArray = inputGetter();
+  var inputChange = editor.getValue();  
   var bigArray = templateGetter();
+  var inputArray = inputGetter(bigArray);
 
   //loop through big array to store user input then change html using template accordingly
   for (var i = 0; i < bigArray.length; i++) {
@@ -250,7 +276,7 @@ function insertInput() {
         }
 
         // only replaces the first instance of the item
-        var inputChange = inputChange.replace(`{{${bigArray[i].itemList}}}`, `${bigArray[i].userInput}`).replace(/{{section(?:.+)}}/gm,"");
+        var inputChange = inputChange.replaceAll(`{{${bigArray[i].itemList}}}`, `${bigArray[i].userInput}`).replace(/{{section(?:.+)}}/gm,"");
 
         code.innerHTML = inputChange;
         localStorage.setItem("htmluser", editor.getValue());
@@ -267,7 +293,6 @@ let bigArray = [];
 
 
 function formBuilder() {
-
   var bigArray = templateGetter();
   document.getElementById('options').innerHTML = "";
 
@@ -351,5 +376,6 @@ document.getElementById('render-form').addEventListener('click', function () {
 });
 
 document.querySelector("#options").addEventListener("change", function () {
+  inputSaver();
   insertInput();
 });
