@@ -269,7 +269,9 @@ function insertInput() {
 
         var inputChangeTest = inputChangeTest.replaceAll(`{{${bigArray[i].itemList.replaceAll('-', ' ')}}}`, `{{${bigArray[i].itemInput}:${bigArray[i].itemTitle}|${inputValue}}}`);
 
-        var inputChange = inputChange.replaceAll(`{{${bigArray[i].itemList}}}`, `${bigArray[i].userInput}`).replace(/{{section(?:.+)}}/gm, "").replace(/{{subsection(?:.+)}}/gm, "").replaceAll(`{{${bigArray[i].itemInput}:${bigArray[i].itemID.replaceAll('-',' ')}}}`, `${bigArray[i].userInput}`);
+        var regex = new RegExp(`{{${bigArray[i].itemInput}:${bigArray[i].itemID.replaceAll('-',' ')}`+'.*}}', "gmi");
+
+        var inputChange = inputChange.replaceAll(regex, `${bigArray[i].userInput}`).replace(/{{section(?:.+)}}/gm, "").replace(/{{subsection(?:.+)}}/gm, "");
 
 
         code.innerHTML = inputChange;
