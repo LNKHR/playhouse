@@ -209,7 +209,7 @@ function templateGetter() {
     dupTest.push(ItemID);
 
     // Removes undefined from value
-    let itemValues = (cleanList[i].split(/:(.+)/)[1].split('|')[1] == undefined) ? "[info]" : cleanList[i].split(/:(.+)/)[1].split('|')[1];
+    let itemValues = (cleanList[i].split(/:(.+)/)[1].split('|')[1] == undefined && cleanList[i].split(':')[0] != "color") ? "[info]" : cleanList[i].split(/:(.+)/)[1].split('|')[1];
 
     // Makes a pretty array of info
     bigArray[i] = {
