@@ -171,35 +171,15 @@ window.onload = () => {
   writtenEdit.setValue(renderedCode);
 };
 
-// Sets user input as a variable in local storage
-function inputSaver() {
-  var inputs = document.querySelectorAll('.user-input');  
-  for (let j = 0; j < localStorage.length; j++) {
-    let storedValue = localStorage.key(j);
-    if (storedValue != "htmlRendered" || storedValue != "htmluser" || storedValue != "userEditor") {
-      localStorage.removeItem(storedValue)
-    }
-  }
-  for (var i = 0; i < inputs.length; i++) {
-    localStorage.setItem(inputs[i].id,inputs[i].value);
-  }
-}
-
 // Grabs user input from the forms
-function inputGetter(bigArray) {  
+function inputGetter() {  
+  var userInput = document.querySelectorAll('.user-input');
   var inputArray = [];  
-    for (var i = 0; i < bigArray.length; i++) {
-      if (localStorage.getItem(bigArray[i].itemID)) {
-        inputArray[i] = {
-          id: bigArray[i].itemID,
-          value: localStorage.getItem(bigArray[i].itemID)
-        };
-      } else {
-        inputArray[i] = {
-          id: bigArray[i].itemID,
-          value: bigArray[i].itemValue
-        };
-      } 
+    for (var i = 0; i < userInput.length; i++) {
+      inputArray[i] = {
+        id: userInput[i].id,
+        value: userInput[i].value
+      };
     } 
   return inputArray;
 }
@@ -237,19 +217,6 @@ function templateGetter() {
     
   };
 
-  var savedInput = inputGetter(bigArray);
-  
-  // Inserts saved user input into big array
-  if (savedInput.length > 0) {
-    for (let i = 0; i < itemList.length; i++) {
-      for (let j = 0; j < savedInput.length; j++) {        
-        if (savedInput[j].id == bigArray[i].itemID) {
-          bigArray[i].itemValue = savedInput[j].value;
-        }
-      }
-    }
-  }
-
   return bigArray;
 
 }
@@ -258,14 +225,17 @@ function templateGetter() {
 function insertInput() {
   //get the original template
   var inputChange = editor.getValue();  
+  var inputChangeTest = editor.getValue();  
   var bigArray = templateGetter();
-  var inputArray = inputGetter(bigArray);
+  var inputArray = inputGetter();
+
+  console.log(bigArray);
+  console.log(inputArray);
 
   //loop through big array to store user input then change html using template accordingly
   for (var i = 0; i < bigArray.length; i++) {
     for (var j = 0; j < inputArray.length; j++) {
       if (inputArray[j].id == bigArray[i].itemID) {
-
 
         if (bigArray[i].itemInput == 'textarea') {
           bigArray[i].userInput = "<p>" + inputArray[j].value.replaceAll("\n", `</p>
@@ -277,15 +247,25 @@ function insertInput() {
           bigArray[i].userInput = inputArray[j].value;
         }
 
-        
+        var inputValue = "";
+        if (bigArray[i].itemInput == 'textarea') {
+          inputValue = inputArray[j].value.replaceAll('\n','//');
+        } else if (bigArray[i].itemInput == 'dropdown') {
+          inputValue = inputArray[j].value + ',' + bigArray[i].itemValue.replace(`${inputArray[j].value},`,'');
+        } else {
+          inputValue = inputArray[j].value;
+        }
+
+        var inputChangeTest = inputChangeTest.replaceAll(`{{${bigArray[i].itemList.replaceAll('-', ' ')}}}`, `{{${bigArray[i].itemInput}:${bigArray[i].itemTitle}|${inputValue}}}`);
+       
         var inputChange = inputChange.replaceAll(`{{${bigArray[i].itemList}}}`, `${bigArray[i].userInput}`).replace(/{{section(?:.+)}}/gm,"").replace(/{{subsection(?:.+)}}/gm,"");
-        //var inputChangeTest = inputChange.replaceAll(`{{${bigArray[i].itemList}}}`, `{{${bigArray[i].itemInput}:${bigArray[i].itemTitle}|${bigArray[i].userInput}}}`);
+        
 
         code.innerHTML = inputChange;
         localStorage.setItem("htmluser", editor.getValue());
         localStorage.setItem("htmlRendered", inputChange);
         writtenEdit.setValue(inputChange);
-        //editor.setValue(inputChangeTest);
+        editor.setValue(inputChangeTest);
 
       }
     }
@@ -299,7 +279,6 @@ let bigArray = [];
 function formBuilder() {
   var bigArray = templateGetter();
   document.getElementById('options').innerHTML = "";
-  console.log(bigArray);
 
   // Creates the forms
   for (let i = 0; i < bigArray.length; i++) {
@@ -318,7 +297,7 @@ function formBuilder() {
     let inputTextArea = `
       <div class="mb-3">
         <label class="mb-2" for="${bigArray[i].itemID}">${bigArray[i].itemTitle}</label>
-        <textarea class="form-control user-input" type="color" input-type="${bigArray[i].itemInput}" name="${bigArray[i].itemID}" id="${bigArray[i].itemID}">${bigArray[i].itemValue}</textarea>
+        <textarea class="form-control user-input" type="color" input-type="${bigArray[i].itemInput}" name="${bigArray[i].itemID}" id="${bigArray[i].itemID}">${bigArray[i].itemValue.replaceAll('//','\n')}</textarea>
       </div>
     `;
 
@@ -344,21 +323,7 @@ function formBuilder() {
     </div>
     `;
     
-    let inputBootstrap = `
-    <div class="row no-gutters mx-n1">
-      <div class="col-4 my-auto p-1">
-        <label class="m-0" for="${bigArray[i].itemID}">${bigArray[i].itemTitle}</label>
-      </div>
-      <div class="col-8 my-auto p-1">
-        <select class="form-control user-input" input-type="${bigArray[i].itemInput}" name="${bigArray[i].itemID}" id="${bigArray[i].itemID}">
-          <option value="primary">Primary</option>
-          <option value="warning">Warning</option>
-          <option value="info">Info</option>
-          <option value="danger">Danger</option>
-        </select> 
-      </div>
-    </div>
-    `;
+    
 
     let inputDropdown = `
     <div class="row no-gutters mx-n1">
@@ -405,6 +370,41 @@ function formBuilder() {
     } if (bigArray[i].itemInput == "list") {
       document.getElementById('options').innerHTML += inputList;
     } if (bigArray[i].itemInput == "bootstrap") {
+      var bsPrimary = '';
+      var bsWarning = '';
+      var bsInfo = '';
+      var bsDanger = '';
+
+      switch(bigArray[i].itemValue) {
+        case 'primary': 
+          bsPrimary = 'selected';
+          break;
+        case 'warning': 
+          bsWarning = 'selected';
+          break;
+        case 'info': 
+          bsInfo = 'selected';
+          break;
+        case 'danger': 
+          bsDanger = 'selected';
+          break;
+      }
+
+      let inputBootstrap = `
+      <div class="row no-gutters mx-n1">
+        <div class="col-4 my-auto p-1">
+          <label class="m-0" for="${bigArray[i].itemID}">${bigArray[i].itemTitle}</label>
+        </div>
+        <div class="col-8 my-auto p-1">
+          <select class="form-control user-input" input-type="${bigArray[i].itemInput}" name="${bigArray[i].itemID}" id="${bigArray[i].itemID}">
+            <option value="primary" ${bsPrimary}>Primary</option>
+            <option value="warning" ${bsWarning}>Warning</option>
+            <option value="info" ${bsInfo}>Info</option>
+            <option value="danger" ${bsDanger}>Danger</option>
+          </select> 
+        </div>
+      </div>
+      `;
       document.getElementById('options').innerHTML += inputBootstrap;
     } if (bigArray[i].itemInput == "section") {
       document.getElementById('options').innerHTML += sectionTitle;
@@ -423,7 +423,6 @@ document.getElementById('render-form').addEventListener('click', function () {
 });
 
 document.querySelector("#options").addEventListener("change", function () {
-  inputSaver();
   insertInput();
 });
 
