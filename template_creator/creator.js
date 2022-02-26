@@ -248,7 +248,7 @@ function insertInput() {
         }
 
         var inputValue = "";
-        if (bigArray[i].itemInput == 'textarea') {
+        if (bigArray[i].itemInput == 'textarea' || bigArray[i].itemInput == 'list') {
           inputValue = inputArray[j].value.replaceAll('\n','//');
         } else if (bigArray[i].itemInput == 'dropdown') {
           inputValue = inputArray[j].value + ',' + bigArray[i].itemValue.replace(`${inputArray[j].value},`,'');
@@ -342,7 +342,7 @@ function formBuilder() {
     let inputList = `
     <div class="mb-3">
       <label class="mb-1" for="${bigArray[i].itemID}">${bigArray[i].itemTitle}</label>
-      <textarea class="form-control user-input" type="color" input-type="${bigArray[i].itemInput}" name="${bigArray[i].itemID}" id="${bigArray[i].itemID}"></textarea>
+      <textarea class="form-control user-input" type="color" input-type="${bigArray[i].itemInput}" name="${bigArray[i].itemID}" id="${bigArray[i].itemID}">${bigArray[i].itemValue.replaceAll('//','\n')}</textarea>
     </div>
     `;
 
