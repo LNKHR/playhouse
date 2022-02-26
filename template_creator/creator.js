@@ -191,9 +191,10 @@ function inputGetter() {
 function templateGetter() {
 
   // Grabbing all dah HTML
-  var itemListRaw = editor.getValue().match(/{{(?:.+)}}/gm); //.filter((x, i, a) => a.indexOf(x) == i)
+  var itemListRaw = editor.getValue().match(/{{(.+)}}/gm); //.filter((x, i, a) => a.indexOf(x) == i)
   let cleanList = [];
   let bigArray = [];
+  let dupTest = [];
 
   // removes all duplicates from list
   var itemListSet = new Set(itemListRaw);
@@ -204,10 +205,11 @@ function templateGetter() {
     // So we don't have to keep scrubbing the {{}}
     cleanList.push(itemList[i].split('{{')[1].split('}}')[0]);
 
+    let ItemID = itemList[i].replace(/\s/g, '-').split(':')[1].split('|')[0].replace('}}','');
+    dupTest.push(ItemID);
+
     // Removes undefined from value
     let itemValues = (cleanList[i].split(/:(.+)/)[1].split('|')[1] == undefined) ? "[info]" : cleanList[i].split(/:(.+)/)[1].split('|')[1];
-
-    //console.log(itemValues);
 
     // Makes a pretty array of info
     bigArray[i] = {
@@ -216,11 +218,20 @@ function templateGetter() {
       itemTitle: cleanList[i].split(':')[1].split('|')[0],
       itemID: cleanList[i].replace(/\s/g, '-').split(':')[1].split('|')[0],
       itemValue: itemValues
-    };
-
+    };    
   };
 
-  return bigArray;
+  var flags = {};
+  var bigArrayClean = bigArray.filter(function(entry) {
+      if (flags[entry.itemID]) {
+          return false;
+      }
+      flags[entry.itemID] = true;
+      return true;
+  });
+  console.log(bigArrayClean);
+
+  return bigArrayClean;
 
 }
 
@@ -231,9 +242,6 @@ function insertInput() {
   var inputChangeTest = editor.getValue();
   var bigArray = templateGetter();
   var inputArray = inputGetter();
-
-  console.log(bigArray);
-  console.log(inputArray);
 
   //loop through big array to store user input then change html using template accordingly
   for (var i = 0; i < bigArray.length; i++) {
@@ -261,7 +269,7 @@ function insertInput() {
 
         var inputChangeTest = inputChangeTest.replaceAll(`{{${bigArray[i].itemList.replaceAll('-', ' ')}}}`, `{{${bigArray[i].itemInput}:${bigArray[i].itemTitle}|${inputValue}}}`);
 
-        var inputChange = inputChange.replaceAll(`{{${bigArray[i].itemList}}}`, `${bigArray[i].userInput}`).replace(/{{section(?:.+)}}/gm, "").replace(/{{subsection(?:.+)}}/gm, "");
+        var inputChange = inputChange.replaceAll(`{{${bigArray[i].itemList}}}`, `${bigArray[i].userInput}`).replace(/{{section(?:.+)}}/gm, "").replace(/{{subsection(?:.+)}}/gm, "").replaceAll(`{{${bigArray[i].itemInput}:${bigArray[i].itemID.replaceAll('-',' ')}}}`, `${bigArray[i].userInput}`);
 
 
         code.innerHTML = inputChange;
