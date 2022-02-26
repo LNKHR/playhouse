@@ -18,6 +18,7 @@ editor.setOptions({
   mode: 'ace/mode/html'
 });
 
+
 /* Editor Stuff
 ========================================================== */
 const writtenEdit = ace.edit("writtenhtml");
@@ -41,11 +42,10 @@ writtenEdit.setReadOnly(true);
 
 /* Resizing Renderer
 ========================================================== */
-
 let resizers = document.querySelectorAll(".resizers");
 
 for (var i = 0; i < resizers.length; i++) {
-  resizers[i].addEventListener("click", function () {
+  resizers[i].addEventListener("click", function() {
     editor.resize();
     editor.renderer.updateFull();
     writtenEdit.resize();
@@ -82,6 +82,7 @@ function offCanvas() {
   element.classList.toggle("active");
 }
 
+
 /* Theme Helper
 ========================================================== */
 function setStyleSource(linkID, sourceLoc) {
@@ -89,9 +90,9 @@ function setStyleSource(linkID, sourceLoc) {
   theLink.href = sourceLoc;
 }
 
+
 /* Editor Theme Toggle 
 ========================================================== */
-
 let editorTheme = true;
 
 const toggleTheme = () => {
@@ -120,6 +121,7 @@ const editorThemeToggle = () => {
   localStorage.setItem("userEditor", editorTheme);
 };
 
+
 /* Change CSS Theme
 ========================================================== */
 (function newThemeUser() {
@@ -130,7 +132,7 @@ const editorThemeToggle = () => {
   }
 })();
 
-document.getElementById("thCSSThemes").addEventListener("change", function () {
+document.getElementById("thCSSThemes").addEventListener("change", function() {
   var selected = "../styles/toyhouse_themes/" + this.options[this.selectedIndex].value + ".css";
   let vanillaSelected = this.options[this.selectedIndex].value;
   setStyleSource("#thThemes", selected);
@@ -152,14 +154,15 @@ const documentationToggle = () => {
   return '';
 };*/
 
+
 /* Tooltip
 ========================================================== */
-$(function () {
+$(function() {
   $('[data-toggle="tooltip"]').tooltip()
 })
 
 
-/* Lol
+/* Template Creator
 ========================================================== */
 // Loads user's previous html into the editor
 window.onload = () => {
@@ -172,15 +175,15 @@ window.onload = () => {
 };
 
 // Grabs user input from the forms
-function inputGetter() {  
+function inputGetter() {
   var userInput = document.querySelectorAll('.user-input');
-  var inputArray = [];  
-    for (var i = 0; i < userInput.length; i++) {
-      inputArray[i] = {
-        id: userInput[i].id,
-        value: userInput[i].value
-      };
-    } 
+  var inputArray = [];
+  for (var i = 0; i < userInput.length; i++) {
+    inputArray[i] = {
+      id: userInput[i].id,
+      value: userInput[i].value
+    };
+  }
   return inputArray;
 }
 
@@ -214,7 +217,7 @@ function templateGetter() {
       itemID: cleanList[i].replace(/\s/g, '-').split(':')[1].split('|')[0],
       itemValue: itemValues
     };
-    
+
   };
 
   return bigArray;
@@ -224,8 +227,8 @@ function templateGetter() {
 
 function insertInput() {
   //get the original template
-  var inputChange = editor.getValue();  
-  var inputChangeTest = editor.getValue();  
+  var inputChange = editor.getValue();
+  var inputChangeTest = editor.getValue();
   var bigArray = templateGetter();
   var inputArray = inputGetter();
 
@@ -249,17 +252,17 @@ function insertInput() {
 
         var inputValue = "";
         if (bigArray[i].itemInput == 'textarea' || bigArray[i].itemInput == 'list') {
-          inputValue = inputArray[j].value.replaceAll('\n','//');
+          inputValue = inputArray[j].value.replaceAll('\n', '//');
         } else if (bigArray[i].itemInput == 'dropdown') {
-          inputValue = inputArray[j].value + ',' + bigArray[i].itemValue.replace(`${inputArray[j].value},`,'');
+          inputValue = inputArray[j].value + ',' + bigArray[i].itemValue.replace(`${inputArray[j].value},`, '');
         } else {
           inputValue = inputArray[j].value;
         }
 
         var inputChangeTest = inputChangeTest.replaceAll(`{{${bigArray[i].itemList.replaceAll('-', ' ')}}}`, `{{${bigArray[i].itemInput}:${bigArray[i].itemTitle}|${inputValue}}}`);
-       
-        var inputChange = inputChange.replaceAll(`{{${bigArray[i].itemList}}}`, `${bigArray[i].userInput}`).replace(/{{section(?:.+)}}/gm,"").replace(/{{subsection(?:.+)}}/gm,"");
-        
+
+        var inputChange = inputChange.replaceAll(`{{${bigArray[i].itemList}}}`, `${bigArray[i].userInput}`).replace(/{{section(?:.+)}}/gm, "").replace(/{{subsection(?:.+)}}/gm, "");
+
 
         code.innerHTML = inputChange;
         localStorage.setItem("htmluser", editor.getValue());
@@ -322,8 +325,8 @@ function formBuilder() {
       </div>
     </div>
     `;
-    
-    
+
+
 
     let inputDropdown = `
     <div class="row no-gutters mx-n1">
@@ -332,7 +335,7 @@ function formBuilder() {
       </div>
       <div class="col-8 my-auto p-1">
         <select class="form-control user-input" input-type="${bigArray[i].itemInput}" name="${bigArray[i].itemID}" id="${bigArray[i].itemID}">
-          <option>` + bigArray[i].itemValue.replaceAll(',',`</option>
+          <option>` + bigArray[i].itemValue.replaceAll(',', `</option>
           <option>`) + `</option>
         </select> 
       </div>
@@ -359,33 +362,43 @@ function formBuilder() {
 
     if (bigArray[i].itemInput == "text") {
       document.getElementById('options').innerHTML += inputText;
-    } if (bigArray[i].itemInput == "textarea") {
+    }
+    if (bigArray[i].itemInput == "textarea") {
       document.getElementById('options').innerHTML += inputTextArea;
-    } if (bigArray[i].itemInput == "color") {
+    }
+    if (bigArray[i].itemInput == "color") {
       document.getElementById('options').innerHTML += inputColor;
-    } if (bigArray[i].itemInput == "number") {
+    }
+    if (bigArray[i].itemInput == "number") {
       document.getElementById('options').innerHTML += inputNumber;
-    } if (bigArray[i].itemInput == "dropdown") {
+    }
+    if (bigArray[i].itemInput == "dropdown") {
       document.getElementById('options').innerHTML += inputDropdown;
-    } if (bigArray[i].itemInput == "list") {
+    }
+    if (bigArray[i].itemInput == "list") {
       document.getElementById('options').innerHTML += inputList;
-    } if (bigArray[i].itemInput == "bootstrap") {
+    }
+    if (bigArray[i].itemInput == "bootstrap") {
       var bsPrimary = '';
+      var bsSuccess = '';
       var bsWarning = '';
       var bsInfo = '';
       var bsDanger = '';
 
-      switch(bigArray[i].itemValue) {
-        case 'primary': 
+      switch (bigArray[i].itemValue) {
+        case 'primary':
           bsPrimary = 'selected';
           break;
-        case 'warning': 
+        case 'success':
+          bsSuccess = 'selected';
+          break;
+        case 'warning':
           bsWarning = 'selected';
           break;
-        case 'info': 
+        case 'info':
           bsInfo = 'selected';
           break;
-        case 'danger': 
+        case 'danger':
           bsDanger = 'selected';
           break;
       }
@@ -398,6 +411,7 @@ function formBuilder() {
         <div class="col-8 my-auto p-1">
           <select class="form-control user-input" input-type="${bigArray[i].itemInput}" name="${bigArray[i].itemID}" id="${bigArray[i].itemID}">
             <option value="primary" ${bsPrimary}>Primary</option>
+            <option value="success" ${bsSuccess}>Success</option>
             <option value="warning" ${bsWarning}>Warning</option>
             <option value="info" ${bsInfo}>Info</option>
             <option value="danger" ${bsDanger}>Danger</option>
@@ -406,9 +420,11 @@ function formBuilder() {
       </div>
       `;
       document.getElementById('options').innerHTML += inputBootstrap;
-    } if (bigArray[i].itemInput == "section") {
+    }
+    if (bigArray[i].itemInput == "section") {
       document.getElementById('options').innerHTML += sectionTitle;
-    } if (bigArray[i].itemInput == "subsection") {
+    }
+    if (bigArray[i].itemInput == "subsection") {
       document.getElementById('options').innerHTML += subsectionTitle;
     }
 
@@ -418,22 +434,24 @@ function formBuilder() {
 
 };
 
-document.getElementById('render-form').addEventListener('click', function () {
+document.getElementById('render-form').addEventListener('click', function() {
   formBuilder();
 });
 
-document.querySelector("#options").addEventListener("change", function () {
+document.querySelector("#options").addEventListener("change", function() {
   insertInput();
 });
 
 
-document.querySelector("#download").addEventListener("click",function () {
+document.querySelector("#download").addEventListener("click", function() {
   var zip = new JSZip();
   let templateCode = localStorage.getItem("htmluser");
   let renderedCode = localStorage.getItem("htmlRendered");
-  zip.file("Template HTML.txt",templateCode).file("Rendered HTML.txt",renderedCode);
-  zip.generateAsync({type:"blob"})
+  zip.file("Template HTML.txt", templateCode).file("Rendered HTML.txt", renderedCode);
+  zip.generateAsync({
+      type: "blob"
+    })
     .then(function(zip) {
-    saveAs(zip, "Playhouse Templates.zip");
-  });
+      saveAs(zip, "Playhouse Templates.zip");
+    });
 });
