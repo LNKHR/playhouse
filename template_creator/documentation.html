@@ -22,6 +22,10 @@
     div p:last-child {
       margin-bottom: 0
     }
+
+    #main {
+      padding-bottom: 50vh;
+    }
   </style>
 
 </head>
@@ -31,26 +35,21 @@
       <h1 class="display-3 mb-4 text-primary">General Information</h1>
       <div class="pl-4">
         <p>This is just a really basic template creator for Toyhou.se HTML codes! It has a lot of limitations but we really hope it helps users that are less code savvy.</p>
-        <p>This tool was created by <a href="">Cheeriko</a> and <a href="">Sylueon</a>! It would be great if you could support us on ko-fi!</p>
+        <p>This tool was created by <a href="https://ko-fi.com/cheeriko">Cheeriko</a> and <a href="https://ko-fi.com/sylueon">Sylueon</a>! It would be great if you could support us!</p>
       </div>
       <hr class="my-5">
       <h1 class="display-3 mb-4 text-primary">Variables</h1>
       <div class="pl-4">
         <p>Variables just need to be inserted wherever you want the user to be able to change things (save for the section variables).</p>
         <p class="text-center dsiplay-4" style="font-size:1.5rem;">{{<code title="Type of text input" data-toggle="tooltip" data-placement="top">input type</code>::<code title="Title of the input" data-toggle="tooltip" data-placement="top">title</code>||<code title="[Optional] Default value of the input" data-toggle="tooltip" data-placement="top">value</code>}}</p>
-        <p>Input types are posted below. Titles and values should not have any special characters or new lines.</p>
+        <p>Input types are posted below. Titles and values should not have line breaks/new lines - special characters might also break them. Values are optional!</p>
+        <p><b>Variables can not be inserted into other variables.</b> Something like <code>{{textarea::title||{{text::title||value}}}}</code> will break the template.</p>
       </div>
       <hr class="my-5">
       <div class="pl-4 mb-4">
         <div class="mb-3" style="font-size:1.25rem;letter-spacing:1px;">{{template::title}}</div>
         <div class="card rounded-0 d-block pl-4 py-3 ml-4 text-muted" style="border-width: 0 0 0 2px;">
           <p>Purely optional. When the user downloads their templates, it'll save with your template name.</p>
-        </div>
-      </div>
-      <div class="pl-4 mb-4">
-        <div class="mb-3" style="font-size:1.25rem;letter-spacing:1px;">{{section::title}}</div>
-        <div class="card rounded-0 d-block pl-4 py-3 ml-4 text-muted" style="border-width: 0 0 0 2px;">
-          <p>Adds a title to the form output for better organization.</p>
         </div>
       </div>
       <div class="pl-4 mb-4">
@@ -79,6 +78,13 @@
         </div>
       </div>
       <div class="pl-4 mb-4">
+        <div class="mb-3" style="font-size:1.25rem;letter-spacing:1px;">{{list::title}}</div>
+        <div class="card rounded-0 d-block pl-4 py-3 ml-4 text-muted" style="border-width: 0 0 0 2px;">
+          <p>This will input user text as a simple <code><<i></i>li>[user text]<<i></i>/li></code>.</p> 
+          <p>If you want to add multiple lines in the initial value, please add <code>&&</code> between them.</p>
+        </div>
+      </div>
+      <div class="pl-4 mb-4">
         <div class="mb-3" style="font-size:1.25rem;letter-spacing:1px;">{{color::title||value}}</div>
         <div class="card rounded-0 d-block pl-4 py-3 ml-4 text-muted" style="border-width: 0 0 0 2px;">
           <p>For hex colors. Make sure the initial variable has a value in RGB, <code>rgb(000,000,000)</code>, or hex, <code>#000000</code>.</p>
@@ -98,10 +104,10 @@
         </div>
       </div>
       <div class="pl-4 mb-4">
-        <div class="mb-3" style="font-size:1.25rem;letter-spacing:1px;">{{list::title}}</div>
+        <div class="mb-3" style="font-size:1.25rem;letter-spacing:1px;">{{bootstrap::title||primary}}</div>
         <div class="card rounded-0 d-block pl-4 py-3 ml-4 text-muted" style="border-width: 0 0 0 2px;">
-          <p>This will input user text as a simple <code><<i></i>li>[user text]<<i></i>/li></code>.</p> 
-          <p>If you want to add multiple lines in the initial value, please add <code>&&</code> between them.</p>
+          <p>A quick default dropdown for bootstrap colors made for your convenience!</p>
+          <p>Options for the default value are: <code>primary, success, warning, info, or danger</code>. Only put one in the value place!</p>
         </div>
       </div>
       <hr class="my-5">
@@ -146,23 +152,22 @@
 -->
 
 <<i></i>div class="mx-auto my-md-5" style="max-width:700px;">
-<<i></i>div class="card d-block text-center bg-faded card-outline-{{bootstrap::card outline}} p-5" style="border-width: {{number::card border width}}px;border-style: {{dropdown::card border style}};border-radius:{{number::card border radius}}rem;">
+  <<i></i>div class="card d-block text-center bg-faded card-outline-{{bootstrap::card outline}} p-5" style="border-width: {{number::card border width}}px;border-style: {{dropdown::card border style}};border-radius:{{number::card border radius}}rem;">
 
-  <<i></i>h1>{{text::example title}}<<i></i>/h1>
-  <<i></i>small class="text-muted">{{text::example subtext}}<<i></i>/small>
-  <<i></i>hr class="my-4 card-outline-{{bootstrap::card outline}}" style="border-top-width: {{number::card border width}}px;border-top-style: {{dropdown::card border style}}">
-  {{textarea::lorem ipsum}}
-  <<i></i>hr class="my-4 card-outline-{{bootstrap::card outline}}" style="border-top-width: {{number::card border width}}px;border-top-style: {{dropdown::card border style}}">
+    <<i></i>h1>{{text::example title}}<<i></i>/h1>
+    <<i></i>small class="text-muted">{{text::example subtext}}<<i></i>/small>
+    <<i></i>hr class="my-4 card-outline-{{bootstrap::card outline}}" style="border-top-width: {{number::card border width}}px;border-top-style: {{dropdown::card border style}}">
+    {{textarea::lorem ipsum}}
+    <<i></i>hr class="my-4 card-outline-{{bootstrap::card outline}}" style="border-top-width: {{number::card border width}}px;border-top-style: {{dropdown::card border style}}">
 
-  <<i></i>a class="text-{{bootstrap::link color}}" href="{{text::link one}}"><<i></i>i class="{{text::link one icon}} fa-fw mx-1"><<i></i>/i><<i></i>/a>
-  <<i></i>a class="text-{{bootstrap::link color}}" href="{{text::link two}}"><<i></i>i class="{{text::link two icon}} fa-fw mx-1"><<i></i>/i><<i></i>/a>
-  <<i></i>a class="text-{{bootstrap::link color}}" href="{{text::link three}}"><<i></i>i class="{{text::link three icon}} fa-fw mx-1"><<i></i>/i><<i></i>/a>
-  
-<<i></i>/div>
+    <<i></i>a class="text-{{bootstrap::link color}}" href="{{text::link one}}"><<i></i>i class="{{text::link one icon}} fa-fw mx-1"><<i></i>/i><<i></i>/a>
+    <<i></i>a class="text-{{bootstrap::link color}}" href="{{text::link two}}"><<i></i>i class="{{text::link two icon}} fa-fw mx-1"><<i></i>/i><<i></i>/a>
+    <<i></i>a class="text-{{bootstrap::link color}}" href="{{text::link three}}"><<i></i>i class="{{text::link three icon}} fa-fw mx-1"><<i></i>/i><<i></i>/a>
+    
+  <<i></i>/div>
 <<i></i>/div></code></pre>
         <p><b>Warning:</b> Having 2 initial variables with the same input type and value will break the template. The initial variable must come <u>before</u> you call it.</p>
       </div>
-      <hr class="my-5">
     </div>
   </div>
 
@@ -171,11 +176,11 @@
   <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 
-  <!-- Hightlight JS -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/styles/default.min.css">
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/highlight.min.js"></script>
-  <!-- and it's easy to individually load additional languages -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/languages/go.min.js"></script>
+  <script>
+    $(function () {
+      $('[data-toggle="tooltip"]').tooltip();
+    });
+  </script>
 
 </body>
 </html>

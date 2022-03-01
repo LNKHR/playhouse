@@ -43,7 +43,7 @@ writtenEdit.setReadOnly(true);
 let resizers = document.querySelectorAll(".resizers");
 
 for (var i = 0; i < resizers.length; i++) {
-  resizers[i].addEventListener("click", function () {
+  resizers[i].addEventListener("click", function() {
     editor.resize();
     editor.renderer.updateFull();
     writtenEdit.resize();
@@ -130,7 +130,7 @@ const editorThemeToggle = () => {
   }
 })();
 
-document.getElementById("thCSSThemes").addEventListener("change", function () {
+document.getElementById("thCSSThemes").addEventListener("change", function() {
   var selected =
     "../styles/toyhouse_themes/" +
     this.options[this.selectedIndex].value +
@@ -148,7 +148,7 @@ document.getElementById("thCSSThemes").addEventListener("change", function () {
 
 /* Tooltip
 ========================================================== */
-$(function () {
+$(function() {
   $('[data-toggle="tooltip"]').tooltip();
 });
 
@@ -179,46 +179,51 @@ function inputGetter() {
 
 // Grabs the template and makes it look nice and neat
 function templateGetter() {
-  // Grabbing all dah HTML
-  var itemListRaw = editor.getValue().match(/{{(bootstrap|text|textarea|color|number|dropdown|list|section|subsection)(.+?)}}/gim); //.filter((x, i, a) => a.indexOf(x) == i)
-  let cleanList = [];
-  let bigArray = [];
+  try {
+    // Grabbing all dah HTML
+    var itemListRaw = editor.getValue().match(/{{(bootstrap|text|textarea|color|number|dropdown|list|section|subsection)(.+?)}}/gim); //.filter((x, i, a) => a.indexOf(x) == i)
+    let cleanList = [];
+    let bigArray = [];
 
-  // removes all duplicates from list
-  var itemListSet = new Set(itemListRaw);
-  var itemList = Array.from(itemListSet);
+    // removes all duplicates from list
+    var itemListSet = new Set(itemListRaw);
+    var itemList = Array.from(itemListSet);
 
-  for (let i = 0; i < itemList.length; i++) {
-    // So we don't have to keep scrubbing the {{}}
-    cleanList.push(itemList[i].replace('{{','').replace('}}',''));
+    for (let i = 0; i < itemList.length; i++) {
+      // So we don't have to keep scrubbing the {{}}
+      cleanList.push(itemList[i].replace('{{', '').replace('}}', ''));
 
-    // Removes undefined from value
-    let itemValues =
-      cleanList[i].split(/::(.+)/)[1].split("||")[1] == undefined &&
-      cleanList[i].split(/::(.+)/)[0] != "color"
-        ? "[info]"
-        : cleanList[i].split(/::(.+)/)[1].split("||")[1];
+      // Removes undefined from value
+      let itemValues =
+        cleanList[i].split(/::(.+)/)[1].split("||")[1] == undefined &&
+        cleanList[i].split(/::(.+)/)[0] != "color" ?
+        "[info]" :
+        cleanList[i].split(/::(.+)/)[1].split("||")[1];
 
-    // Makes a pretty array of info
-    bigArray[i] = {
-      itemList: cleanList[i],
-      itemInput: cleanList[i].split(/::(.+)/)[0],
-      itemTitle: cleanList[i].split(/::(.+)/)[1].split("||")[0],
-      itemID: cleanList[i].replace(/\s/g, "-").split(/::(.+)/)[1].split("||")[0],
-      itemValue: itemValues,
-    };
-  }
-
-  var flags = {};
-  var bigArrayClean = bigArray.filter(function (entry) {
-    if (flags[entry.itemID]) {
-      return false;
+      // Makes a pretty array of info
+      bigArray[i] = {
+        itemList: cleanList[i],
+        itemInput: cleanList[i].split(/::(.+)/)[0],
+        itemTitle: cleanList[i].split(/::(.+)/)[1].split("||")[0],
+        itemID: cleanList[i].replace(/\s/g, "-").split(/::(.+)/)[1].split("||")[0],
+        itemValue: itemValues,
+      };
     }
-    flags[entry.itemID] = true;
-    return true;
-  });
 
-  return bigArrayClean;
+    var flags = {};
+    var bigArrayClean = bigArray.filter(function(entry) {
+      if (flags[entry.itemID]) {
+        return false;
+      }
+      flags[entry.itemID] = true;
+      return true;
+    });
+  
+    return bigArrayClean;
+
+  } catch (err) {
+    document.getElementById("code").innerHTML = `<div class="alert alert-warning">Error: Looks like you're missing a :: somewhere - check over your template code just in case!</div>`;
+  }
 
 }
 
@@ -234,37 +239,37 @@ function insertInput() {
     for (var j = 0; j < inputArray.length; j++) {
       if (inputArray[j].id == bigArray[i].itemID) {
         if (bigArray[i].itemInput == "textarea") {
-          bigArray[i].userInput = inputArray[j].value.includes("\n\n")
-            ? "<p>" +
-              inputArray[j].value.replaceAll(
-                "\n\n",
-                `</p>
+          bigArray[i].userInput = inputArray[j].value.includes("\n\n") ?
+            "<p>" +
+            inputArray[j].value.replaceAll(
+              "\n\n",
+              `</p> <p>`
+
+            ) +
+            "</p>" :
+            "<p>" +
+            inputArray[j].value.replaceAll(
+              "\n",
+              `</p>
           <p>`
-              ) +
-              "</p>"
-            : "<p>" +
-              inputArray[j].value.replaceAll(
-                "\n",
-                `</p>
-          <p>`
-              ) +
-              "</p>";
+            ) +
+            "</p>";
         } else if (bigArray[i].itemInput == "list") {
-          bigArray[i].userInput = inputArray[j].value.includes("\n\n")
-            ? "<li>" +
-              inputArray[j].value.replaceAll(
-                "\n\n",
-                `</li>
+          bigArray[i].userInput = inputArray[j].value.includes("\n\n") ?
+            "<li>" +
+            inputArray[j].value.replaceAll(
+              "\n\n",
+              `</li>
           <li>`
-              ) +
-              "</li>"
-            : "<li>" +
-              inputArray[j].value.replaceAll(
-                "\n",
-                `</li>
+            ) +
+            "</li>" :
+            "<li>" +
+            inputArray[j].value.replaceAll(
+              "\n",
+              `</li>
           <li>`
-              ) +
-              "</li>";
+            ) +
+            "</li>";
         } else {
           bigArray[i].userInput = inputArray[j].value;
         }
@@ -274,9 +279,9 @@ function insertInput() {
           bigArray[i].itemInput == "textarea" ||
           bigArray[i].itemInput == "list"
         ) {
-          inputValue = inputArray[j].value.includes("\n\n")
-            ? inputArray[j].value.replaceAll("\n\n", "&&")
-            : inputArray[j].value.replaceAll("\n", "&&");
+          inputValue = inputArray[j].value.includes("\n\n") ?
+            inputArray[j].value.replaceAll("\n\n", "&&") :
+            inputArray[j].value.replaceAll("\n", "&&");
         } else if (bigArray[i].itemInput == "dropdown") {
           inputValue =
             inputArray[j].value +
@@ -471,11 +476,11 @@ function formBuilder() {
   insertInput();
 }
 
-document.getElementById("render-form").addEventListener("click", function () {
+document.getElementById("render-form").addEventListener("click", function() {
   formBuilder();
 });
 
-document.querySelector("#options").addEventListener("change", function () {
+document.querySelector("#options").addEventListener("change", function() {
   insertInput();
 });
 
@@ -483,7 +488,7 @@ document.querySelector("#options").addEventListener("change", function () {
 /* Save Template
 ========================================================== */
 const saveCodeAs = () => {
-  const templateName = (editor.getValue().match(/{{template(.+?)}}/gm) != null) ? editor.getValue().match(/{{template(.+?)}}/gm)[0].split(/::(.+)/)[1].replace('}}','').toLowerCase().replace(/\s/g, "-") + ".zip" : "playhouse-template.zip";
+  const templateName = (editor.getValue().match(/{{template(.+?)}}/gm) != null) ? editor.getValue().match(/{{template(.+?)}}/gm)[0].split(/::(.+)/)[1].replace('}}', '').toLowerCase().replace(/\s/g, "-") + ".zip" : "playhouse-template.zip";
   var zip = new JSZip();
   let templateCode = localStorage.getItem("htmluser");
   let renderedCode = localStorage.getItem("htmlRendered");
@@ -494,7 +499,7 @@ const saveCodeAs = () => {
     .generateAsync({
       type: "blob",
     })
-    .then(function (zip) {
+    .then(function(zip) {
       saveAs(zip, templateName);
     });
 };
