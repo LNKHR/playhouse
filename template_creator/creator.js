@@ -239,37 +239,11 @@ function insertInput() {
     for (var j = 0; j < inputArray.length; j++) {
       if (inputArray[j].id == bigArray[i].itemID) {
         if (bigArray[i].itemInput == "textarea") {
-          bigArray[i].userInput = inputArray[j].value.includes("\n\n") ?
-            "<p>" +
-            inputArray[j].value.replaceAll(
-              "\n\n",
-              `</p> <p>`
-
-            ) +
-            "</p>" :
-            "<p>" +
-            inputArray[j].value.replaceAll(
-              "\n",
-              `</p>
-          <p>`
-            ) +
-            "</p>";
+          bigArray[i].userInput = inputArray[j].value.includes("\n\n") ? "<p>" + inputArray[j].value.replaceAll("\n\n",`</p>\n<p>`) + "</p>" : "<p>" + inputArray[j].value.replaceAll("\n", `</p>\n<p>`) + "</p>";
         } else if (bigArray[i].itemInput == "list") {
           bigArray[i].userInput = inputArray[j].value.includes("\n\n") ?
             "<li>" +
-            inputArray[j].value.replaceAll(
-              "\n\n",
-              `</li>
-          <li>`
-            ) +
-            "</li>" :
-            "<li>" +
-            inputArray[j].value.replaceAll(
-              "\n",
-              `</li>
-          <li>`
-            ) +
-            "</li>";
+            inputArray[j].value.replaceAll("\n\n",`</li>\n<li>`) + "</li>" : "<li>" + inputArray[j].value.replaceAll("\n",`</li>\n<li>`) + "</li>";
         } else {
           bigArray[i].userInput = inputArray[j].value;
         }
