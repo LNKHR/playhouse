@@ -1,0 +1,162 @@
+/* Resizers
+=========================================== */
+
+.resizer {
+  padding: .25rem;
+  cursor: ew-resize;
+  position: sticky;
+  top: 0;
+  max-height: 100vh;
+  display: flex;
+  align-items: center;
+}
+
+.resizer-horizontal,
+.resizer-horizontal-2 {
+  cursor: ns-resize;
+  text-align: center;
+  line-height: 1;
+}
+
+.resizer-horizontal {
+  margin-top: 52px;
+}
+
+.resizers{
+  opacity: 1;
+  transition: opacity .5s ease;
+}
+
+.resizers:hover{
+  opacity: .75;
+}
+
+/* Top Options
+=========================================== */
+
+.options {
+  overflow: hidden;
+}
+
+/* Editors
+=========================================== */
+
+#codeEditor{
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  position: sticky;
+  top: 0;
+  overflow: hidden;
+}
+
+.written-html,
+.main-editor {
+  height: 25vh;
+  flex: 0 0 auto;
+}
+
+.main-editor{
+  max-height: calc(100% - 68px);
+}
+
+.written-html{
+  max-height: calc(100% - 84px);
+}
+
+#options {
+  width: 100% !important;
+  overflow-y: auto;
+  flex: 1 1 auto;
+  padding-bottom: 250px !important;
+}
+
+#options hr:first-child {
+  display: none !important;
+}
+
+#codeEditor pre {
+  margin: 0 !important;
+}
+
+@media screen and (min-width: 768px) {
+  #codeEditor {
+    width: 25%;
+    max-width: calc(100% - .5rem);
+    z-index: 1000;
+  }
+}
+
+.ace_editor {
+  width: 100% !important;
+  height: 100%;
+}
+
+@media screen and (max-width: 767px) {
+  #codeEditor {
+    position: absolute;
+    top: 109px;
+    left: -100%;
+    height: 100%;
+    width: 100%;
+    transition: left .5s ease-in-out;
+    z-index: 1000;
+  }
+
+  #codeEditor.active {
+    left: 0;
+  }
+}
+
+/* Misc
+=========================================== */
+
+#options label{
+  text-transform: capitalize;
+  font-size: 1rem;
+}
+
+input{
+  box-shadow: none !important;
+}
+
+button {
+  cursor: pointer;
+}
+
+input[type="color"] {
+	-webkit-appearance: none;
+	width: 100%;
+	height: 30px;
+  padding: .25rem;
+}
+
+input[type="color"]::-webkit-color-swatch-wrapper {
+	padding: 0;
+}
+
+input[type="color"]::-webkit-color-swatch {
+	border: none;
+  border-radius: .25rem;
+}
+
+
+/* Scrollbar
+=========================================== */
+
+@media screen and (min-width: 768px) {
+  ::-webkit-scrollbar-track {
+    background-color: #F5F5F5;
+  }
+
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+    background-color: #F5F5F5;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background-color: #acacac;
+    border: 2px solid #F5F5F5;
+  }
+}
