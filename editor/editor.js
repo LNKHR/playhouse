@@ -3,35 +3,33 @@
 var editor = ace.edit("html");
 editor.$blockScrolling = Infinity;
 editor.setOptions({
-  selectionStyle: 'line',
+  selectionStyle: "line",
   highlightActiveLine: true,
   highlightSelectedWord: true,
   behavioursEnabled: true,
   displayIndentGuides: true,
   fontSize: 12,
-  theme: 'ace/theme/tomorrow_night',
+  theme: "ace/theme/tomorrow_night",
   useWorker: false,
   useSoftTabs: true,
   indentedSoftWrap: false,
   tabSize: 2,
   wrap: true,
-  mode: 'ace/mode/html'
+  mode: "ace/mode/html",
 });
 
 // Resizes editor
-document.querySelector(".resizer").addEventListener("click",function() {
+document.querySelector(".resizer").addEventListener("click", function () {
   editor.resize();
   editor.renderer.updateFull();
-})
-
+});
 
 /* Resizer
 ========================================================== */
 $("#codeEditor").resizable({
   handleSelector: ".resizer",
-  resizeHeight: false
+  resizeHeight: false,
 });
-
 
 /* Sidebar Toggle
 ========================================================== */
@@ -40,7 +38,6 @@ function offCanvas() {
   element.classList.toggle("active");
 }
 
-
 /* Toyhouse Sidebar Toggle 
 ========================================================== */
 function sidebarToggle() {
@@ -48,35 +45,34 @@ function sidebarToggle() {
   document.getElementById("content").classList.toggle("col-lg-12");
 }
 
-
 /* Compiler
 ========================================================== */
 let compile = () => {
-  editor.addEventListener('change', function () {
+  editor.addEventListener("change", function () {
     let code = document.getElementById("code");
     var text = editor.getValue();
     localStorage.setItem("htmlTHEditor", text);
     code.innerHTML = text;
   });
-  document.getElementById("profile-toggler").addEventListener('click', function () {
-    let code = document.getElementById("code");
-    var text = editor.getValue();
-    localStorage.setItem("htmlTHEditor", text);
-    code.innerHTML = text;
-  });
+  document
+    .getElementById("profile-toggler")
+    .addEventListener("click", function () {
+      let code = document.getElementById("code");
+      var text = editor.getValue();
+      localStorage.setItem("htmlTHEditor", text);
+      code.innerHTML = text;
+    });
   window.onload = () => {
     var savedText = localStorage.getItem("htmlTHEditor") || "";
     code.innerHTML = savedText;
     editor.session.setValue(savedText);
   };
-}
-
+};
 
 /* Toyhouse User/Character Toggle 
 ========================================================== */
 let profileToggle = true;
 const profileToggler = () => {
-
   var currentTime = new Date().toLocaleDateString();
   profileToggle = !profileToggle;
 
@@ -251,10 +247,8 @@ const profileToggler = () => {
         </div>
       </div>
     </div>`;
-    
   }
-}
-
+};
 
 /* Theme Helper
 ========================================================== */
@@ -262,7 +256,6 @@ function setStyleSource(linkID, sourceLoc) {
   var theLink = document.querySelector(linkID);
   theLink.href = sourceLoc;
 }
-
 
 /* Editor Theme Toggle 
 ========================================================== */
@@ -273,12 +266,12 @@ const toggleTheme = () => {
     editorTheme = true;
     editor.setTheme("ace/theme/tomorrow_night");
     $("#fa-editor-toggle").addClass("fa-sun").removeClass("fa-moon");
-   } else {
+  } else {
     editorTheme = false;
     $("#fa-editor-toggle").addClass("fa-moon").removeClass("fa-sun");
     editor.setTheme("ace/theme/chrome");
   }
-}
+};
 
 (function savedEditorTheme() {
   let savedEditor = localStorage.getItem("userEditor");
@@ -286,40 +279,56 @@ const toggleTheme = () => {
   toggleTheme();
 })();
 
-const editorThemeToggle= () => {
+const editorThemeToggle = () => {
   editorTheme = !editorTheme;
   toggleTheme();
   localStorage.setItem("userEditor", editorTheme);
-}
-
+};
 
 /* Change CSS Theme
 ========================================================== */
 (function newThemeUser() {
   var savedTheme = localStorage.getItem("themeUser");
-  if(document.querySelector(`[value='${savedTheme}']`)) {
-    document.querySelector(`[value='${savedTheme}']`).setAttribute("selected", "true");
-    setStyleSource("#thThemes","../styles/toyhouse_themes/" + savedTheme + ".css");
+  if (document.querySelector(`[value='${savedTheme}']`)) {
+    document
+      .querySelector(`[value='${savedTheme}']`)
+      .setAttribute("selected", "true");
+    setStyleSource(
+      "#thThemes",
+      "../styles/toyhouse_themes/" + savedTheme + ".css"
+    );
   }
 })();
 
 document.getElementById("thCSSThemes").addEventListener("change", function () {
-  var selected = "../styles/toyhouse_themes/" + this.options[this.selectedIndex].value + ".css";
+  var selected =
+    "../styles/toyhouse_themes/" +
+    this.options[this.selectedIndex].value +
+    ".css";
   let vanillaSelected = this.options[this.selectedIndex].value;
   setStyleSource("#thThemes", selected);
   localStorage.setItem("themeUser", vanillaSelected);
 });
 
-
 /* Tooltip
 ========================================================== */
 $(function () {
-  $('[data-toggle="tooltip"]').tooltip()
-})
+  $('[data-toggle="tooltip"]').tooltip();
+});
 
-
-/* User Warning
+/* Ctrl + S
 ========================================================== */
-window.onbeforeunload = function(e) {
-  return '';
-};
+
+const saveCodeAs = () => {
+  const blob = new Blob([editor.getValue()], {type: "text/html;charset=utf-8",});
+  saveAs(blob, 'code.txt', { autoBom: true })
+}
+
+document.addEventListener("keydown", (e) => {
+  if (e.ctrlKey && "s" === e.key) {
+    e.preventDefault();
+    saveCodeAs();
+    return false;
+  }
+  return true;
+});

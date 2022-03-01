@@ -480,9 +480,9 @@ document.querySelector("#options").addEventListener("change", function () {
 });
 
 
-
-// Save Document
-document.querySelector("#download").addEventListener("click", function () {
+/* Save Template
+========================================================== */
+const saveCodeAs = () => {
   const templateName = (editor.getValue().match(/{{template(.+?)}}/gm) != null) ? editor.getValue().match(/{{template(.+?)}}/gm)[0].split(/::(.+)/)[1].replace('}}','').toLowerCase().replace(/\s/g, "-") + ".zip" : "playhouse-template.zip";
   var zip = new JSZip();
   let templateCode = localStorage.getItem("htmluser");
@@ -497,4 +497,13 @@ document.querySelector("#download").addEventListener("click", function () {
     .then(function (zip) {
       saveAs(zip, templateName);
     });
+};
+
+document.addEventListener("keydown", (e) => {
+  if (e.ctrlKey && "s" === e.key) {
+    e.preventDefault();
+    saveCodeAs();
+    return false;
+  }
+  return true;
 });
