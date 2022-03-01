@@ -33,7 +33,7 @@
 
             <!-- Switch -->
             <div class="col-auto p-1">
-              <button class="btn btn-default d-block" title="Documentation" data-toggle="tooltip" data-placement="bottom" onclick="documentationToggle()"><i class="fas fa-info fa-fw"></i></button>
+              <a href="../editor/index.html" target="_blank" class="btn btn-default d-block" title="Documentation" data-toggle="tooltip" data-placement="bottom"><i class="fas fa-info fa-fw"></i></a>
             </div>
 
             <!-- Editor Theme Change -->
@@ -84,72 +84,8 @@
       <!-- Render Area -->
       <div class="col p-4" style="overflow: hidden !important;">
         <div id="code"></div>
-        <div class="d-none" id="documentation">
-          <div class="mx-auto my-4" style="max-width: 768px;">
-            <h1 class="display-3 mb-4 text-primary">General Information</h1>
-            <div class="pl-4" style="font-size:1.125rem;">
-              <p>This is just a really basic template creator for Toyhou.se HTML codes! It has a lot of limitations but we really hope it helps users that are less code savvy.</p>
-            </div>
-            <hr class="my-5">
-            <h1 class="display-3 mb-4 text-primary">Variables</h1>
-            <div class="pl-4">
-              <p>Variables just need to be inserted wherever you want the user to be able to change things (save for the section variables).</p>
-              <p class="text-center dsiplay-4" style="font-size:1.5rem;">{{<code title="Type of text input" data-toggle="tooltip" data-placement="top">input type</code>:<code title="Title of the input" data-toggle="tooltip" data-placement="top">title</code>|<code title="[Optional] Default value of the input" data-toggle="tooltip" data-placement="top">value</code>}}</p>
-              <p>It will not read any input types that are shown below. Titles and values should not have any special characters or new lines.</p>
-            </div>
-            <hr class="my-5">
-            <div class="pl-4 mb-4">
-              <div class="mb-3" style="font-size:1.25rem;letter-spacing:1px;">{{text:title|value}}</div>
-              <div class="blockquote pl-4 ml-4 text-muted">
-                <p>Simple text input.</p>
-              </div>
-            </div>
-            <div class="pl-4 mb-4">
-              <div class="mb-3" style="font-size:1.25rem;letter-spacing:1px;">{{textarea:title|value}}</div>
-              <div class="blockquote pl-4 ml-4 text-muted">
-                <p>For larger bodies of text like History or Personality info.</p>
-              </div>
-            </div>
-            <div class="pl-4 mb-4">
-              <div class="mb-3" style="font-size:1.25rem;letter-spacing:1px;">{{color:title|value}}</div>
-              <div class="blockquote pl-4 ml-4 text-muted">
-                <p>For hex colors.</p>
-              </div>
-            </div>
-            <div class="pl-4 mb-4">
-              <div class="mb-3" style="font-size:1.25rem;letter-spacing:1px;">{{number:title|value}}</div>
-              <div class="blockquote pl-4 ml-4 text-muted">
-                <p>Number input.</p>
-              </div>
-            </div>
-            <div class="pl-4 mb-4">
-              <div class="mb-3" style="font-size:1.25rem;letter-spacing:1px;">{{dropdown:title|option1,option2,option3}}</div>
-              <div class="blockquote pl-4 ml-4 text-muted">
-                <p>Info here</p>
-                <p>Dropdowns cannot have HTML in them. Something like <code>{{dropdown:title|<<i></i>i class="fal fa-circle"><<i></i>/i>,<<i></i>i class="fas fa-circle"><<i></i>/i>}}</code> will not work.</p>
-              </div>
-            </div>
-            <div class="pl-4 mb-4">
-              <div class="mb-3" style="font-size:1.25rem;letter-spacing:1px;">{{list:title}}</div>
-              <div class="blockquote pl-4 ml-4 text-muted">
-                <p>Info here</p>
-              </div>
-            </div>
-            <div class="pl-4 mb-4">
-              <div class="mb-3" style="font-size:1.25rem;letter-spacing:1px;">{{section:title}}</div>
-              <div class="blockquote pl-4 ml-4 text-muted">
-                <p>Info here</p>
-              </div>
-            </div>
-            <div class="pl-4 mb-4">
-              <div class="mb-3" style="font-size:1.25rem;letter-spacing:1px;">{{subsection:title}}</div>
-              <div class="blockquote pl-4 ml-4 text-muted">
-                <p>Info here</p>
-              </div>
-            </div>
-          </div>
-        </div>
       </div>
+
     </div>
   </div>
 

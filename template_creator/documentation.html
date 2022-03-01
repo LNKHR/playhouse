@@ -14,80 +14,109 @@
   <!-- Font Awesome -->
   <script src="https://kit.fontawesome.com/734cc6a413.js" crossorigin="anonymous"></script>
 
+  <style>
+    div p:last-child {
+      margin-bottom: 0
+    }
+  </style>
+
 </head>
 <body id="main">
-  <div class="clearfix container-fluid p-0">
+  <div class="clearfix container-fluid p-0" style="font-size:1.125rem;">
     <div class="row no-gutters flex-nowrap">
 
-      <div class="col-4 bg-faded">
+      <div class="col-3 bg-faded order-1">
         
       </div>
 
       <!-- Render Area -->
-      <div class="col-5 p-4 my-md-4 mx-auto">
+      <div class="col-6 p-4 my-md-5 mx-auto">
         <h1 class="display-3 mb-4 text-primary">General Information</h1>
-        <div class="pl-4" style="font-size:1.125rem;">
+        <div class="pl-4">
           <p>This is just a really basic template creator for Toyhou.se HTML codes! It has a lot of limitations but we really hope it helps users that are less code savvy.</p>
+          <p>This tool was created by <a href="">Cheeriko</a> and <a href="">Sylueon</a>! It would be great if you could support us on kofi!</p>
         </div>
-        <hr class="my-5">
-        <h1 class="display-3 mb-4 text-primary">Best Use</h1>
         <hr class="my-5">
         <h1 class="display-3 mb-4 text-primary">Variables</h1>
         <div class="pl-4">
           <p>Variables just need to be inserted wherever you want the user to be able to change things (save for the section variables).</p>
-          <p class="text-center dsiplay-4" style="font-size:1.5rem;">{{<code title="Type of text input" data-toggle="tooltip" data-placement="top">input type</code>:<code title="Title of the input" data-toggle="tooltip" data-placement="top">title</code>|<code title="[Optional] Default value of the input" data-toggle="tooltip" data-placement="top">value</code>}}</p>
-          <p>It will not read any input types that are shown below. Titles and values should not have any special characters or new lines.</p>
+          <p class="text-center dsiplay-4" style="font-size:1.5rem;">{{<code title="Type of text input" data-toggle="tooltip" data-placement="top">input type</code>::<code title="Title of the input" data-toggle="tooltip" data-placement="top">title</code>||<code title="[Optional] Default value of the input" data-toggle="tooltip" data-placement="top">value</code>}}</p>
+          <p>Input types are posted below. Titles and values should not have any special characters or new lines.</p>
         </div>
         <hr class="my-5">
         <div class="pl-4 mb-4">
-          <div class="mb-3" style="font-size:1.25rem;letter-spacing:1px;">{{text:title|value}}</div>
-          <div class="blockquote pl-4 ml-4 text-muted">
-            <p>Simple text input.</p>
+          <div class="mb-3" style="font-size:1.25rem;letter-spacing:1px;">{{template::title}}</div>
+          <div class="card rounded-0 d-block pl-4 py-3 ml-4 text-muted" style="border-width: 0 0 0 2px;">
+            <p>Purely optional. When the user downloads their templates, it'll save with your template name.</p>
           </div>
         </div>
         <div class="pl-4 mb-4">
-          <div class="mb-3" style="font-size:1.25rem;letter-spacing:1px;">{{textarea:title|value}}</div>
-          <div class="blockquote pl-4 ml-4 text-muted">
-            <p>For larger bodies of text like History or Personality info.</p>
+          <div class="mb-3" style="font-size:1.25rem;letter-spacing:1px;">{{section::title}}</div>
+          <div class="card rounded-0 d-block pl-4 py-3 ml-4 text-muted" style="border-width: 0 0 0 2px;">
+            <p>Adds a title to the form output for better organization.</p>
           </div>
         </div>
         <div class="pl-4 mb-4">
-          <div class="mb-3" style="font-size:1.25rem;letter-spacing:1px;">{{color:title|value}}</div>
-          <div class="blockquote pl-4 ml-4 text-muted">
-            <p>For hex colors.</p>
+          <div class="mb-3" style="font-size:1.25rem;letter-spacing:1px;">{{section::title}}</div>
+          <div class="card rounded-0 d-block pl-4 py-3 ml-4 text-muted" style="border-width: 0 0 0 2px;">
+            <p>Adds a title to the form output for better organization.</p>
           </div>
         </div>
         <div class="pl-4 mb-4">
-          <div class="mb-3" style="font-size:1.25rem;letter-spacing:1px;">{{number:title|value}}</div>
-          <div class="blockquote pl-4 ml-4 text-muted">
-            <p>Number input.</p>
+          <div class="mb-3" style="font-size:1.25rem;letter-spacing:1px;">{{subsection::title}}</div>
+          <div class="card rounded-0 d-block pl-4 py-3 ml-4 text-muted" style="border-width: 0 0 0 2px;">
+            <p>Adds a subtitle to the form output for better organization.</p>
           </div>
         </div>
         <div class="pl-4 mb-4">
-          <div class="mb-3" style="font-size:1.25rem;letter-spacing:1px;">{{dropdown:title|option1,option2,option3}}</div>
-          <div class="blockquote pl-4 ml-4 text-muted">
-            <p>Info here</p>
-            <p>Dropdowns cannot have HTML in them. Something like <code>{{dropdown:title|<<i></i>i class="fal fa-circle"><<i></i>/i>,<<i></i>i class="fas fa-circle"><<i></i>/i>}}</code> will not work.</p>
+          <div class="mb-3" style="font-size:1.25rem;letter-spacing:1px;">{{text::title||value}}</div>
+          <div class="card rounded-0 d-block pl-4 py-3 ml-4 text-muted" style="border-width: 0 0 0 2px;">
+            <p>Simple text input. For things like quick profile info, urls to images, links, etc.</p>
           </div>
         </div>
         <div class="pl-4 mb-4">
-          <div class="mb-3" style="font-size:1.25rem;letter-spacing:1px;">{{list:title}}</div>
-          <div class="blockquote pl-4 ml-4 text-muted">
-            <p>Info here</p>
+          <div class="mb-3" style="font-size:1.25rem;letter-spacing:1px;">{{textarea::title||value}}</div>
+          <div class="card rounded-0 d-block pl-4 py-3 ml-4 text-muted" style="border-width: 0 0 0 2px;">
+            <p>For larger bodies of text like History or Personality info. Will automatically seperate new lines with a <code><<i></i>p><<i></i>/p></code>.</p>
+            <p>If you want to add multiple lines in the initial value, please add <code>&&</code> between them.</p>
           </div>
         </div>
         <div class="pl-4 mb-4">
-          <div class="mb-3" style="font-size:1.25rem;letter-spacing:1px;">{{section:title}}</div>
-          <div class="blockquote pl-4 ml-4 text-muted">
-            <p>Info here</p>
+          <div class="mb-3" style="font-size:1.25rem;letter-spacing:1px;">{{color::title||value}}</div>
+          <div class="card rounded-0 d-block pl-4 py-3 ml-4 text-muted" style="border-width: 0 0 0 2px;">
+            <p>For hex colors. Make sure the initial variable has a value in RGB, <code>rgb(000,000,000)</code>, or hex, <code>#000000</code>.</p>
           </div>
         </div>
         <div class="pl-4 mb-4">
-          <div class="mb-3" style="font-size:1.25rem;letter-spacing:1px;">{{subsection:title}}</div>
-          <div class="blockquote pl-4 ml-4 text-muted">
-            <p>Info here</p>
+          <div class="mb-3" style="font-size:1.25rem;letter-spacing:1px;">{{number::title||value}}</div>
+          <div class="card rounded-0 d-block pl-4 py-3 ml-4 text-muted" style="border-width: 0 0 0 2px;">
+            <p>Number input. For things like border-width, paddings, margins, etc.</p>
           </div>
         </div>
+        <div class="pl-4 mb-4">
+          <div class="mb-3" style="font-size:1.25rem;letter-spacing:1px;">{{dropdown::title||option1,option2,option3}}</div>
+          <div class="card rounded-0 d-block pl-4 py-3 ml-4 text-muted" style="border-width: 0 0 0 2px;">
+            <p>For simple dropdown options.</p>
+            <p>These must be in plain text, they can not have HTML in them. Something like <code>{{dropdown::title||<<i></i>i class="fal fa-circle"><<i></i>/i>,<<i></i>i class="fas fa-circle"><<i></i>/i>}}</code> will not work.</p>
+          </div>
+        </div>
+        <div class="pl-4 mb-4">
+          <div class="mb-3" style="font-size:1.25rem;letter-spacing:1px;">{{list::title}}</div>
+          <div class="card rounded-0 d-block pl-4 py-3 ml-4 text-muted" style="border-width: 0 0 0 2px;">
+            <p>This will input user text as a simple <code><<i></i>li>[user text]<<i></i>/li></code>.</p> 
+            <p>If you want to add multiple lines in the initial value, please add <code>&&</code> between them.</p>
+          </div>
+        </div>
+        <hr class="my-5">
+        <h1 class="display-3 mb-4 text-primary">Best Use for Creating a Template</h1>
+        <div class="pl-4">
+          <p>When creating a template, we advise that you state all of the variables with their default values in a comment at the very top of the file (we will call these the 'initial variable'). Then you can call them later in the actual HTML. <b>Example below.</b></p>
+          <pre>
+
+          </pre>
+          <p><b>Warning:</b> Having 2 initial variables with the same input type and value will break the template. The initial variable must come <u>before</u> you call it.</p>
+        </div>
+        <hr class="my-5">
       </div>
     </div>
   </div>

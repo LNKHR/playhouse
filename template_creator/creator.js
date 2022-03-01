@@ -3,49 +3,47 @@
 const editor = ace.edit("html");
 editor.$blockScrolling = Infinity;
 editor.setOptions({
-  selectionStyle: 'line',
+  selectionStyle: "line",
   highlightActiveLine: true,
   highlightSelectedWord: true,
   behavioursEnabled: true,
   displayIndentGuides: true,
   fontSize: 12,
-  theme: 'ace/theme/tomorrow_night',
+  theme: "ace/theme/tomorrow_night",
   useWorker: false,
   useSoftTabs: true,
   indentedSoftWrap: false,
   tabSize: 2,
   wrap: true,
-  mode: 'ace/mode/html'
+  mode: "ace/mode/html",
 });
-
 
 /* Editor Stuff
 ========================================================== */
 const writtenEdit = ace.edit("writtenhtml");
 writtenEdit.$blockScrolling = Infinity;
 writtenEdit.setOptions({
-  selectionStyle: 'line',
+  selectionStyle: "line",
   highlightActiveLine: true,
   highlightSelectedWord: true,
   displayIndentGuides: true,
   fontSize: 12,
-  theme: 'ace/theme/tomorrow_night',
+  theme: "ace/theme/tomorrow_night",
   useWorker: false,
   indentedSoftWrap: false,
   tabSize: 2,
   wrap: true,
-  mode: 'ace/mode/html'
+  mode: "ace/mode/html",
 });
 
 writtenEdit.setReadOnly(true);
-
 
 /* Resizing Renderer
 ========================================================== */
 let resizers = document.querySelectorAll(".resizers");
 
 for (var i = 0; i < resizers.length; i++) {
-  resizers[i].addEventListener("click", function() {
+  resizers[i].addEventListener("click", function () {
     editor.resize();
     editor.renderer.updateFull();
     writtenEdit.resize();
@@ -53,27 +51,25 @@ for (var i = 0; i < resizers.length; i++) {
   });
 }
 
-
 /* Resizer
 ========================================================== */
 $("#codeEditor").resizable({
   handleSelector: ".resizer",
   resizeWidth: true,
-  resizeHeight: false
+  resizeHeight: false,
 });
 
 $(".main-editor").resizable({
   handleSelector: ".resizer-horizontal",
   resizeWidth: false,
-  resizeHeight: true
+  resizeHeight: true,
 });
 
 $(".written-html").resizable({
   handleSelector: ".resizer-horizontal-2",
   resizeWidth: false,
-  resizeHeight: true
+  resizeHeight: true,
 });
-
 
 /* Sidebar Junk
 ========================================================== */
@@ -82,14 +78,12 @@ function offCanvas() {
   element.classList.toggle("active");
 }
 
-
 /* Theme Helper
 ========================================================== */
 function setStyleSource(linkID, sourceLoc) {
   var theLink = document.querySelector(linkID);
   theLink.href = sourceLoc;
 }
-
 
 /* Editor Theme Toggle 
 ========================================================== */
@@ -121,32 +115,30 @@ const editorThemeToggle = () => {
   localStorage.setItem("userEditor", editorTheme);
 };
 
-
 /* Change CSS Theme
 ========================================================== */
 (function newThemeUser() {
   var savedTheme = localStorage.getItem("themeUser");
   if (document.querySelector(`[value='${savedTheme}']`)) {
-    document.querySelector(`[value='${savedTheme}']`).setAttribute("selected", "true");
-    setStyleSource("#thThemes", "../styles/toyhouse_themes/" + savedTheme + ".css");
+    document
+      .querySelector(`[value='${savedTheme}']`)
+      .setAttribute("selected", "true");
+    setStyleSource(
+      "#thThemes",
+      "../styles/toyhouse_themes/" + savedTheme + ".css"
+    );
   }
 })();
 
-document.getElementById("thCSSThemes").addEventListener("change", function() {
-  var selected = "../styles/toyhouse_themes/" + this.options[this.selectedIndex].value + ".css";
+document.getElementById("thCSSThemes").addEventListener("change", function () {
+  var selected =
+    "../styles/toyhouse_themes/" +
+    this.options[this.selectedIndex].value +
+    ".css";
   let vanillaSelected = this.options[this.selectedIndex].value;
   setStyleSource("#thThemes", selected);
   localStorage.setItem("themeUser", vanillaSelected);
 });
-
-
-/* Show Documentation
-========================================================== */
-const documentationToggle = () => {
-  $("#code").toggleClass("d-none");
-  $("#documentation").toggleClass("d-none");
-};
-
 
 /* User Warning
 ========================================================== */
@@ -154,13 +146,11 @@ const documentationToggle = () => {
   return '';
 };*/
 
-
 /* Tooltip
 ========================================================== */
-$(function() {
-  $('[data-toggle="tooltip"]').tooltip()
-})
-
+$(function () {
+  $('[data-toggle="tooltip"]').tooltip();
+});
 
 /* Template Creator
 ========================================================== */
@@ -176,12 +166,12 @@ window.onload = () => {
 
 // Grabs user input from the forms
 function inputGetter() {
-  var userInput = document.querySelectorAll('.user-input');
+  var userInput = document.querySelectorAll(".user-input");
   var inputArray = [];
   for (var i = 0; i < userInput.length; i++) {
     inputArray[i] = {
       id: userInput[i].id,
-      value: userInput[i].value
+      value: userInput[i].value,
     };
   }
   return inputArray;
@@ -189,52 +179,48 @@ function inputGetter() {
 
 // Grabs the template and makes it look nice and neat
 function templateGetter() {
-
   // Grabbing all dah HTML
-  var itemListRaw = editor.getValue().match(/{{(.+)}}/gm); //.filter((x, i, a) => a.indexOf(x) == i)
+  var itemListRaw = editor.getValue().match(/{{(bootstrap|text|textarea|color|number|dropdown|list|section|subsection)(.+?)}}/gim); //.filter((x, i, a) => a.indexOf(x) == i)
   let cleanList = [];
   let bigArray = [];
-  let dupTest = [];
 
   // removes all duplicates from list
   var itemListSet = new Set(itemListRaw);
   var itemList = Array.from(itemListSet);
 
   for (let i = 0; i < itemList.length; i++) {
-
     // So we don't have to keep scrubbing the {{}}
-    cleanList.push(itemList[i].split('{{')[1].split('}}')[0]);
-
-    let ItemID = itemList[i].replace(/\s/g, '-').split(':')[1].split('|')[0].replace('}}','');
-    dupTest.push(ItemID);
+    cleanList.push(itemList[i].replace('{{','').replace('}}',''));
 
     // Removes undefined from value
-    let itemValues = (cleanList[i].split(/:(.+)/)[1].split('|')[1] == undefined && cleanList[i].split(':')[0] != "color") ? "[info]" : cleanList[i].split(/:(.+)/)[1].split('|')[1];
+    let itemValues =
+      cleanList[i].split(/::(.+)/)[1].split("||")[1] == undefined &&
+      cleanList[i].split(/::(.+)/)[0] != "color"
+        ? "[info]"
+        : cleanList[i].split(/::(.+)/)[1].split("||")[1];
 
     // Makes a pretty array of info
     bigArray[i] = {
       itemList: cleanList[i],
-      itemInput: cleanList[i].split(':')[0],
-      itemTitle: cleanList[i].split(':')[1].split('|')[0],
-      itemID: cleanList[i].replace(/\s/g, '-').split(':')[1].split('|')[0],
-      itemValue: itemValues
-    };    
-  };
+      itemInput: cleanList[i].split(/::(.+)/)[0],
+      itemTitle: cleanList[i].split(/::(.+)/)[1].split("||")[0],
+      itemID: cleanList[i].replace(/\s/g, "-").split(/::(.+)/)[1].split("||")[0],
+      itemValue: itemValues,
+    };
+  }
 
   var flags = {};
-  var bigArrayClean = bigArray.filter(function(entry) {
-      if (flags[entry.itemID]) {
-          return false;
-      }
-      flags[entry.itemID] = true;
-      return true;
+  var bigArrayClean = bigArray.filter(function (entry) {
+    if (flags[entry.itemID]) {
+      return false;
+    }
+    flags[entry.itemID] = true;
+    return true;
   });
-  console.log(bigArrayClean);
 
   return bigArrayClean;
 
 }
-
 
 function insertInput() {
   //get the original template
@@ -247,56 +233,94 @@ function insertInput() {
   for (var i = 0; i < bigArray.length; i++) {
     for (var j = 0; j < inputArray.length; j++) {
       if (inputArray[j].id == bigArray[i].itemID) {
-
-        if (bigArray[i].itemInput == 'textarea') {
-          bigArray[i].userInput = "<p>" + inputArray[j].value.replaceAll("\n", `</p>
-          <p>`) + "</p>";
-        } else if (bigArray[i].itemInput == 'list') {
-          bigArray[i].userInput = "<li>" + inputArray[j].value.replaceAll("\n", `</li>
-          <li>`) + "</li>";
+        if (bigArray[i].itemInput == "textarea") {
+          bigArray[i].userInput = inputArray[j].value.includes("\n\n")
+            ? "<p>" +
+              inputArray[j].value.replaceAll(
+                "\n\n",
+                `</p>
+          <p>`
+              ) +
+              "</p>"
+            : "<p>" +
+              inputArray[j].value.replaceAll(
+                "\n",
+                `</p>
+          <p>`
+              ) +
+              "</p>";
+        } else if (bigArray[i].itemInput == "list") {
+          bigArray[i].userInput = inputArray[j].value.includes("\n\n")
+            ? "<li>" +
+              inputArray[j].value.replaceAll(
+                "\n\n",
+                `</li>
+          <li>`
+              ) +
+              "</li>"
+            : "<li>" +
+              inputArray[j].value.replaceAll(
+                "\n",
+                `</li>
+          <li>`
+              ) +
+              "</li>";
         } else {
           bigArray[i].userInput = inputArray[j].value;
         }
 
         var inputValue = "";
-        if (bigArray[i].itemInput == 'textarea' || bigArray[i].itemInput == 'list') {
-          inputValue = inputArray[j].value.replaceAll('\n', '//');
-        } else if (bigArray[i].itemInput == 'dropdown') {
-          inputValue = inputArray[j].value + ',' + bigArray[i].itemValue.replace(`${inputArray[j].value},`, '');
+        if (
+          bigArray[i].itemInput == "textarea" ||
+          bigArray[i].itemInput == "list"
+        ) {
+          inputValue = inputArray[j].value.includes("\n\n")
+            ? inputArray[j].value.replaceAll("\n\n", "&&")
+            : inputArray[j].value.replaceAll("\n", "&&");
+        } else if (bigArray[i].itemInput == "dropdown") {
+          inputValue =
+            inputArray[j].value +
+            "," +
+            bigArray[i].itemValue.replace(`${inputArray[j].value},`, "");
         } else {
           inputValue = inputArray[j].value;
         }
 
-        var inputChangeTest = inputChangeTest.replaceAll(`{{${bigArray[i].itemList.replaceAll('-', ' ')}}}`, `{{${bigArray[i].itemInput}:${bigArray[i].itemTitle}|${inputValue}}}`);
+        var inputChangeTest = inputChangeTest.replaceAll(
+          `{{${bigArray[i].itemList.replaceAll("-", " ")}}}`,
+          `{{${bigArray[i].itemInput}::${bigArray[i].itemTitle}||${inputValue}}}`
+        );
 
         // var regex = new RegExp(`{{${bigArray[i].itemInput}:${bigArray[i].itemID.replaceAll('-',' ')}`+'.*}}', "gmi");
         // var inputChange = inputChange.replaceAll(regex, `${bigArray[i].userInput}`).replace(/{{section(?:.+)}}/gm, "").replace(/{{subsection(?:.+)}}/gm, "");
 
-        var inputChange = inputChange.replaceAll(`{{${bigArray[i].itemList}}}`, `${bigArray[i].userInput}`).replace(/{{section(?:.+)}}/gm, "").replace(/{{subsection(?:.+)}}/gm, "").replaceAll(`{{${bigArray[i].itemInput}:${bigArray[i].itemTitle}}}`, `${bigArray[i].userInput}`);
-
+        var inputChange = inputChange
+          .replaceAll(`{{${bigArray[i].itemList}}}`, `${bigArray[i].userInput}`)
+          .replace(/{{section(?::.+)}}/gm, "")
+          .replace(/{{subsection(?::.+)}}/gm, "")
+          .replaceAll(
+            `{{${bigArray[i].itemInput}::${bigArray[i].itemTitle}}}`,
+            `${bigArray[i].userInput}`
+          );
 
         code.innerHTML = inputChange;
         localStorage.setItem("htmluser", editor.getValue());
         localStorage.setItem("htmlRendered", inputChange);
         writtenEdit.setValue(inputChange);
         editor.setValue(inputChangeTest);
-
       }
     }
   }
-};
-
+}
 
 let bigArray = [];
 
-
 function formBuilder() {
   var bigArray = templateGetter();
-  document.getElementById('options').innerHTML = "";
+  document.getElementById("options").innerHTML = "";
 
   // Creates the forms
   for (let i = 0; i < bigArray.length; i++) {
-
     let inputText = `
     <div class="row no-gutters mx-n1">
       <div class="col-4 my-auto p-1">
@@ -310,8 +334,14 @@ function formBuilder() {
 
     let inputTextArea = `
       <div class="mb-3">
-        <label class="mb-2" for="${bigArray[i].itemID}">${bigArray[i].itemTitle}</label>
-        <textarea class="form-control user-input" type="color" input-type="${bigArray[i].itemInput}" name="${bigArray[i].itemID}" id="${bigArray[i].itemID}">${bigArray[i].itemValue.replaceAll('//','\n')}</textarea>
+        <label class="mb-2" for="${bigArray[i].itemID}">${
+      bigArray[i].itemTitle
+    }</label>
+        <textarea class="form-control user-input" type="color" input-type="${
+          bigArray[i].itemInput
+        }" name="${bigArray[i].itemID}" id="${bigArray[i].itemID}">${bigArray[
+      i
+    ].itemValue.replaceAll("&&", "\n")}</textarea>
       </div>
     `;
 
@@ -337,17 +367,21 @@ function formBuilder() {
     </div>
     `;
 
-
-
-    let inputDropdown = `
+    let inputDropdown =
+      `
     <div class="row no-gutters mx-n1">
       <div class="col-4 my-auto p-1">
         <label class="m-0" for="${bigArray[i].itemID}">${bigArray[i].itemTitle}</label>
       </div>
       <div class="col-8 my-auto p-1">
         <select class="form-control user-input" input-type="${bigArray[i].itemInput}" name="${bigArray[i].itemID}" id="${bigArray[i].itemID}">
-          <option>` + bigArray[i].itemValue.replaceAll(',', `</option>
-          <option>`) + `</option>
+          <option>` +
+      bigArray[i].itemValue.replaceAll(
+        ",",
+        `</option>
+          <option>`
+      ) +
+      `</option>
         </select> 
       </div>
     </div>
@@ -355,8 +389,14 @@ function formBuilder() {
 
     let inputList = `
     <div class="mb-3">
-      <label class="mb-1" for="${bigArray[i].itemID}">${bigArray[i].itemTitle}</label>
-      <textarea class="form-control user-input" type="color" input-type="${bigArray[i].itemInput}" name="${bigArray[i].itemID}" id="${bigArray[i].itemID}">${bigArray[i].itemValue.replaceAll('//','\n')}</textarea>
+      <label class="mb-1" for="${bigArray[i].itemID}">${
+      bigArray[i].itemTitle
+    }</label>
+      <textarea class="form-control user-input" type="color" input-type="${
+        bigArray[i].itemInput
+      }" name="${bigArray[i].itemID}" id="${bigArray[i].itemID}">${bigArray[
+      i
+    ].itemValue.replaceAll("&&", "\n")}</textarea>
     </div>
     `;
 
@@ -372,45 +412,45 @@ function formBuilder() {
     `;
 
     if (bigArray[i].itemInput == "text") {
-      document.getElementById('options').innerHTML += inputText;
+      document.getElementById("options").innerHTML += inputText;
     }
     if (bigArray[i].itemInput == "textarea") {
-      document.getElementById('options').innerHTML += inputTextArea;
+      document.getElementById("options").innerHTML += inputTextArea;
     }
     if (bigArray[i].itemInput == "color") {
-      document.getElementById('options').innerHTML += inputColor;
+      document.getElementById("options").innerHTML += inputColor;
     }
     if (bigArray[i].itemInput == "number") {
-      document.getElementById('options').innerHTML += inputNumber;
+      document.getElementById("options").innerHTML += inputNumber;
     }
     if (bigArray[i].itemInput == "dropdown") {
-      document.getElementById('options').innerHTML += inputDropdown;
+      document.getElementById("options").innerHTML += inputDropdown;
     }
     if (bigArray[i].itemInput == "list") {
-      document.getElementById('options').innerHTML += inputList;
+      document.getElementById("options").innerHTML += inputList;
     }
     if (bigArray[i].itemInput == "bootstrap") {
-      var bsPrimary = '';
-      var bsSuccess = '';
-      var bsWarning = '';
-      var bsInfo = '';
-      var bsDanger = '';
+      var bsPrimary = "";
+      var bsSuccess = "";
+      var bsWarning = "";
+      var bsInfo = "";
+      var bsDanger = "";
 
       switch (bigArray[i].itemValue) {
-        case 'primary':
-          bsPrimary = 'selected';
+        case "primary":
+          bsPrimary = "selected";
           break;
-        case 'success':
-          bsSuccess = 'selected';
+        case "success":
+          bsSuccess = "selected";
           break;
-        case 'warning':
-          bsWarning = 'selected';
+        case "warning":
+          bsWarning = "selected";
           break;
-        case 'info':
-          bsInfo = 'selected';
+        case "info":
+          bsInfo = "selected";
           break;
-        case 'danger':
-          bsDanger = 'selected';
+        case "danger":
+          bsDanger = "selected";
           break;
       }
 
@@ -430,39 +470,43 @@ function formBuilder() {
         </div>
       </div>
       `;
-      document.getElementById('options').innerHTML += inputBootstrap;
+      document.getElementById("options").innerHTML += inputBootstrap;
     }
     if (bigArray[i].itemInput == "section") {
-      document.getElementById('options').innerHTML += sectionTitle;
+      document.getElementById("options").innerHTML += sectionTitle;
     }
     if (bigArray[i].itemInput == "subsection") {
-      document.getElementById('options').innerHTML += subsectionTitle;
+      document.getElementById("options").innerHTML += subsectionTitle;
     }
-
   }
 
   insertInput();
+}
 
-};
-
-document.getElementById('render-form').addEventListener('click', function() {
+document.getElementById("render-form").addEventListener("click", function () {
   formBuilder();
 });
 
-document.querySelector("#options").addEventListener("change", function() {
+document.querySelector("#options").addEventListener("change", function () {
   insertInput();
 });
 
 
-document.querySelector("#download").addEventListener("click", function() {
+
+// Save Document
+document.querySelector("#download").addEventListener("click", function () {
+  const templateName = (editor.getValue().match(/{{template(.+?)}}/gm) != null) ? editor.getValue().match(/{{template(.+?)}}/gm)[0].split(/::(.+)/)[1].replace('}}','').toLowerCase().replace(/\s/g, "-") + ".zip" : "playhouse-template.zip";
   var zip = new JSZip();
   let templateCode = localStorage.getItem("htmluser");
   let renderedCode = localStorage.getItem("htmlRendered");
-  zip.file("Template HTML.txt", templateCode).file("Rendered HTML.txt", renderedCode);
-  zip.generateAsync({
-      type: "blob"
+  zip
+    .file("Template HTML.txt", templateCode)
+    .file("Rendered HTML.txt", renderedCode);
+  zip
+    .generateAsync({
+      type: "blob",
     })
-    .then(function(zip) {
-      saveAs(zip, "Playhouse Templates.zip");
+    .then(function (zip) {
+      saveAs(zip, templateName);
     });
 });
