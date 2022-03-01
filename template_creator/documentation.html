@@ -15,6 +15,10 @@
   <script src="https://kit.fontawesome.com/734cc6a413.js" crossorigin="anonymous"></script>
 
   <style>
+    pre {
+      white-space: pre-wrap !important;
+    }
+
     div p:last-child {
       margin-bottom: 0
     }
@@ -34,7 +38,7 @@
         <h1 class="display-3 mb-4 text-primary">General Information</h1>
         <div class="pl-4">
           <p>This is just a really basic template creator for Toyhou.se HTML codes! It has a lot of limitations but we really hope it helps users that are less code savvy.</p>
-          <p>This tool was created by <a href="">Cheeriko</a> and <a href="">Sylueon</a>! It would be great if you could support us on kofi!</p>
+          <p>This tool was created by <a href="">Cheeriko</a> and <a href="">Sylueon</a>! It would be great if you could support us on ko-fi!</p>
         </div>
         <hr class="my-5">
         <h1 class="display-3 mb-4 text-primary">Variables</h1>
@@ -111,9 +115,58 @@
         <h1 class="display-3 mb-4 text-primary">Best Use for Creating a Template</h1>
         <div class="pl-4">
           <p>When creating a template, we advise that you state all of the variables with their default values in a comment at the very top of the file (we will call these the 'initial variable'). Then you can call them later in the actual HTML. <b>Example below.</b></p>
-          <pre>
+          <pre class="rounded bg-faded p-5"><code class="text-muted"><<i></i>!-- 
 
-          </pre>
+  >_ Template Variables
+  (These are the 'initial' variables.)
+
+    {{template::test template}}
+
+    {{section::Card Styles}}
+    {{bootstrap::card outline||primary}}
+    {{number::card border width||4}}
+    {{dropdown::card border style||double,solid,dotted,dashed}}
+    {{number::card border radius||1}}
+
+    {{section::Card Top}}
+    {{text::example title||This is an Example Title}}
+    {{text::example subtext||You can do so many things with the text!}}
+
+    {{section::Card Middle}}
+    {{textarea::lorem ipsum||Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas eleifend mi sit amet enim gravida, nec congue urna porttitor.&&Praesent porttitor enim et efficitur consequat.}}
+
+    {{section::Card Bottom}}
+    {{bootstrap::link color||primary}}
+
+    {{subsection::Link One}}
+    {{text::link one||#}}
+    {{text::link one icon||fas fa-coffee}}
+
+    {{subsection::Link Two}}
+    {{text::link two||#}}
+    {{text::link two icon||fab fa-twitter}}
+
+    {{subsection::Link Three}}
+    {{text::link three||#}}
+    {{text::link three icon||fas fa-link}}
+
+-->
+
+<<i></i>div class="mx-auto my-md-5" style="max-width:700px;">
+  <<i></i>div class="card d-block text-center bg-faded card-outline-{{bootstrap::card outline}} p-5" style="border-width: {{number::card border width}}px;border-style: {{dropdown::card border style}};border-radius:{{number::card border radius}}rem;">
+
+    <<i></i>h1>{{text::example title}}<<i></i>/h1>
+    <<i></i>small class="text-muted">{{text::example subtext}}<<i></i>/small>
+    <<i></i>hr class="my-4 card-outline-{{bootstrap::card outline}}" style="border-top-width: {{number::card border width}}px;border-top-style: {{dropdown::card border style}}">
+    {{textarea::lorem ipsum}}
+    <<i></i>hr class="my-4 card-outline-{{bootstrap::card outline}}" style="border-top-width: {{number::card border width}}px;border-top-style: {{dropdown::card border style}}">
+
+    <<i></i>a class="text-{{bootstrap::link color}}" href="{{text::link one}}"><<i></i>i class="{{text::link one icon}} fa-fw mx-1"><<i></i>/i><<i></i>/a>
+    <<i></i>a class="text-{{bootstrap::link color}}" href="{{text::link two}}"><<i></i>i class="{{text::link two icon}} fa-fw mx-1"><<i></i>/i><<i></i>/a>
+    <<i></i>a class="text-{{bootstrap::link color}}" href="{{text::link three}}"><<i></i>i class="{{text::link three icon}} fa-fw mx-1"><<i></i>/i><<i></i>/a>
+    
+  <<i></i>/div>
+<<i></i>/div></code></pre>
           <p><b>Warning:</b> Having 2 initial variables with the same input type and value will break the template. The initial variable must come <u>before</u> you call it.</p>
         </div>
         <hr class="my-5">
@@ -125,6 +178,12 @@
   <script src="https://code.jquery.com/jquery-3.5.1.js" integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+  <!-- Hightlight JS -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/styles/default.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/highlight.min.js"></script>
+  <!-- and it's easy to individually load additional languages -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/languages/go.min.js"></script>
 
 </body>
 </html>

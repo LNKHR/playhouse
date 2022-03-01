@@ -323,10 +323,10 @@ function formBuilder() {
   for (let i = 0; i < bigArray.length; i++) {
     let inputText = `
     <div class="row no-gutters mx-n1">
-      <div class="col-4 my-auto p-1">
+      <div class="col-5 my-auto p-1">
         <label class="m-0" for="${bigArray[i].itemID}">${bigArray[i].itemTitle}</label>
       </div>
-      <div class="col-8 my-auto p-1">
+      <div class="col-7 my-auto p-1">
         <input class="form-control user-input" type="text" value="${bigArray[i].itemValue}" input-type="${bigArray[i].itemInput}" name="${bigArray[i].itemID}" id="${bigArray[i].itemID}"></input>
       </div>
     </div>
@@ -334,23 +334,17 @@ function formBuilder() {
 
     let inputTextArea = `
       <div class="mb-3">
-        <label class="mb-2" for="${bigArray[i].itemID}">${
-      bigArray[i].itemTitle
-    }</label>
-        <textarea class="form-control user-input" type="color" input-type="${
-          bigArray[i].itemInput
-        }" name="${bigArray[i].itemID}" id="${bigArray[i].itemID}">${bigArray[
-      i
-    ].itemValue.replaceAll("&&", "\n")}</textarea>
+        <label class="mb-2" for="${bigArray[i].itemID}">${bigArray[i].itemTitle}<br><small class="text-muted">Press enter to create a new paragraph.</small></label>
+        <textarea rows="6" class="form-control user-input" type="color" input-type="${bigArray[i].itemInput}" name="${bigArray[i].itemID}" id="${bigArray[i].itemID}">${bigArray[i].itemValue.replaceAll("&&", "\n")}</textarea>
       </div>
     `;
 
     let inputColor = `
     <div class="row no-gutters mx-n1">
-      <div class="col-4 my-auto p-1">
+      <div class="col-5 my-auto p-1">
         <label class="m-0" for="${bigArray[i].itemID}">${bigArray[i].itemTitle}</label>
       </div>
-      <div class="col-8 my-auto p-1">
+      <div class="col-7 my-auto p-1">
         <input class="form-control user-input" value="${bigArray[i].itemValue}" type="color" input-type="${bigArray[i].itemInput}" name="${bigArray[i].itemID}" id="${bigArray[i].itemID}"></input>
       </div>
     </div>
@@ -358,10 +352,10 @@ function formBuilder() {
 
     let inputNumber = `
     <div class="row no-gutters mx-n1">
-      <div class="col-4 my-auto p-1">
+      <div class="col-5 my-auto p-1">
         <label class="m-0" for="${bigArray[i].itemID}">${bigArray[i].itemTitle}</label>
       </div>
-      <div class="col-8 my-auto p-1">
+      <div class="col-7 my-auto p-1">
         <input class="form-control user-input" value="${bigArray[i].itemValue}" type="number" input-type="${bigArray[i].itemInput}" name="${bigArray[i].itemID}" id="${bigArray[i].itemID}"></input>
       </div>
     </div>
@@ -370,10 +364,10 @@ function formBuilder() {
     let inputDropdown =
       `
     <div class="row no-gutters mx-n1">
-      <div class="col-4 my-auto p-1">
+      <div class="col-5 my-auto p-1">
         <label class="m-0" for="${bigArray[i].itemID}">${bigArray[i].itemTitle}</label>
       </div>
-      <div class="col-8 my-auto p-1">
+      <div class="col-7 my-auto p-1">
         <select class="form-control user-input" input-type="${bigArray[i].itemInput}" name="${bigArray[i].itemID}" id="${bigArray[i].itemID}">
           <option>` +
       bigArray[i].itemValue.replaceAll(
@@ -389,14 +383,8 @@ function formBuilder() {
 
     let inputList = `
     <div class="mb-3">
-      <label class="mb-1" for="${bigArray[i].itemID}">${
-      bigArray[i].itemTitle
-    }</label>
-      <textarea class="form-control user-input" type="color" input-type="${
-        bigArray[i].itemInput
-      }" name="${bigArray[i].itemID}" id="${bigArray[i].itemID}">${bigArray[
-      i
-    ].itemValue.replaceAll("&&", "\n")}</textarea>
+      <label class="mb-1" for="${bigArray[i].itemID}">${bigArray[i].itemTitle}<br><small class="text-muted">Press enter to create a new line.</label>
+      <textarea rows="4" class="form-control user-input" type="color" input-type="${bigArray[i].itemInput}" name="${bigArray[i].itemID}" id="${bigArray[i].itemID}">${bigArray[i].itemValue.replaceAll("&&", "\n")}</textarea>
     </div>
     `;
 
@@ -456,10 +444,10 @@ function formBuilder() {
 
       let inputBootstrap = `
       <div class="row no-gutters mx-n1">
-        <div class="col-4 my-auto p-1">
+        <div class="col-5 my-auto p-1">
           <label class="m-0" for="${bigArray[i].itemID}">${bigArray[i].itemTitle}</label>
         </div>
-        <div class="col-8 my-auto p-1">
+        <div class="col-7 my-auto p-1">
           <select class="form-control user-input" input-type="${bigArray[i].itemInput}" name="${bigArray[i].itemID}" id="${bigArray[i].itemID}">
             <option value="primary" ${bsPrimary}>Primary</option>
             <option value="success" ${bsSuccess}>Success</option>

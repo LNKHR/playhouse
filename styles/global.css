@@ -71,6 +71,10 @@
   padding-bottom: 250px !important;
 }
 
+#options hr:first-child {
+  display: none !important;
+}
+
 #codeEditor pre {
   margin: 0 !important;
 }
@@ -109,7 +113,7 @@
 
 #options label{
   text-transform: capitalize;
-  font-size: .9rem;
+  font-size: 1rem;
 }
 
 input{
@@ -126,9 +130,11 @@ input[type="color"] {
 	height: 30px;
   padding: .25rem;
 }
+
 input[type="color"]::-webkit-color-swatch-wrapper {
 	padding: 0;
 }
+
 input[type="color"]::-webkit-color-swatch {
 	border: none;
   border-radius: .25rem;
