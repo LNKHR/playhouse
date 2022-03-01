@@ -257,6 +257,12 @@ function setStyleSource(linkID, sourceLoc) {
   theLink.href = sourceLoc;
 }
 
+/* User Warning
+========================================================== */
+window.onbeforeunload = function(e) {
+  return '';
+};
+
 /* Editor Theme Toggle 
 ========================================================== */
 let editorTheme = true;

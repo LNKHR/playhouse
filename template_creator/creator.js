@@ -142,9 +142,9 @@ document.getElementById("thCSSThemes").addEventListener("change", function() {
 
 /* User Warning
 ========================================================== */
-/*window.onbeforeunload = function(e) {
+window.onbeforeunload = function(e) {
   return '';
-};*/
+};
 
 /* Tooltip
 ========================================================== */
