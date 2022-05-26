@@ -39,25 +39,6 @@
               <a href="documentation.html" target="_blank" class="btn btn-default d-block" title="Documentation" data-toggle="tooltip" data-placement="bottom"><i class="fas fa-info fa-fw"></i></a>
             </div>
 
-            <!-- Editor Theme Change -->
-            <div class="col-auto p-1 hidden-sm-down">
-              <button class="btn btn-default d-block" onclick="editorThemeToggle()"><i class="fas fa-sun fa-fw" id="fa-editor-toggle"></i></button>
-            </div>
-
-            <!-- Theme Options -->
-            <div class="col p-1">
-              <form>
-                <select class="form-control" id="thCSSThemes">
-                  <option selected value="night">Night</option>
-                  <option value="default">Default</option>
-                  <option value="pink">Pink</option>
-                  <option value="teal">Teal</option>
-                  <option value="bee">Bee</option>
-                  <option value="velvet">Velvet</option>
-                </select>
-              </form>
-            </div>
-
             <!-- Render -->
             <div class="col-auto p-1">
               <button class="btn btn-default d-block" title="Download Codes" data-toggle="tooltip" data-placement="bottom" onclick="saveCodeAs()">
@@ -86,6 +67,73 @@
 
       <!-- Render Area -->
       <div class="col p-4" style="overflow: hidden !important;">
+        
+
+        <div class="mx-auto w-100" style="max-width:800px;">
+          <form class="card rounded-0 bg-faded p-md-5 p-4" id="myform">
+            <h1>User Options</h1>
+            <fieldset>
+
+              <div class="text-muted">
+                <p>This is a simple tool that outputs a slightly customized version of your charadex Google Sheet - just in case you don't want to host your own.</p>
+                <p>If you don't have a sheet, you can copy it <a target="_blank" href="">here</a>. Just fill it out, make the link public to viewers, and add the ID in below!</p>
+              </div>
+
+              <hr>
+
+              <div class="row no-gutters mb-2">
+                <label class="col" for="editorTheme"><b>Editor Theme</b></label>
+                <div class="col-4">
+                  <select class="form-control rounded-0" name="editorTheme">
+                    <option selected="selected" value="dark">Dark</option>
+                    <option value="light">Light</option>
+                  </select>
+                </div> 
+              </div>
+
+              <div class="row no-gutters mb-2">
+                <label class="col" for="siteTheme"><b>Site Theme</b></label>
+                <div class="col-4">
+                  <select class="form-control rounded-0" name="siteTheme">
+                    <option selected value="night">Night</option>
+                    <option value="default">Default</option>
+                    <option value="pink">Pink</option>
+                    <option value="teal">Teal</option>
+                    <option value="bee">Bee</option>
+                    <option value="velvet">Velvet</option>
+                  </select>
+                </div> 
+              </div>
+
+              <div class="row no-gutters mb-2">
+                <label class="col" for="editorLayout"><b>Layout</b></label>
+                <div class="col-4">
+                  <select class="form-control rounded-0" name="editorLayout">
+                    <option selected="selected" value="user">Toyhouse User</option>
+                    <option value="character">Toyhouse Character</option>
+                    <option value="blank">Blank</option>
+                  </select>
+                </div> 
+              </div>
+
+              <div class="row no-gutters mb-2">
+                <label class="col" for="saveFile"><b>Save File As</b></label>
+                <div class="col-4">
+                  <select class="form-control rounded-0" name="saveFile">
+                    <option selected="selected" value="both">HTML & Plain Text</option>
+                    <option value="html">HTML</option>
+                    <option value="text">Plain Text</option>
+                  </select>
+                </div> 
+              </div>
+
+              <hr>
+
+              <input class="btn btn-primary rounded-0 d-block w-100" type="submit" form="myform" id="savePreferences" value="Save Preferences" />
+              
+            </fieldset>
+          </form>
+        </div> 
         <div id="code"></div>
       </div>
 

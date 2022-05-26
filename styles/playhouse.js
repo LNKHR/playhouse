@@ -1,21 +1,3 @@
-/* User Options
-========================================================== */
-const userOptions = {
-
-  editorTheme: '',
-
-
-};
-
-/* User Options
-========================================================== */
-const defaultOptions = {
-
-  editorTheme: userOptions.editorTheme || true, 
-
-};
-
-
 /* Ace Editor Options
 ========================================================== */
 const editorTime = (aceSelector) => {
@@ -39,6 +21,7 @@ const editorTime = (aceSelector) => {
 };
 
 
+
 /* Resizing options
 ========================================================== */
 const resizerOptions = (editorSelect,htmlSelect,width,height) => {
@@ -48,6 +31,7 @@ const resizerOptions = (editorSelect,htmlSelect,width,height) => {
     resizeHeight: height,
   });
 };
+
 
 
 /* Resizing editors
@@ -61,101 +45,114 @@ const resizeEditors = (editorSelect) => {
 };
 
 
-const creator = () => {
 
-  /* Editor Stuff
-  ========================================================== */
+/* Editor Stuff
+========================================================== */
 
-  // Main editor in creator
-  const editor = ace.edit("html");
-  editorTime(editor);
+// Main editor in creator
+const editor = ace.edit("html");
+editorTime(editor);
 
-  // Copy/Paste editor in creator
-  const writtenEdit = ace.edit("writtenhtml");
-  writtenEdit.setReadOnly(true);
-  editorTime(writtenEdit);
+// Copy/Paste editor in creator
+const writtenEdit = ace.edit("writtenhtml");
+writtenEdit.setReadOnly(true);
+editorTime(writtenEdit);
 
-  
-
-  /* Resizing Windows
-  ========================================================== */
-  resizerOptions("#codeEditor",".resizer",true,false);
-  resizerOptions(".main-editor",".resizer-horizontal",false,true);
-  resizerOptions(".written-html",".resizer-horizontal-2",false,true);
-
-  // Execute Resize
-  resizeEditors(editor);
-  resizeEditors(writtenEdit);
+// Theme function for later
+const editorTheme = (theme) => {
+  if (theme == 'light') {
+    editor.setTheme("ace/theme/chrome");
+    writtenEdit.setTheme("ace/theme/chrome");
+  } else {
+    editor.setTheme("ace/theme/tomorrow_night");
+    writtenEdit.setTheme("ace/theme/tomorrow_night");
+  }
+}
 
 
 
-  /* Theme Helper
-  ========================================================== */
-  const setStyleSource = (linkID, sourceLoc) => {
-    let theLink = document.querySelector(linkID);
-    theLink.href = sourceLoc;
+/* Resizing Windows
+========================================================== */
+resizerOptions("#codeEditor",".resizer",true,false);
+resizerOptions(".main-editor",".resizer-horizontal",false,true);
+resizerOptions(".written-html",".resizer-horizontal-2",false,true);
+
+// Execute Resize
+resizeEditors(editor);
+resizeEditors(writtenEdit);
+
+
+
+/* Theme Helper
+========================================================== */
+const setStyleSource = (linkID, sourceLoc) => {
+  let theLink = document.querySelector(linkID);
+  theLink.href = sourceLoc;
+}
+
+
+
+/* User Options
+========================================================== */
+let userPreferences = new Object();
+
+// Style document when loaded
+$(document).ready(function() {
+  if (window.localStorage.getItem('userPreferences').length > 0){
+
+    // Grab saved preferences
+    userPreferences = JSON.parse(window.localStorage.getItem('userPreferences'));
+
+    // Select new property
+    for (const property in userPreferences) {
+      $(`[name='${property}'] option`).attr("selected", false);
+      $(`[name='${property}'] option[value='${userPreferences[property]}']`).attr("selected", true);
+    }
+
+    // Setting CSS Style
+    setStyleSource("#thThemes", `../styles/toyhouse_themes/${userPreferences.siteTheme}.css`);
+
+    // Set editor theme
+    editorTheme(userPreferences.editorTheme);
+
+  }
+});
+
+
+// Save from form
+$("form").submit(function(event) {
+
+  // Prevent Click 
+  event.preventDefault();
+
+  // Save preferences to object
+  let savedPreferences = $(this).serializeArray();
+
+  // Create object from array
+  for (let i = 0; i < savedPreferences.length; i++) {
+    userPreferences[savedPreferences[i].name] = savedPreferences[i].value;
   }
 
+  // Select new property
+  for (const property in userPreferences) {
+    $(`[name='${property}'] option`).attr("selected", false);
+    $(`[name='${property}'] option[value='${userPreferences[property]}']`).attr("selected", true);
+  }
+
+  // Set new JSON to the local storage
+  localStorage.setItem("userPreferences", JSON.stringify(userPreferences));
+
+  // Setting CSS Style
+  setStyleSource("#thThemes", `../styles/toyhouse_themes/${userPreferences.siteTheme}.css`);
+
+  // Set editor theme
+  editorTheme(userPreferences.editorTheme);
+
+});
 
 
-  /* Editor Theme Toggle 
-  ========================================================== */
-  let editorTheme = defaultOptions.editorTheme;
-
-  const toggleTheme = () => {
-    if (editorTheme == true || editorTheme == "true") {
-      editorTheme = true;
-      editor.setTheme("ace/theme/tomorrow_night");
-      writtenEdit.setTheme("ace/theme/tomorrow_night");
-      $("#fa-editor-toggle").addClass("fa-sun").removeClass("fa-moon");
-    } else {
-      editorTheme = false;
-      $("#fa-editor-toggle").addClass("fa-moon").removeClass("fa-sun");
-      editor.setTheme("ace/theme/chrome");
-      writtenEdit.setTheme("ace/theme/chrome");
-    }
-  };
-
-  (function savedEditorTheme() {
-    let savedEditor = localStorage.getItem("userEditor");
-    editorTheme = savedEditor ? savedEditor : editorTheme;
-    toggleTheme();
-  })();
-
-  const editorThemeToggle = () => {
-    editorTheme = !editorTheme;
-    toggleTheme();
-    localStorage.setItem("userEditor", editorTheme);
-  };
-
-
-  /* Change CSS Theme
-  ========================================================== */
-  (function newThemeUser() {
-    var savedTheme = localStorage.getItem("themeUser");
-    if (document.querySelector(`[value='${savedTheme}']`)) {
-      document
-        .querySelector(`[value='${savedTheme}']`)
-        .setAttribute("selected", "true");
-      setStyleSource(
-        "#thThemes",
-        "../styles/toyhouse_themes/" + savedTheme + ".css"
-      );
-    }
-  })();
-
-
-  document.getElementById("thCSSThemes").addEventListener("change", function() {
-    var selected =
-      "../styles/toyhouse_themes/" +
-      this.options[this.selectedIndex].value +
-      ".css";
-    let vanillaSelected = this.options[this.selectedIndex].value;
-    setStyleSource("#thThemes", selected);
-    localStorage.setItem("themeUser", vanillaSelected);
-  });
-
-
+const creator = () => {
+  
   /* Template Creator
   ========================================================== */
   // Loads user's previous html into the editor
@@ -538,8 +535,8 @@ const playhouseEditor = () => {
   /* Toyhouse Sidebar Toggle 
   ========================================================== */
   function sidebarToggle() {
-    document.getElementById("sidebar").classList.toggle("d-none");
-    document.getElementById("content").classList.toggle("col-lg-12");
+    $("#sidebar").classList.toggle("d-none");
+    $("#content").classList.toggle("col-lg-12");
   }
 
   /* Compiler
