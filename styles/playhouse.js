@@ -122,7 +122,7 @@ $(document).ready(() => {
   };
 
   // Render form on page load
-  $("#render-form").trigger('click');
+  $("#render-form").trigger('click').trigger('click');
 
 });
 
@@ -158,6 +158,22 @@ $("form").submit(function(event) {
 
 });
 
+
+// Autosave Function
+let autosave = () => {
+  switch (userPreferences.autosave) {
+    case "5":
+      return 5000;
+    case "15":
+      return 15000;
+    case "30":
+      return 30000;
+    case "60":
+      return 60000;
+    default:
+      return "off";
+  };
+}
 
 
 /* Template Creator
@@ -435,11 +451,18 @@ const creator = () => {
   $("#render-form").on("click", function() {formBuilder();});
 
 
-  console.log(userPreferences);
+  // Autosave
+  const autosaveForm = () => {
+    if (autosave() != "off") {
+      const interval = setInterval(function() {
+        formBuilder();
+      }, autosave());
+    }
+  }
 
-  const interval = setTimeout(function() {
-    formBuilder();
-  }, 5000);
+  $(document).ready(() => {autosaveForm();});
+  $("form").submit((event) => {autosaveForm();});
+
 
 
   /* Save Template
