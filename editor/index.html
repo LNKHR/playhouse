@@ -32,19 +32,19 @@
 
           <!-- Toggle Type -->
           <div class="col-auto p-1">
-            <button class="btn btn-default d-block" id="profile-toggler" onclick="profileToggler()">
+            <button class="btn btn-default d-block" id="profileToggle">
               <i class="fas fa-user fa-fw" id="fa-user"></i>
             </button>
           </div>
 
           <!-- Toggle Sidebar -->
           <div class="col-auto p-1 hidden-sm-down">
-            <button class="btn btn-default d-block" title="Toggle Sidebar" data-toggle="tooltip" data-placement="bottom" onclick="sidebarToggle()"><i class="fas fa-sidebar fa-fw"></i></button>
+            <button class="btn btn-default d-block" id="sidebarToggle" title="Toggle Sidebar" data-toggle="tooltip" data-placement="bottom"><i class="fas fa-sidebar fa-fw"></i></button>
           </div>
 
           <!-- Toggle Editory Theme -->
           <div class="col-auto p-1 hidden-sm-down">
-            <button class="btn btn-default d-block" onclick="editorThemeToggle()"><i class="fas fa-sun fa-fw" id="fa-editor-toggle"></i></button>
+            <button class="btn btn-default d-block" id="editorTheme"><i class="fas fa-sun fa-fw" id="fa-editor-toggle"></i></button>
           </div>
 
           <!-- Theme Options -->
@@ -63,7 +63,7 @@
 
           <!-- Toggle Type -->
           <div class="col-auto p-1">
-            <button class="btn btn-default d-block" onclick="saveCodeAs()">
+            <button class="btn btn-default d-block" id="saveCode">
               <i class="fas fa-download fa-fw"></i>
             </button>
           </div>
@@ -71,7 +71,7 @@
         </div>
         <textarea id="html"></textarea>
       </div>
-      <div class="resizer bg-secondary p-1 hidden-sm-down"><i class="fas fa-grip-lines-vertical"></i></div>
+      <div class="resizers resizer bg-secondary p-1 hidden-sm-down"><i class="fas fa-grip-lines-vertical"></i></div>
 
       <!-- Render Area -->
       <div class="col" style="overflow: hidden !important;">
@@ -155,6 +155,7 @@
   <script type="text/javascript" src="https://rawgit.com/RickStrahl/jquery-resizable/master/src/jquery-resizable.js"></script>
 
   <!-- File Savers -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.4/jszip.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/filesaver.js-npm@1.0.1/FileSaver.min.js"></script>
 
   <!-- Ace Editor -->
@@ -162,7 +163,7 @@
 
   <!-- Dah JS -->
   <script src="../styles/playhouse.js" type="text/javascript"></script>
-  <script type="text/javascript">playhouseEditor();</script>
+  <script>playhouseEditor();</script>
 
 </body>
 </html>
