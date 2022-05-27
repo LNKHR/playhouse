@@ -123,8 +123,9 @@ $(document).ready(() => {
 
   }
 
+  // Render form on page load
   $("#render-form").trigger('click');
-  
+
 });
 
 
@@ -160,19 +161,10 @@ $("form").submit(function(event) {
 });
 
 
-const creator = () => {
-  
-  /* Template Creator
-  ========================================================== */
-  // Loads user's previous html into the editor
-  /*$(window).load(() => {
-    const savedTemplateHTML = localStorage.getItem("htmluser") || "";
-    creatorEditor.session.setValue(savedTemplateHTML);
 
-    let renderedCode = localStorage.getItem("htmlRendered");
-    code.innerHTML = renderedCode;
-    creatorCopyEditor.setValue(renderedCode);
-  });*/
+/* Template Creator
+========================================================== */
+const creator = () => {
 
   // Grabs user input from the forms
   const inputGetter = () => {
@@ -183,10 +175,13 @@ const creator = () => {
   // Grabs the template and makes it look nice and neat
   const templateGetter = () => {
     try {
+
       // Grabbing all dah HTML
       var itemListRaw = creatorEditor.getValue().match(/{{(bootstrap|text|textarea|color|number|dropdown|list|section|subsection)(.+?)}}/gim);
       let cleanList = [];
       let bigArray = [];
+
+      console.log(creatorEditor.getValue().match(/{{loop([\s\S]*?){{\/loop}}/gim));
 
       // removes all duplicates from list
       var itemListSet = new Set(itemListRaw);
