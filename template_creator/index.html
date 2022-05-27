@@ -74,7 +74,7 @@
             <h1>User Options</h1>
             <fieldset>
 
-              <div class="row no-gutters mb-2">
+              <div class="row no-gutters mb-2 custom-control">
                 <label class="col" for="editorTheme"><b>Editor Theme</b></label>
                 <div class="col-4">
                   <select class="form-control rounded-0" name="editorTheme">
@@ -84,7 +84,7 @@
                 </div> 
               </div>
 
-              <div class="row no-gutters mb-2">
+              <div class="row no-gutters mb-2 custom-control">
                 <label class="col" for="siteTheme"><b>Site Theme</b></label>
                 <div class="col-4">
                   <select class="form-control rounded-0" name="siteTheme">
@@ -98,7 +98,7 @@
                 </div> 
               </div>
 
-              <div class="row no-gutters mb-2">
+              <div class="row no-gutters mb-2 custom-control">
                 <label class="col" for="editorLayout"><b>Layout</b></label>
                 <div class="col-4">
                   <select class="form-control rounded-0" name="editorLayout">
@@ -109,13 +109,36 @@
                 </div> 
               </div>
 
-              <div class="row no-gutters mb-2">
+              <div class="row no-gutters mb-2 custom-control">
                 <label class="col" for="saveFile"><b>Save File As</b></label>
                 <div class="col-4">
                   <select class="form-control rounded-0" name="saveFile">
                     <option selected="selected" value="both">HTML & Plain Text</option>
                     <option value="html">HTML</option>
                     <option value="text">Plain Text</option>
+                  </select>
+                </div> 
+              </div>
+
+              <div class="row no-gutters mb-2 custom-control custom-switch">
+                <label class="col" for="saveOnEdit"><b>Save on Edit</b></label>
+                <div class="col-4">
+                  <select class="form-control rounded-0" name="saveOnEdit">
+                    <option value="5">On</option>
+                    <option value="15" selected="selected">Off</option>
+                  </select>
+                </div> 
+              </div>
+
+              <div class="row no-gutters mb-2 custom-control">
+                <label class="col" for="autosave"><b>Autosave</b></label>
+                <div class="col-4">
+                  <select class="form-control rounded-0" name="autosave">
+                    <option value="5">5 Mins</option>
+                    <option value="15" selected="selected">15 Mins</option>
+                    <option value="30">30 Mins</option>
+                    <option value="30">60 Mins</option>
+                    <option value="off">Off</option>
                   </select>
                 </div> 
               </div>

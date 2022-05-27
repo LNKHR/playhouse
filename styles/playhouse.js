@@ -40,7 +40,6 @@ const resizeEditors = (editorSelect) => {
   $(".resizers").on("click", function() {
     editorSelect.resize();
     editorSelect.renderer.updateFull();
-    console.log(editorSelect);
   });
 };
 
@@ -99,7 +98,7 @@ let userPreferences = new Object();
 // Style document when loaded
 $(document).ready(() => {
 
-  if (window.localStorage.getItem('userPreferences').length > 0){
+  if (window.localStorage.getItem('userPreferences')){
 
     // Grab saved preferences
     userPreferences = JSON.parse(window.localStorage.getItem('userPreferences'));
@@ -116,12 +115,11 @@ $(document).ready(() => {
     // Set editor theme
     editorTheme(userPreferences.editorTheme);
 
-
-    // Creator editor saved HTML
-    const savedTemplateHTML = localStorage.getItem("htmluser") || "";
-    creatorEditor.session.setValue(savedTemplateHTML);
-
   }
+
+  if (localStorage.getItem("creatorEditor")){
+    creatorEditor.setValue(localStorage.getItem("creatorEditor"));
+  };
 
   // Render form on page load
   $("#render-form").trigger('click');
@@ -168,7 +166,7 @@ const creator = () => {
 
   // Grabs user input from the forms
   const inputGetter = () => {
-    var inputArray = $(".user-input").serializeArray();
+    let inputArray = $(".user-input").serializeArray();
     return inputArray;
   };
 
@@ -177,231 +175,219 @@ const creator = () => {
     try {
 
       // Grabbing all dah HTML
-      var itemListRaw = creatorEditor.getValue().match(/{{(bootstrap|text|textarea|color|number|dropdown|list|section|subsection)(.+?)}}/gim);
-      let cleanList = [];
-      let bigArray = [];
+      let regex = new RegExp(/{{(bootstrap|text|textarea|color|number|dropdown|list|section|subsection)([\s\S]+?)}}/gim);
+      let itemListRaw = creatorEditor.getValue().match(regex);
 
-      console.log(creatorEditor.getValue().match(/{{loop([\s\S]*?){{\/loop}}/gim));
+      // Get all unique items
+      let itemListUnique = [...new Set(itemListRaw)];
 
-      // removes all duplicates from list
-      var itemListSet = new Set(itemListRaw);
-      var itemList = Array.from(itemListSet);
+      // Arrays to use for later
+      let cleanList = new Array;
+      let variableObject = new Array;
 
-      for (let i = 0; i < itemList.length; i++) {
-        // So we don't have to keep scrubbing the {{}}
-        cleanList.push(itemList[i].replace('{{', '').replace('}}', ''));
+      // Fix up array
+      for (let i = 0; i < itemListUnique.length; i++) {
 
-        // Removes undefined from value
-        let itemValues =
-          cleanList[i].split(/::(.+)/)[1].split("||")[1] == undefined &&
-          cleanList[i].split(/::(.+)/)[0] != "color" ?
-          "[info]" :
-          cleanList[i].split(/::(.+)/)[1].split("||")[1];
+        // Removes {{}}
+        cleanList.push(itemListUnique[i].replace('{{', '').replace('}}', ''));
 
         // Makes a pretty array of info
-        bigArray[i] = {
-          itemList: cleanList[i],
-          itemInput: cleanList[i].split(/::(.+)/)[0],
+        variableObject.push({
           itemTitle: cleanList[i].split(/::(.+)/)[1].split("||")[0],
-          itemID: cleanList[i].replace(/\s/g, "-").split(/::(.+)/)[1].split("||")[0],
-          itemValue: itemValues,
-        };
+          itemID: cleanList[i].replace(/\s/g, "-").split(/::(.+)/)[1].split("||")[0].toLowerCase(),
+          itemInput: cleanList[i].split(/::(.+)/)[0],
+          itemUnique: cleanList[i].split('||')[0],
+          itemList: cleanList[i],
+          itemValue: 
+            cleanList[i].split(/::(.+)/)[1].split("||")[1] == undefined &&
+            cleanList[i].split(/::(.+)/)[0] != "color" ?
+            "[info]" :
+            cleanList[i].split(/::(.+)/)[1].split("||")[1],
+        });
+
       }
 
-      var flags = {};
-      var bigArrayClean = bigArray.filter(function(entry) {
-        if (flags[entry.itemID]) {
-          return false;
-        }
-        flags[entry.itemID] = true;
-        return true;
-      });
+      // Filter out variables that aren't key variables
+      variableObject = variableObject.filter((val,ind,arr) => arr.findIndex( val2 => (val2.itemUnique === val.itemUnique)) === ind);
     
-      return bigArrayClean;
+      // Returns key variables
+      return variableObject;
 
     } catch (err) {
-      document.getElementById("code").innerHTML = `<div class="alert alert-warning">Error: Looks like you're missing a :: somewhere - check over your template code just in case!</div>`;
+      $("#code").html(`<div class="alert alert-warning mb-4">Error: Looks like you're missing a :: somewhere - check over your template code just in case!</div>`);
     }
-
   }
 
-  function insertInput() {
-    //get the original template
-    var inputChange = creatorEditor.getValue();
-    var inputChangeTest = creatorEditor.getValue();
-    var bigArray = templateGetter();
-    var inputArray = inputGetter();
 
-    //loop through big array to store user input then change html using template accordingly
-    for (var i = 0; i < bigArray.length; i++) {
-      for (var j = 0; j < inputArray.length; j++) {
-        if (inputArray[j].name == bigArray[i].itemID) {
+  // Adding Inputs
+  const insertInput = () => {
 
+    // Grab template variable array
+    let templateVariableArray = templateGetter();
 
-          if (bigArray[i].itemInput == "textarea") {
-            bigArray[i].userInput = inputArray[j].value.includes("\n\n") ? "<p>" + inputArray[j].value.replaceAll("\n\n",`</p>\n<p>`) + "</p>" : "<p>" + inputArray[j].value.replaceAll("\n", `</p>\n<p>`) + "</p>";
-          } else if (bigArray[i].itemInput == "list") {
-            bigArray[i].userInput = inputArray[j].value.includes("\n\n") ?
-              "<li>" +
-              inputArray[j].value.replaceAll("\n\n",`</li>\n<li>`) + "</li>" : "<li>" + inputArray[j].value.replaceAll("\n",`</li>\n<li>`) + "</li>";
+    // Grab input array
+    let inputArray = inputGetter();
+
+    // Get the original template
+    let keyVariableUpdate = creatorEditor.getValue();
+    let variableUpdate = creatorEditor.getValue();
+
+    // Loop through big array to store user input then change html using template accordingly
+    for (let i = 0; i < templateVariableArray.length; i++) {
+      for (let j = 0; j < inputArray.length; j++) {
+        if (inputArray[j].name == templateVariableArray[i].itemID) {
+
+          if (templateVariableArray[i].itemInput == "textarea") {
+            templateVariableArray[i].userInput = inputArray[j].value.includes("\n\n") ? "<p>" + inputArray[j].value.replaceAll("\n\n",`</p>\n<p>`) + "</p>" : "<p>" + inputArray[j].value.replaceAll("\n", `</p>\n<p>`) + "</p>";
+          } else if (templateVariableArray[i].itemInput == "list") {
+            templateVariableArray[i].userInput = inputArray[j].value.includes("\n\n") ?
+              "<li>" + inputArray[j].value.replaceAll("\n\n",`</li>\n<li>`) + "</li>" : "<li>" + inputArray[j].value.replaceAll("\n",`</li>\n<li>`) + "</li>";
           } else {
-            bigArray[i].userInput = inputArray[j].value;
+            templateVariableArray[i].userInput = inputArray[j].value;
           }
 
-          var inputValue = "";
-          if (
-            bigArray[i].itemInput == "textarea" ||
-            bigArray[i].itemInput == "list"
-          ) {
+          let inputValue = "";
+          if (templateVariableArray[i].itemInput == "textarea" || templateVariableArray[i].itemInput == "list") {
             inputValue = inputArray[j].value.includes("\n\n") ?
               inputArray[j].value.replaceAll("\n\n", "&&") :
               inputArray[j].value.replaceAll("\n", "&&");
-          } else if (bigArray[i].itemInput == "dropdown") {
-            inputValue =
-              inputArray[j].value +
-              "," +
-              bigArray[i].itemValue.replace(`${inputArray[j].value},`, "");
+          } else if (templateVariableArray[i].itemInput == "dropdown") {
+            inputValue = inputArray[j].value + "," + templateVariableArray[i].itemValue.replace(`${inputArray[j].value},`, "");
           } else {
             inputValue = inputArray[j].value;
           }
 
-          var inputChangeTest = inputChangeTest.replaceAll(
-            `{{${bigArray[i].itemList.replaceAll("-", " ")}}}`,
-            `{{${bigArray[i].itemInput}::${bigArray[i].itemTitle}||${inputValue}}}`
+          keyVariableUpdate = keyVariableUpdate.replaceAll(
+            `{{${templateVariableArray[i].itemList.replaceAll("-", " ")}}}`,
+            `{{${templateVariableArray[i].itemInput}::${templateVariableArray[i].itemTitle}||${inputValue}}}`
           );
 
-          var inputChange = inputChange
-            .replaceAll(`{{${bigArray[i].itemList}}}`, `${bigArray[i].userInput}`)
-            .replace(/{{section(?::.+)}}/gm, "")
-            .replace(/{{subsection(?::.+)}}/gm, "")
-            .replaceAll(
-              `{{${bigArray[i].itemInput}::${bigArray[i].itemTitle}}}`,
-              `${bigArray[i].userInput}`
-            );
-
-          code.innerHTML = inputChange;
-          localStorage.setItem("htmluser", creatorEditor.getValue());
-          localStorage.setItem("htmlRendered", inputChange);
-          creatorCopyEditor.setValue(inputChange);
-          creatorEditor.setValue(inputChangeTest);
+          variableUpdate = variableUpdate
+          .replaceAll(`{{${templateVariableArray[i].itemList}}}`, `${templateVariableArray[i].userInput}`)
+          .replace(/{{section(?::.+)}}/gm, "")
+          .replace(/{{subsection(?::.+)}}/gm, "")
+          .replaceAll(
+            `{{${templateVariableArray[i].itemInput}::${templateVariableArray[i].itemTitle}}}`,
+            `${templateVariableArray[i].userInput}`
+          );
 
         }
       }
     }
+
+    // Save just the key variable edit
+    localStorage.setItem("creatorEditor", keyVariableUpdate);
+
+    // Update the html
+    $("#code").html(variableUpdate);
+
+    // Set Editor Values
+    creatorEditor.setValue(keyVariableUpdate);
+    creatorCopyEditor.setValue(variableUpdate);
+
   }
 
-  let bigArray = [];
 
+  // Builds the forms for user input
   function formBuilder() {
-    var bigArray = templateGetter();
-    document.getElementById("options").innerHTML = "";
 
+    // Slap that input in there
+    insertInput();
+
+    // Get the template again and clear out the form HTML
+    let templateVariableArray = templateGetter();
+    $("#options").html("");
+  
     // Creates the forms
-    for (let i = 0; i < bigArray.length; i++) {
-      let inputText = `
-      <div class="row no-gutters mx-n1">
-        <div class="col-5 my-auto p-1">
-          <label class="m-0" for="${bigArray[i].itemID}">${bigArray[i].itemTitle}</label>
-        </div>
-        <div class="col-7 my-auto p-1">
-          <input class="form-control user-input" type="text" value="${bigArray[i].itemValue}" input-type="${bigArray[i].itemInput}" name="${bigArray[i].itemID}" id="${bigArray[i].itemID}"></input>
-        </div>
-      </div>
-      `;
-
-      let inputTextArea = `
-        <div class="mb-3">
-          <label class="mb-2" for="${bigArray[i].itemID}">${bigArray[i].itemTitle}<br><small class="text-muted">Press enter to create a new paragraph.</small></label>
-          <textarea rows="6" class="form-control user-input" type="color" input-type="${bigArray[i].itemInput}" name="${bigArray[i].itemID}" id="${bigArray[i].itemID}">${bigArray[i].itemValue.replaceAll("&&", "\n")}</textarea>
-        </div>
-      `;
-
-      let inputColor = `
-      <div class="row no-gutters mx-n1">
-        <div class="col-5 my-auto p-1">
-          <label class="m-0" for="${bigArray[i].itemID}">${bigArray[i].itemTitle}</label>
-        </div>
-        <div class="col-7 my-auto p-1">
-          <input class="form-control user-input" value="${bigArray[i].itemValue}" type="color" input-type="${bigArray[i].itemInput}" name="${bigArray[i].itemID}" id="${bigArray[i].itemID}"></input>
-        </div>
-      </div>
-      `;
-
-      let inputNumber = `
-      <div class="row no-gutters mx-n1">
-        <div class="col-5 my-auto p-1">
-          <label class="m-0" for="${bigArray[i].itemID}">${bigArray[i].itemTitle}</label>
-        </div>
-        <div class="col-7 my-auto p-1">
-          <input class="form-control user-input" value="${bigArray[i].itemValue}" type="number" input-type="${bigArray[i].itemInput}" name="${bigArray[i].itemID}" id="${bigArray[i].itemID}"></input>
-        </div>
-      </div>
-      `;
-
-      let inputDropdown =
-        `
-      <div class="row no-gutters mx-n1">
-        <div class="col-5 my-auto p-1">
-          <label class="m-0" for="${bigArray[i].itemID}">${bigArray[i].itemTitle}</label>
-        </div>
-        <div class="col-7 my-auto p-1">
-          <select class="form-control user-input" input-type="${bigArray[i].itemInput}" name="${bigArray[i].itemID}" id="${bigArray[i].itemID}">
-            <option>` +
-        bigArray[i].itemValue.replaceAll(
-          ",",
-          `</option>
-            <option>`
-        ) +
-        `</option>
-          </select> 
-        </div>
-      </div>
-      `;
-
-      let inputList = `
-      <div class="mb-3">
-        <label class="mb-1" for="${bigArray[i].itemID}">${bigArray[i].itemTitle}<br><small class="text-muted">Press enter to create a new line.</label>
-        <textarea rows="4" class="form-control user-input" type="color" input-type="${bigArray[i].itemInput}" name="${bigArray[i].itemID}" id="${bigArray[i].itemID}">${bigArray[i].itemValue.replaceAll("&&", "\n")}</textarea>
-      </div>
-      `;
-
-      let sectionTitle = `
-        <hr class="mx-n4 my-4">
-        <h1 class="text-primary text-center text-capitalize display-4 mb-4">${bigArray[i].itemTitle}</h1>
-      `;
-
-      let subsectionTitle = `
-        <hr>
-          <h1 class="text-capitalize text-muted display-4 mb-0" style="font-size:1.25rem;">${bigArray[i].itemTitle}</h1>
-        <hr>
-      `;
-
-      if (bigArray[i].itemInput == "text") {
-        document.getElementById("options").innerHTML += inputText;
-      }
-      if (bigArray[i].itemInput == "textarea") {
-        document.getElementById("options").innerHTML += inputTextArea;
-      }
-      if (bigArray[i].itemInput == "color") {
-        document.getElementById("options").innerHTML += inputColor;
-      }
-      if (bigArray[i].itemInput == "number") {
-        document.getElementById("options").innerHTML += inputNumber;
-      }
-      if (bigArray[i].itemInput == "dropdown") {
-        document.getElementById("options").innerHTML += inputDropdown;
-      }
-      if (bigArray[i].itemInput == "list") {
-        document.getElementById("options").innerHTML += inputList;
-      }
-      if (bigArray[i].itemInput == "bootstrap") {
-        var bsPrimary = "";
-        var bsSuccess = "";
-        var bsWarning = "";
-        var bsInfo = "";
-        var bsDanger = "";
-
-        switch (bigArray[i].itemValue) {
+    for (let i = 0; i < templateVariableArray.length; i++) {
+  
+      // Insert Input Items
+      switch (templateVariableArray[i].itemInput) {
+        case "text":
+          $("#options").append(`
+          <div class="row no-gutters mx-n1">
+            <div class="col-5 my-auto p-1">
+              <label class="m-0" for="${templateVariableArray[i].itemID}">${templateVariableArray[i].itemTitle}</label>
+            </div>
+            <div class="col-7 my-auto p-1">
+              <input class="form-control user-input" type="text" value="${templateVariableArray[i].itemValue}" input-type="${templateVariableArray[i].itemInput}" name="${templateVariableArray[i].itemID}"></input>
+            </div>
+          </div>`);
+          break;
+        case "textarea":
+          $("#options").append(`
+          <div class="mb-3">
+            <label class="mb-2" for="${templateVariableArray[i].itemID}">${templateVariableArray[i].itemTitle}<br><small class="text-muted">Press enter to create a new paragraph.</small></label>
+            <textarea rows="6" class="form-control user-input" type="color" input-type="${templateVariableArray[i].itemInput}" name="${templateVariableArray[i].itemID}">${templateVariableArray[i].itemValue.replaceAll("&&", "\n")}</textarea>
+          </div>`);
+          break;
+        case "color":
+          $("#options").append(`
+          <div class="row no-gutters mx-n1">
+            <div class="col-5 my-auto p-1">
+              <label class="m-0" for="${templateVariableArray[i].itemID}">${templateVariableArray[i].itemTitle}</label>
+            </div>
+            <div class="col-7 my-auto p-1">
+              <input class="form-control user-input" value="${templateVariableArray[i].itemValue}" type="color" input-type="${templateVariableArray[i].itemInput}" name="${templateVariableArray[i].itemID}"></input>
+            </div>
+          </div>`);
+          break;
+        case "number":
+          $("#options").append(`
+          <div class="row no-gutters mx-n1">
+            <div class="col-5 my-auto p-1">
+              <label class="m-0" for="${templateVariableArray[i].itemID}">${templateVariableArray[i].itemTitle}</label>
+            </div>
+            <div class="col-7 my-auto p-1">
+              <input class="form-control user-input" value="${templateVariableArray[i].itemValue}" type="number" input-type="${templateVariableArray[i].itemInput}" name="${templateVariableArray[i].itemID}"></input>
+            </div>
+          </div>`);
+          break;
+        case "dropdown":
+          $("#options").append(`
+          <div class="row no-gutters mx-n1">
+            <div class="col-5 my-auto p-1">
+              <label class="m-0" for="${templateVariableArray[i].itemID}">${templateVariableArray[i].itemTitle}</label>
+            </div>
+            <div class="col-7 my-auto p-1">
+              <select class="form-control user-input" input-type="${templateVariableArray[i].itemInput}" name="${templateVariableArray[i].itemID}">
+                <option> ${templateVariableArray[i].itemValue.replaceAll(",", `</option> <option>`)} </option>
+              </select> 
+            </div>
+          </div>`);
+          break;
+        case "list":
+          $("#options").append(`
+          <div class="mb-3">
+            <label class="mb-1" for="${templateVariableArray[i].itemID}">${templateVariableArray[i].itemTitle}<br><small class="text-muted">Press enter to create a new line.</label>
+            <textarea rows="4" class="form-control user-input" type="color" input-type="${templateVariableArray[i].itemInput}" name="${templateVariableArray[i].itemID}">
+              ${templateVariableArray[i].itemValue.replaceAll("&&", "\n")}
+            </textarea>
+          </div>`);
+          break;
+        case "section":
+          $("#options").append(`
+          <hr class="mx-n4 my-4">
+          <h1 class="text-primary text-center text-capitalize display-4 mb-4">${templateVariableArray[i].itemTitle}</h1>`);
+          break;
+        case "subsection":
+          $("#options").append(`
+          <hr>
+          <h1 class="text-capitalize text-muted display-4 mb-0" style="font-size:1.25rem;">${templateVariableArray[i].itemTitle}</h1>
+          <hr>`);
+          break;
+      };
+  
+      // Auto Populate Bootstrap
+      if (templateVariableArray[i].itemInput == "bootstrap") {
+  
+        let bsPrimary = "";
+        let bsSuccess = "";
+        let bsWarning = "";
+        let bsInfo = "";
+        let bsDanger = "";
+  
+        switch (templateVariableArray[i].itemValue) {
           case "primary":
             bsPrimary = "selected";
             break;
@@ -417,51 +403,50 @@ const creator = () => {
           case "danger":
             bsDanger = "selected";
             break;
-        }
-
+        };
+  
         let inputBootstrap = `
-        <div class="row no-gutters mx-n1">
-          <div class="col-5 my-auto p-1">
-            <label class="m-0" for="${bigArray[i].itemID}">${bigArray[i].itemTitle}</label>
+          <div class="row no-gutters mx-n1">
+            <div class="col-5 my-auto p-1">
+              <label class="m-0" for="${templateVariableArray[i].itemID}">${templateVariableArray[i].itemTitle}</label>
+            </div>
+            <div class="col-7 my-auto p-1">
+              <select class="form-control user-input" input-type="${templateVariableArray[i].itemInput}" name="${templateVariableArray[i].itemID}">
+                <option value="primary" ${bsPrimary}>Primary</option>
+                <option value="success" ${bsSuccess}>Success</option>
+                <option value="warning" ${bsWarning}>Warning</option>
+                <option value="info" ${bsInfo}>Info</option>
+                <option value="danger" ${bsDanger}>Danger</option>
+              </select> 
+            </div>
           </div>
-          <div class="col-7 my-auto p-1">
-            <select class="form-control user-input" input-type="${bigArray[i].itemInput}" name="${bigArray[i].itemID}" id="${bigArray[i].itemID}">
-              <option value="primary" ${bsPrimary}>Primary</option>
-              <option value="success" ${bsSuccess}>Success</option>
-              <option value="warning" ${bsWarning}>Warning</option>
-              <option value="info" ${bsInfo}>Info</option>
-              <option value="danger" ${bsDanger}>Danger</option>
-            </select> 
-          </div>
-        </div>
         `;
-        document.getElementById("options").innerHTML += inputBootstrap;
-      }
-      if (bigArray[i].itemInput == "section") {
-        document.getElementById("options").innerHTML += sectionTitle;
-      }
-      if (bigArray[i].itemInput == "subsection") {
-        document.getElementById("options").innerHTML += subsectionTitle;
-      }
+  
+        $("#options").append(inputBootstrap);
+  
+      };
+  
     }
-
-    insertInput();
+  
   }
 
-  document.getElementById("render-form").addEventListener("click", function() {
-    formBuilder();
-  });
 
-  document.querySelector("#options").addEventListener("change", function() {
-    insertInput();
-  });
+  // Create your template!
+  $("#render-form").on("click", function() {formBuilder();});
+
+
+  console.log(userPreferences);
+
+  const interval = setTimeout(function() {
+    formBuilder();
+  }, 5000);
 
 
   /* Save Template
   ========================================================== */
   const saveCodeAs = () => {
     const templateName = (creatorEditor.getValue().match(/{{template(.+?)}}/gm) != null) ? creatorEditor.getValue().match(/{{template(.+?)}}/gm)[0].split(/::(.+)/)[1].replace('}}', '').toLowerCase().replace(/\s/g, "-") + ".zip" : "playhouse-template.zip";
-    var zip = new JSZip();
+    let zip = new JSZip();
     let templateCode = localStorage.getItem("htmluser");
     let renderedCode = localStorage.getItem("htmlRendered");
     zip
@@ -491,7 +476,7 @@ const creator = () => {
 const playhouseEditor = () => {
   /* Editor Options
   ========================================================== */
-  var editor = ace.edit("html");
+  let editor = ace.edit("html");
   editor.$blockScrolling = Infinity;
   editor.setOptions({
     selectionStyle: "line",
@@ -525,7 +510,7 @@ const playhouseEditor = () => {
   /* Sidebar Toggle
   ========================================================== */
   function offCanvas() {
-    var element = document.getElementById("codeEditor");
+    let element = document.getElementById("codeEditor");
     element.classList.toggle("active");
   }
 
@@ -541,7 +526,7 @@ const playhouseEditor = () => {
   let compile = () => {
     editor.addEventListener("change", function () {
       let code = document.getElementById("code");
-      var text = editor.getValue();
+      let text = editor.getValue();
       localStorage.setItem("htmlTHEditor", text);
       code.innerHTML = text;
     });
@@ -549,12 +534,12 @@ const playhouseEditor = () => {
       .getElementById("profile-toggler")
       .addEventListener("click", function () {
         let code = document.getElementById("code");
-        var text = editor.getValue();
+        let text = editor.getValue();
         localStorage.setItem("htmlTHEditor", text);
         code.innerHTML = text;
       });
     window.onload = () => {
-      var savedText = localStorage.getItem("htmlTHEditor") || "";
+      let savedText = localStorage.getItem("htmlTHEditor") || "";
       code.innerHTML = savedText;
       editor.session.setValue(savedText);
     };
@@ -566,7 +551,7 @@ const playhouseEditor = () => {
   ========================================================== */
   let profileToggle = true;
   const profileToggler = () => {
-    var currentTime = new Date().toLocaleDateString();
+    let currentTime = new Date().toLocaleDateString();
     profileToggle = !profileToggle;
 
     if (profileToggle) {
@@ -746,7 +731,7 @@ const playhouseEditor = () => {
   /* Theme Helper
   ========================================================== */
   function setStyleSource(linkID, sourceLoc) {
-    var theLink = document.querySelector(linkID);
+    let theLink = document.querySelector(linkID);
     theLink.href = sourceLoc;
   }
 
@@ -787,7 +772,7 @@ const playhouseEditor = () => {
   /* Change CSS Theme
   ========================================================== */
   (function newThemeUser() {
-    var savedTheme = localStorage.getItem("themeUser");
+    let savedTheme = localStorage.getItem("themeUser");
     if (document.querySelector(`[value='${savedTheme}']`)) {
       document
         .querySelector(`[value='${savedTheme}']`)
@@ -800,7 +785,7 @@ const playhouseEditor = () => {
   })();
 
   document.getElementById("thCSSThemes").addEventListener("change", function () {
-    var selected =
+    let selected =
       "../styles/toyhouse_themes/" +
       this.options[this.selectedIndex].value +
       ".css";
