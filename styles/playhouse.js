@@ -50,22 +50,22 @@ const resizeEditors = (editorSelect) => {
 ========================================================== */
 
 // Main editor in creator
-const editor = ace.edit("html");
-editorTime(editor);
+const creatorEditor = ace.edit("html");
+editorTime(creatorEditor);
 
 // Copy/Paste editor in creator
-const writtenEdit = ace.edit("writtenhtml");
-writtenEdit.setReadOnly(true);
-editorTime(writtenEdit);
+const creatorCopyEditor = ace.edit("writtenhtml");
+creatorCopyEditor.setReadOnly(true);
+editorTime(creatorCopyEditor);
 
 // Theme function for later
 const editorTheme = (theme) => {
   if (theme == 'light') {
-    editor.setTheme("ace/theme/chrome");
-    writtenEdit.setTheme("ace/theme/chrome");
+    creatorEditor.setTheme("ace/theme/chrome");
+    creatorCopyEditor.setTheme("ace/theme/chrome");
   } else {
-    editor.setTheme("ace/theme/tomorrow_night");
-    writtenEdit.setTheme("ace/theme/tomorrow_night");
+    creatorEditor.setTheme("ace/theme/tomorrow_night");
+    creatorCopyEditor.setTheme("ace/theme/tomorrow_night");
   }
 }
 
@@ -78,8 +78,8 @@ resizerOptions(".main-editor",".resizer-horizontal",false,true);
 resizerOptions(".written-html",".resizer-horizontal-2",false,true);
 
 // Execute Resize
-resizeEditors(editor);
-resizeEditors(writtenEdit);
+resizeEditors(creatorEditor);
+resizeEditors(creatorCopyEditor);
 
 
 
@@ -97,7 +97,8 @@ const setStyleSource = (linkID, sourceLoc) => {
 let userPreferences = new Object();
 
 // Style document when loaded
-$(document).ready(function() {
+$(document).ready(() => {
+
   if (window.localStorage.getItem('userPreferences').length > 0){
 
     // Grab saved preferences
@@ -115,7 +116,15 @@ $(document).ready(function() {
     // Set editor theme
     editorTheme(userPreferences.editorTheme);
 
+
+    // Creator editor saved HTML
+    const savedTemplateHTML = localStorage.getItem("htmluser") || "";
+    creatorEditor.session.setValue(savedTemplateHTML);
+
   }
+
+  $("#render-form").trigger('click');
+  
 });
 
 
@@ -156,33 +165,26 @@ const creator = () => {
   /* Template Creator
   ========================================================== */
   // Loads user's previous html into the editor
-  window.onload = () => {
+  /*$(window).load(() => {
     const savedTemplateHTML = localStorage.getItem("htmluser") || "";
-    editor.session.setValue(savedTemplateHTML);
+    creatorEditor.session.setValue(savedTemplateHTML);
 
     let renderedCode = localStorage.getItem("htmlRendered");
     code.innerHTML = renderedCode;
-    writtenEdit.setValue(renderedCode);
-  };
+    creatorCopyEditor.setValue(renderedCode);
+  });*/
 
   // Grabs user input from the forms
-  function inputGetter() {
-    var userInput = document.querySelectorAll(".user-input");
-    var inputArray = [];
-    for (var i = 0; i < userInput.length; i++) {
-      inputArray[i] = {
-        id: userInput[i].id,
-        value: userInput[i].value,
-      };
-    }
+  const inputGetter = () => {
+    var inputArray = $(".user-input").serializeArray();
     return inputArray;
-  }
+  };
 
   // Grabs the template and makes it look nice and neat
-  function templateGetter() {
+  const templateGetter = () => {
     try {
       // Grabbing all dah HTML
-      var itemListRaw = editor.getValue().match(/{{(bootstrap|text|textarea|color|number|dropdown|list|section|subsection)(.+?)}}/gim); //.filter((x, i, a) => a.indexOf(x) == i)
+      var itemListRaw = creatorEditor.getValue().match(/{{(bootstrap|text|textarea|color|number|dropdown|list|section|subsection)(.+?)}}/gim);
       let cleanList = [];
       let bigArray = [];
 
@@ -230,15 +232,17 @@ const creator = () => {
 
   function insertInput() {
     //get the original template
-    var inputChange = editor.getValue();
-    var inputChangeTest = editor.getValue();
+    var inputChange = creatorEditor.getValue();
+    var inputChangeTest = creatorEditor.getValue();
     var bigArray = templateGetter();
     var inputArray = inputGetter();
 
     //loop through big array to store user input then change html using template accordingly
     for (var i = 0; i < bigArray.length; i++) {
       for (var j = 0; j < inputArray.length; j++) {
-        if (inputArray[j].id == bigArray[i].itemID) {
+        if (inputArray[j].name == bigArray[i].itemID) {
+
+
           if (bigArray[i].itemInput == "textarea") {
             bigArray[i].userInput = inputArray[j].value.includes("\n\n") ? "<p>" + inputArray[j].value.replaceAll("\n\n",`</p>\n<p>`) + "</p>" : "<p>" + inputArray[j].value.replaceAll("\n", `</p>\n<p>`) + "</p>";
           } else if (bigArray[i].itemInput == "list") {
@@ -271,9 +275,6 @@ const creator = () => {
             `{{${bigArray[i].itemInput}::${bigArray[i].itemTitle}||${inputValue}}}`
           );
 
-          // var regex = new RegExp(`{{${bigArray[i].itemInput}:${bigArray[i].itemID.replaceAll('-',' ')}`+'.*}}', "gmi");
-          // var inputChange = inputChange.replaceAll(regex, `${bigArray[i].userInput}`).replace(/{{section(?:.+)}}/gm, "").replace(/{{subsection(?:.+)}}/gm, "");
-
           var inputChange = inputChange
             .replaceAll(`{{${bigArray[i].itemList}}}`, `${bigArray[i].userInput}`)
             .replace(/{{section(?::.+)}}/gm, "")
@@ -284,10 +285,11 @@ const creator = () => {
             );
 
           code.innerHTML = inputChange;
-          localStorage.setItem("htmluser", editor.getValue());
+          localStorage.setItem("htmluser", creatorEditor.getValue());
           localStorage.setItem("htmlRendered", inputChange);
-          writtenEdit.setValue(inputChange);
-          editor.setValue(inputChangeTest);
+          creatorCopyEditor.setValue(inputChange);
+          creatorEditor.setValue(inputChangeTest);
+
         }
       }
     }
@@ -463,7 +465,7 @@ const creator = () => {
   /* Save Template
   ========================================================== */
   const saveCodeAs = () => {
-    const templateName = (editor.getValue().match(/{{template(.+?)}}/gm) != null) ? editor.getValue().match(/{{template(.+?)}}/gm)[0].split(/::(.+)/)[1].replace('}}', '').toLowerCase().replace(/\s/g, "-") + ".zip" : "playhouse-template.zip";
+    const templateName = (creatorEditor.getValue().match(/{{template(.+?)}}/gm) != null) ? creatorEditor.getValue().match(/{{template(.+?)}}/gm)[0].split(/::(.+)/)[1].replace('}}', '').toLowerCase().replace(/\s/g, "-") + ".zip" : "playhouse-template.zip";
     var zip = new JSZip();
     let templateCode = localStorage.getItem("htmluser");
     let renderedCode = localStorage.getItem("htmlRendered");
