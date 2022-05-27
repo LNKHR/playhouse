@@ -91,89 +91,23 @@ const setStyleSource = (linkID, sourceLoc) => {
 
 
 
-/* User Options
+/* Autosave Time Intervals
 ========================================================== */
-let userPreferences = new Object();
-
-// Style document when loaded
-$(document).ready(() => {
-
-  if (window.localStorage.getItem('userPreferences')){
-
-    // Grab saved preferences
-    userPreferences = JSON.parse(window.localStorage.getItem('userPreferences'));
-
-    // Select new property
-    for (const property in userPreferences) {
-      $(`[name='${property}'] option`).attr("selected", false);
-      $(`[name='${property}'] option[value='${userPreferences[property]}']`).attr("selected", true);
-    }
-
-    // Setting CSS Style
-    setStyleSource("#thThemes", `../styles/toyhouse_themes/${userPreferences.siteTheme}.css`);
-
-    // Set editor theme
-    editorTheme(userPreferences.editorTheme);
-
-  }
-
-  if (localStorage.getItem("creatorEditor")){
-    creatorEditor.setValue(localStorage.getItem("creatorEditor"));
-  };
-
-  // Render form on page load
-  $("#render-form").trigger('click').trigger('click');
-
-});
-
-
-// Save from form
-$("form").submit(function(event) {
-
-  // Prevent Click 
-  event.preventDefault();
-
-  // Save preferences to object
-  let savedPreferences = $(this).serializeArray();
-
-  // Create object from array
-  for (let i = 0; i < savedPreferences.length; i++) {
-    userPreferences[savedPreferences[i].name] = savedPreferences[i].value;
-  }
-
-  // Select new property
-  for (const property in userPreferences) {
-    $(`[name='${property}'] option`).attr("selected", false);
-    $(`[name='${property}'] option[value='${userPreferences[property]}']`).attr("selected", true);
-  }
-
-  // Set new JSON to the local storage
-  localStorage.setItem("userPreferences", JSON.stringify(userPreferences));
-
-  // Setting CSS Style
-  setStyleSource("#thThemes", `../styles/toyhouse_themes/${userPreferences.siteTheme}.css`);
-
-  // Set editor theme
-  editorTheme(userPreferences.editorTheme);
-
-});
-
-
-// Autosave Function
-let autosave = () => {
-  switch (userPreferences.autosave) {
+const autoSaveTime = (time) => {
+  switch (time) {
     case "5":
-      return 5000;
+      return 50000;
     case "15":
-      return 15000;
+      return 150000;
     case "30":
-      return 30000;
+      return 300000;
     case "60":
-      return 60000;
-    default:
+      return 600000;
+    case "off":
       return "off";
   };
 }
+
 
 
 /* Template Creator
@@ -291,24 +225,24 @@ const creator = () => {
       }
     }
 
-    // Save just the key variable edit
-    localStorage.setItem("creatorEditor", keyVariableUpdate);
-
-    // Update the html
-    $("#code").html(variableUpdate);
-
-    // Set Editor Values
-    creatorEditor.setValue(keyVariableUpdate);
-    creatorCopyEditor.setValue(variableUpdate);
+    return [keyVariableUpdate,variableUpdate];
 
   }
 
+  const save = (saveInput) => {
+    // Save just the key variable edit
+    localStorage.setItem("creatorEditor", saveInput[0]);
+
+    // Update the html
+    $("#code").html(saveInput[1]);
+
+    // Set Editor Values
+    creatorEditor.setValue(saveInput[0]);
+    creatorCopyEditor.setValue(saveInput[1]);
+  }
 
   // Builds the forms for user input
   function formBuilder() {
-
-    // Slap that input in there
-    insertInput();
 
     // Get the template again and clear out the form HTML
     let templateVariableArray = templateGetter();
@@ -443,30 +377,112 @@ const creator = () => {
       };
   
     }
+
+    // Slap that input in there
+    save(insertInput());
   
-  }
+  };
+
+  // Slap that input in there
+  save(insertInput());
+
+  // Make it work
+  formBuilder();
+
+};
 
 
-  // Create your template!
-  $("#render-form").on("click", function() {formBuilder();});
+/* User Options
+========================================================== */
+let userPreferences = new Object();
+let autosaveInt;
 
+// Style document when loaded
+$(document).ready(() => {
 
-  // Autosave
-  const autosaveForm = () => {
-    if (autosave() != "off") {
-      const interval = setInterval(function() {
-        formBuilder();
-      }, autosave());
+  if (window.localStorage.getItem('userPreferences')){
+
+    // Grab saved preferences
+    userPreferences = JSON.parse(window.localStorage.getItem('userPreferences'));
+
+    // Select new property
+    for (const property in userPreferences) {
+      $(`[name='${property}'] option`).attr("selected", false);
+      $(`[name='${property}'] option[value='${userPreferences[property]}']`).attr("selected", true);
     }
+
+    // Setting CSS Style
+    setStyleSource("#thThemes", `../styles/toyhouse_themes/${userPreferences.siteTheme}.css`);
+
+    // Set editor theme
+    editorTheme(userPreferences.editorTheme);
+
+    // Set Autosave
+    if (autoSaveTime(userPreferences.autosave) != "off") {
+      autosaveInt = setInterval(() => {
+        creator();
+      }, autoSaveTime(userPreferences.autosave));
+    }
+
   }
 
-  $(document).ready(() => {autosaveForm();});
-  $("form").submit((event) => {autosaveForm();});
+  if (localStorage.getItem("creatorEditor")){
+    creatorEditor.setValue(localStorage.getItem("creatorEditor"));
+  };
 
+  // Render form on page load
+  $("#render-form").trigger('click');
+
+});
+
+
+// Save from form
+$("form").submit(function(event) {
+
+  // Prevent Click 
+  event.preventDefault();
+
+  // Save preferences to object
+  let savedPreferences = $(this).serializeArray();
+
+  // Create object from array
+  for (let i = 0; i < savedPreferences.length; i++) {
+    userPreferences[savedPreferences[i].name] = savedPreferences[i].value;
+  }
+
+  // Select new property
+  for (const property in userPreferences) {
+    $(`[name='${property}'] option`).attr("selected", false);
+    $(`[name='${property}'] option[value='${userPreferences[property]}']`).attr("selected", true);
+  }
+
+  // Set new JSON to the local storage
+  localStorage.setItem("userPreferences", JSON.stringify(userPreferences));
+
+  // Setting CSS Style
+  setStyleSource("#thThemes", `../styles/toyhouse_themes/${userPreferences.siteTheme}.css`);
+
+  // Set editor theme
+  editorTheme(userPreferences.editorTheme);
+
+  // Set Autosave
+  clearInterval(autosaveInt);
+  if (autoSaveTime(userPreferences.autosave) != "off") {
+    autosaveInt = setInterval(() => {
+      creator();
+    }, autoSaveTime(userPreferences.autosave));
+  }
+
+
+});
+
+
+// Create your template!
+$("#render-form").on("click", function() {creator();});
 
 
   /* Save Template
-  ========================================================== */
+  ==========================================================
   const saveCodeAs = () => {
     const templateName = (creatorEditor.getValue().match(/{{template(.+?)}}/gm) != null) ? creatorEditor.getValue().match(/{{template(.+?)}}/gm)[0].split(/::(.+)/)[1].replace('}}', '').toLowerCase().replace(/\s/g, "-") + ".zip" : "playhouse-template.zip";
     let zip = new JSZip();
@@ -491,9 +507,7 @@ const creator = () => {
       return false;
     }
     return true;
-  });
-
-};
+  }); */
 
 
 const playhouseEditor = () => {
