@@ -615,7 +615,7 @@ const playhouseEditor = () => {
                   </div>
                   <div class="profile-name-info">
                     <h1 class="display-4">Character</h1>
-                    <h2><span class="display-user"><a href="javascript: void(0)"><i class="fa fa-user mr-1" style="font-size:14px;"></i>user</a></span></h2>
+                    <h2><span class="display-user"><a href="#"><i class="fa fa-user mr-1" style="font-size:14px;"></i>user</a></span></h2>
                   </div>
                 </div>
 
@@ -644,14 +644,14 @@ const playhouseEditor = () => {
                                 Creator
                               </dt>
                               <dd class="field-value col-sm-8">
-                                <span class="display-user"><a href="javascript: void(0)"><i class="fa fa-user mr-1" style="font-size:10px;"></i>user</a></span>
+                                <span class="display-user"><a href="#"><i class="fa fa-user mr-1" style="font-size:10px;"></i>user</a></span>
                               </dd>
                             </div>
                             <div class="row fields-field">
                               <dt class="field-title col-sm-4">
                                 Favorites
                               </dt>
-                              <dd class="field-value col-sm-8"><a href="" th-modal-trigger="">127</a></dd>
+                              <dd class="field-value col-sm-8"><a href="#" th-modal-trigger="">127</a></dd>
                             </div>
                           </dl>
                         </div>
